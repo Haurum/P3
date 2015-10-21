@@ -5,12 +5,12 @@
       <form>
         <input type="text" ng-model="newDivName" />
         <input type="submit" ng-click="submit(newDivName)" class="btn btn-default" value="Submit" /><a ng-click="createNew()" class="btn btn-default">Annuller</a>
-      </form>
-      
+      </form>      
     </div>
     <div class="btn-group-vertical col-md-4 col-md-offset-4" role="group">
       <div class="row">
-        <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()">Tilføj ny division</a>
+        <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()" style="white-space: inherit ! important;">Tilføj ny division
+        <span ng-click="remove($index)" class="glyphicon glyphicon-plus pull-right"></span></a>
       </div>
       <!--<a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()" style="white-space: inherit ! important;">
         Tilføj ny division
@@ -22,7 +22,6 @@
           <span ng-click="remove($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </a>
       </div>
-    </div>
-    
+    </div>   
   </div>
 </div>
