@@ -1,0 +1,19 @@
+.tlist{
+	width: 200px;
+}
+
+.brugerInput{
+	background-color: #fff;
+}
+
+.upload-excel {
+	margin-top: 15px;
+}
+
+.upload-excel input {
+	vertical-align: center;
+}
+
+.add-button button {
+	margin-top: 10px;
+}

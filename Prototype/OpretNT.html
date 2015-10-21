@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Turnerings værktøj - Prototype</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+    body {
+        padding-top: 70px;
+        /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Startside</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="#">About</a>
+                    </li>
+                    <li>
+                        <a href="#">Services</a>
+                    </li>
+                    <li>
+                        <a href="#">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h1>Opret ny turnering</h1>
+                <div class="row">
+                    <div class="brugerInput">
+                        <div class="col-md-6">
+                            <h4>Turnerings navn</h4>
+                            <input type="text" class="form-control" placeholder="Skriv turneringens navn">
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Turnerings kodeord</h4>
+                            <input type="text" class="form-control" placeholder="Skriv turneringens kodeord">
+                        </div>
+                        <div class="col-md-6">
+                                <h4>Turnerings start dag</h4>
+                                <input type="date" name="bday">
+                        </div>
+                        <div class="col-md-6">
+                                <h4>Turnerings slut dag</h4>
+                                <input type="date" name="bday">
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Tid for dag1</h4>
+                            <input type="time" name="usr_time">
+                            -
+                            <input type="time" name="usr_time">
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Tid for dag2</h4>
+                            <input type="time" name="usr_time">
+                            -
+                            <input type="time" name="usr_time">
+                        </div>
+                        <div class="col-md-4">
+                            <h4>Tid for dag3</h4>
+                            <input type="time" name="usr_time">
+                            -
+                            <input type="time" name="usr_time">
+                        </div>
+                        <div class="col-md-12 upload-excel">
+                            <h4>Upload Excel ark for turnering</h4>
+                            <input type="file" name="pic" accept="image/*">
+                            <input class="btn btn-default" type="submit" value="Upload">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 add-button">
+                                <button class="btn btn-default">Tilføj baner</button>
+                            </div>
+                            <div class="col-md-12 add-button">
+                                <button type="button" class="btn btn-default btn-lg">Opret turnering</button>
+                            </div>
+                        </div>
+                        
+
+
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery Version 1.11.1 -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
