@@ -153,7 +153,6 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $location.url("/divisions/detail");
   }
 }])
-<<<<<<< Updated upstream
 
 .controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
   $scope.division = $rootScope.currDivision;
@@ -236,5 +235,3 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 });
 
 /* DATE PICKER END! */ 
-=======
->>>>>>> Stashed changes
