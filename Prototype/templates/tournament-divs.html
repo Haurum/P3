@@ -17,7 +17,7 @@
         <span ng-click="remove($index)" class="glyphicon glyphicon-plus pull-right"></span>
       </a>-->
       <div class="row">
-        <a ng-click="gotoDivison(division)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+        <a ng-click="gotoDivison(division, $index)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
           {{ division }}
           <span ng-click="remove($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </a>

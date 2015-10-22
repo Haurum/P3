@@ -30,7 +30,11 @@ body {
   }
 .partially button span {
 	background-color: orange;
-    border-radius: 32px;
-    color: black;
-  }
+  border-radius: 32px;
+  color: black;
+}
+
+.pools {
+  margin-bottom: 10px;
+}
 

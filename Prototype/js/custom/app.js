@@ -147,11 +147,13 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $rootScope.divisions.splice(index, 1);
   }
   
-  $scope.gotoDivison = function(currDiv) {
+  $scope.gotoDivison = function(currDiv, index) {
     $rootScope.currDivision = currDiv;
+    $rootScope.currDivisionIndex = index
     $location.url("/divisions/detail");
   }
 }])
+<<<<<<< Updated upstream
 
 .controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
   $scope.division = $rootScope.currDivision;
@@ -234,3 +236,5 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 });
 
 /* DATE PICKER END! */ 
+=======
+>>>>>>> Stashed changes
