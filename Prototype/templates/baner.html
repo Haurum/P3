@@ -16,11 +16,11 @@
             <div class="row">
               <a ng-if="!newEm" class="btn btn-default col-md-12" ng-click="createNewEmField()" style="white-space: inherit ! important;">
                 Tilføj ny 11-mands bane
-                <span ng-click="remove($index)" class="glyphicon glyphicon-plus pull-right"></span>
+                <span class="glyphicon glyphicon-plus pull-right"></span>
               </a>
               <a ng-repeat="field in EmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
                 {{ field }}
-                <span class="glyphicon glyphicon-remove pull-right"></span>
+                <span ng-click="removeEmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
               </a>
             </div>
           </div>
