@@ -19,7 +19,7 @@ angular.module('tournyplanner', ['ngRoute'])
       controller: 'DivisonDetailController'
     }).
     when('/addFields', {
-      templateUrl: 'baner.html',
+      templateUrl: 'templates/baner.html',
       controller: 'CreateFieldsController'
     }).    
     otherwise({
@@ -41,7 +41,7 @@ angular.module('tournyplanner', ['ngRoute'])
 
 }])
 
-.controller('CreateFieldsController', ['$scope', '$rootscope', function ($scope, $rootscope) {
+.controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
   $scope.newFieldName = "";
 
