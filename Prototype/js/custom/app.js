@@ -18,6 +18,10 @@ angular.module('tournyplanner', ['ngRoute'])
       templateUrl: 'templates/tournament-divs-detail.html',
       controller: 'DivisonDetailController'
     }).
+    when('/addFields', {
+      templateUrl: 'baner.html',
+      controller: 'CreateFieldsController'
+    }).    
     otherwise({
       redirectTo: '/'
     });
@@ -25,13 +29,72 @@ angular.module('tournyplanner', ['ngRoute'])
 
 .run(function($rootScope) {
   $rootScope.divisions = ["Noobs", "Gorrilaer", "Gulleroderne", "Master", "Challenger"];
+  $rootScope.EmFields = ["Bane 1", "Bane 2", "Bane 5", "Bane 6"];
+  $rootScope.OmFields = ["Bane 3A", "Bane 3B", "Bane 4A", "Bane 4B"];
+  $rootScope.FmFields = ["Bane 7A", "Bane 7B", "Bane 7C", "Bane 7D"];
 })
 
 .controller('HomeController', ['$scope', function ($scope) {
 }])
 
 .controller('CreateTournyController', ['$scope', function ($scope) {
-  console.log("bhisrhbs");
+
+}])
+
+.controller('CreateFieldsController', ['$scope', '$rootscope', function ($scope, $rootscope) {
+
+  $scope.newFieldName = "";
+
+  $scope.newEm = false;
+
+  $scope.newOm = false;
+
+  $scope.newFm = false;
+
+  /* 11mands */
+  $scope.createNewEmField = function() {
+    $scope.newEm = !$scope.newEm;
+  }
+  $scope.submitEmField = function(newName) {
+    $rootScope.EmFields.push(newName);
+    $scope.newFieldName = "";
+    $scope.createNewEmField();
+  }
+  
+  $scope.removeEmField = function(index) {
+    $rootScope.EmFields.splice(index, 1);
+  }
+
+  /* 8mands */
+ $scope.createNewOmField = function() {
+    $scope.newOm = !$scope.newOm;
+  }
+  $scope.submitOmField = function(newName) {
+    $rootScope.OmFields.push(newName);
+    $scope.newFieldName = "";
+    $scope.createNewOmField();
+  }
+  
+  $scope.removeOmField = function(index) {
+    $rootScope.OmFields.splice(index, 1);
+  }  
+
+  /* 5mands */
+  $scope.createNewFmField = function() {
+    $scope.newFm = !$scope.newFm;
+  }
+  $scope.submitFmField = function(newName) {
+    $rootScope.FmFields.push(newName);
+    $scope.newFieldName = "";
+    $scope.createNewFmField();
+  }
+  
+  $scope.removeFmField = function(index) {
+    $rootScope.FmFields.splice(index, 1);
+  }  
+
+
+
 }])
 
 .controller('DivisonController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
