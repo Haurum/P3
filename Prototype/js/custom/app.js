@@ -62,3 +62,4 @@ angular.module('tournyplanner', ['ngRoute'])
 .controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
   $scope.division = $rootScope.currDivision;
 }])
+
