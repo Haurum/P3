@@ -18,7 +18,7 @@
       </a>-->
       <div class="row">
         <a ng-click="gotoDivison(division, $index)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-          {{ division }}
+          {{ division.Name }}
           <span ng-click="remove($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </a>
       </div>
