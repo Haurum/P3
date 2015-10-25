@@ -52,6 +52,9 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   $rootScope.EmFields = ["Bane 1", "Bane 2", "Bane 5", "Bane 6"];
   $rootScope.OmFields = ["Bane 3A", "Bane 3B", "Bane 4A", "Bane 4B"];
   $rootScope.FmFields = ["Bane 7A", "Bane 7B", "Bane 7C", "Bane 7D"];
+  $rootScope.Pools = ["Pulje 1", "Pulje 2",];
+  $rootScope.TeamsPool1 = ["Hjørring FC", "Aab", "Thisted FC", "Klinkby B"];
+  $rootScope.TeamsPool2 = ["Randers", "FCK", "Hobro", "Lemvig"];
 })
 
 .controller('HomeController', ['$scope', function ($scope) {

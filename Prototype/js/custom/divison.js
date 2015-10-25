@@ -9,6 +9,8 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   }
+
+  
   
   $scope.pools = [];
   
