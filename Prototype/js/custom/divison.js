@@ -1,7 +1,8 @@
 angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
-  $scope.division = { MatchDuration: 30, FieldSize: "11-mands", Name: ""};
+  $scope.division = { MatchDuration: "30", FieldSize: "11-mands", Name: ""};
   $scope.division.Name = $rootScope.currDivision;
   $scope.changeField = false;
+  $scope.changeDuration = false;
   $scope.newPool = false;
   $scope.newPoolName = "";
   
@@ -16,7 +17,9 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     if (name != "")
     {
       $scope.pools.push({ Name: name, Teams: [], IsOpen: false });
+      $scope.newPoolFunc();
     }
+
   }
   
   $scope.addTeamToPool = function(newTeamName, index) {
@@ -25,6 +28,10 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   
   $scope.changeFieldFunc = function() {
     $scope.changeField = !$scope.changeField;
+  }
+
+  $scope.changeDurationFunc = function() {
+    $scope.changeDuration = !$scope.changeDuration;
   }
   
   

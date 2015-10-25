@@ -44,7 +44,20 @@
     <div class="row">
       <div class="col-md-12">
         <div class="col-md-2 col-md-offset-2">
-          <h4>Kamplængde</h4><p>{{ division.MatchDuration }} minutter <span class="glyphicon glyphicon-pencil"></span></p>
+          <h4>Kamplængde</h4>
+          <div ng-if="!changeDuration">
+            <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
+          </div>
+          <div ng-if="changeDuration">
+            <select ng-model="division.MatchDuration">
+              <option value="15">15 min. pr. kamp</option>
+              <option value="30">30 min. pr. kamp</option>
+              <option value="40">40 min. pr. kamp</option>
+              <option value="50">50 min. pr. kamp</option>
+              <option value="60">60 min. pr. kamp</option>
+            </select>
+             <a ng-click="changeDurationFunc()">Godkend</a>
+          </div>
         </div>
         <div class="col-md-2 col-md-offset-4">
           <h4>Banestørrelse</h4>

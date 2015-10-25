@@ -1,6 +1,7 @@
 <div class="row">
   <div class="col-lg-12 text-center">
     <h1>Opret ny turnering</h1>
+    <hr>
     <div class="row">
       <div class="brugerInput">
         <div class="col-md-6">
@@ -11,23 +12,41 @@
           <h4>Turnerings kodeord</h4>
           <input type="text" class="form-control" placeholder="Skriv turneringens kodeord" />
         </div>
+
         <div class="col-md-6">
           <h4>Turnerings start dag</h4>
-              <h4>Popup</h4>
-    <div class="row">
-        <div class="col-md-6">
-            <p class="input-group">
-              <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-              </span>
-            </p>
+          <div ng-controller="DatepickerDemoCtrl">
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
+
         <div class="col-md-6">
           <h4>Turnerings slut dag</h4>
-          <input type="date" name="bday" />
+          <div ng-controller="DatepickerDemoCtrl">
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+
+
         <div class="col-md-4">
           <h4>Tid for dag1</h4>
           <input type="time" name="usr_time" />
@@ -46,20 +65,18 @@
           -
           <input type="time" name="usr_time" />
         </div>
+        <hr />
         <div class="col-md-12 upload-excel">
-          <h4>Upload Excel ark for turnering</h4>
+        <hr>
+          <h4 id="uploadHeading">Upload Excel ark for turnering</h4>
           <input type="file" name="pic" accept="image/*" />
-          <input class="btn btn-default" type="submit" value="Upload" />
+          <hr>
         </div>
         <div class="row">
           <div class="col-md-12 add-button">
-            <a href="#/addFields"><button class="btn btn-default">Tilføj baner</button></a>
-          </div>
-          <div class="col-md-12 add-button">
-            <a href="#/divisions"><button type="button" class="btn btn-default btn-lg">Opret turnering</button></a>
-          </div>
-          <div class="col-md-12 add-button">
-            <a href="#/DivisionMatchOverview"><button type="button" class="btn btn-default btn-lg">TEST!</button></a>
+            <a href="#/addFields"class="btn btn-default btn-lg" style="white-space: inherit ! important;">Forsæt
+              <span class="glyphicon glyphicon-arrow-right"> </span>
+            </a>
           </div>
         </div>
       </div>

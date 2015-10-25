@@ -37,6 +37,10 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     when('/TournamentSchedule', {
       templateUrl: 'templates/TournamentSchedule.html',
       controller: 'TournamentScheduleController'
+    }).
+    when('/FinalStage', {
+      templateUrl: 'templates/finalStage.html',
+      controller: 'FinalStageController'
     }).     
     otherwise({
       redirectTo: '/'
@@ -44,7 +48,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 }])
 
 .run(function($rootScope) {
-  $rootScope.divisions = ["Noobs", "Gorrilaer", "Gulleroderne", "Master", "Challenger"];
+  $rootScope.divisions = ["U17 Drenge A", "U17 Drenge B", "U13 Pige A", "U13 Pige B", "U8 Drenge"];
   $rootScope.EmFields = ["Bane 1", "Bane 2", "Bane 5", "Bane 6"];
   $rootScope.OmFields = ["Bane 3A", "Bane 3B", "Bane 4A", "Bane 4B"];
   $rootScope.FmFields = ["Bane 7A", "Bane 7B", "Bane 7C", "Bane 7D"];
@@ -54,7 +58,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 }])
 
 .controller('CreateTournyController', ['$scope', function ($scope) {
-
+  $scope.isCollapsed = true;
 }])
 
 .controller('DivisionMatchOverviewController', ['$scope', function ($scope) {
@@ -72,6 +76,9 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
 .controller('TournamentScheduleController', ['$scope', function ($scope) {
   $scope.isCollapsed = true;
+}])
+
+.controller('FinalStageController', ['$scope', function ($scope) {
 }])
 
 .controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
@@ -170,11 +177,6 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $scope.dt = null;
   };
 
-  // Disable weekend selection
-  $scope.disabled = function(date, mode) {
-    return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
-  };
-
   $scope.toggleMin = function() {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
@@ -232,6 +234,6 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
     return '';
   };
-});
+})
 
 /* DATE PICKER END! */ 
