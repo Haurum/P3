@@ -9,14 +9,15 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   }
-  
-  $scope.pools = [];
+  if (!rootScope.UploadNew) {
+    $rootScope.Pools = [];
+  }
   
   $scope.addPool = function(name) {
     $scope.newPoolName = "";
     if (name != "")
     {
-      $scope.pools.push({ Name: name, Teams: [], IsOpen: false });
+      $rootScope.Pools.push({ Name: name, Teams: [], IsOpen: false });
       $scope.newPoolFunc();
     }
 
