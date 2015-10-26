@@ -1,11 +1,11 @@
 <div class="row">
   <div class="col-lg-12 text-center">
-    <h1>{{ division.Name }}</h1>
+    <h1>{{ divisions[index].Name }}</h1>
     <hr></hr>
     <p>{{ newPoolName }}</p>
-    <div ng-repeat="pool in Pools track by $index" >
+    <div ng-repeat="pool in divisions[index].Pool track by $index" >
       <div class="col-md-4">
-        <h2>{{ pool }}</h2>
+        <h2>{{ pool.Name }}</h2>
 
         <div class="col-md-12" ng-if="pool.IsOpen">
           <form>
@@ -47,10 +47,10 @@
         <div class="col-md-2 col-md-offset-2">
           <h4>Kamplængde</h4>
           <div ng-if="!changeDuration">
-            <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
+            <p>{{ divisions[index].MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
           </div>
           <div ng-if="changeDuration">
-            <select ng-model="division.MatchDuration">
+            <select ng-model="divisions[index].MatchDuration">
               <option value="15">15 min. pr. kamp</option>
               <option value="30">30 min. pr. kamp</option>
               <option value="40">40 min. pr. kamp</option>
@@ -63,10 +63,10 @@
         <div class="col-md-2 col-md-offset-4">
           <h4>Banestørrelse</h4>
           <div ng-if="!changeField">
-            <p>{{ division.FieldSize }} <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
+            <p>{{ divisions[index].FieldSize }} <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
           </div>
           <div ng-if="changeField">
-            <select ng-model="division.FieldSize">
+            <select ng-model="divisions[index].FieldSize">
               <option value="5-mands">5-mands</option>
               <option value="8-mands">8-mands</option>
               <option value="11-mands">11-mands</option>
