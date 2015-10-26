@@ -69,7 +69,8 @@
         <div class="col-md-12 upload-excel">
         <hr>
           <h4 id="uploadHeading">Upload Excel ark for turnering</h4>
-          <input type="file" name="pic" accept="image/*" />
+          <a class="btn btn-default" ng-click="withExcel()">Upload</a>
+          <p ng-if="!helper">Du har uploaded data</p>
           <hr>
         </div>
         <div class="row">
