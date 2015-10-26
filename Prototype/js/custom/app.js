@@ -164,13 +164,9 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $scope.new = !$scope.new;
   }
   $scope.submit = function(newName) {
-    $rootScope.divisions.push(newName);
+    $rootScope.divisions.push({ MatchDuration: "30", FieldSize: "11-mands", Name: newName, Pool: []});
     $scope.newDivName = "";
     $scope.createNew();
-  }
-  
-  $scope.remove = function(index) {
-    $rootScope.divisions.splice(index, 1);
   }
   
   $scope.gotoDivison = function(currDiv, index) {
@@ -179,9 +175,6 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   }
 }])
 
-.controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
-  $scope.division = $rootScope.currDivision;
-}])
 
 /* DATE PICKER START! */
 

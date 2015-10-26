@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.newPool = false;
@@ -17,6 +17,11 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
       $scope.newPoolFunc();
     }
 
+  }
+  
+  $scope.remove = function() {
+    $rootScope.divisions.splice($scope.index, 1);
+    $location.path("/divisions");
   }
   
   $scope.addTeamToPool = function(newTeamName, index) {

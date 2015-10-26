@@ -1,5 +1,12 @@
 <div class="row">
   <div class="col-lg-12 text-center">
+    <ul class="breadcrumb">
+      <li><a href="#/">Forside</a></li>
+      <li><a href="#/addTourny">Opret ny turnering</a></li>
+      <li><a href="#/addFields">Opret bane</a></li>
+      <li><a href="#/divisions">Rækkesoversigt</a></li>
+      <li class="active"><a href="">{{ divisions[index].Name }}</a></li>
+    </ul>
     <h1>{{ divisions[index].Name }}</h1>
     <hr></hr>
     <p>{{ newPoolName }}</p>
@@ -76,5 +83,6 @@
         </div>
       </div>
     </div>
+    <a class="btn btn-danger" ng-click="remove()">Slet række</a>
   </div>
 </div>
