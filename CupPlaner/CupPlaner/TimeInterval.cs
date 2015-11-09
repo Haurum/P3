@@ -16,7 +16,7 @@ namespace CupPlaner
     {
         public int Id { get; set; }
         public System.DateTime StartTime { get; set; }
-        public System.DateTime EndTIme { get; set; }
+        public System.DateTime EndTime { get; set; }
     
         public virtual Team Team { get; set; }
         public virtual Tournament Tournament { get; set; }

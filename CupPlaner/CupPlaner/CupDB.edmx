@@ -127,7 +127,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StartTime" Type="datetime" Nullable="false" Precision="3" />
-    <Property Name="EndTIme" Type="datetime" Nullable="false" Precision="3" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Team_Id" Type="int" Nullable="true" />
     <Property Name="Tournament_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -480,7 +480,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="EndTIme" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
           <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
         </EntityType>
@@ -631,7 +631,7 @@
         <MappingFragment StoreEntitySet="TimeIntervalSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-          <ScalarProperty Name="EndTIme" ColumnName="EndTIme" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/09/2015 11:09:56
+-- Date Created: 11/09/2015 11:16:29
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -110,7 +110,7 @@ ALTER TABLE `FieldSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `TimeIntervalSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`StartTime` datetime( 3 )  NOT NULL, 
-	`EndTIme` datetime( 3 )  NOT NULL, 
+	`EndTime` datetime( 3 )  NOT NULL, 
 	`Team_Id` int, 
 	`Tournament_Id` int);
 
