@@ -29,7 +29,7 @@
             <span ng-click="remove()" class="glyphicon glyphicon-plus pull-right"></span>
           </a>
           <div class="pools">
-            <a  ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+            <a  ng-click="gotoTeamDetail(team, $index)" ng-repeat="team in pool.Teams track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team }}
               <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
             </a>

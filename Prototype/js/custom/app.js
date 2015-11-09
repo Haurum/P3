@@ -42,6 +42,10 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'templates/finalStage.html',
       controller: 'FinalStageController'
     }).     
+    when('/TeamDetail', {
+      templateUrl: 'templates/TeamDetail.html',
+      controller: 'TeamDetailController'
+    }).
     otherwise({
       redirectTo: '/'
     });
@@ -247,4 +251,6 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   };
 })
 
+.controller('TeamDetailController', ['$scope', function ($scope) {
+}])
 /* DATE PICKER END! */ 

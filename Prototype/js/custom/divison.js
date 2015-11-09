@@ -40,6 +40,10 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     $scope.changeDuration = !$scope.changeDuration;
   }
   
+  $scope.gotoTeamDetail = function(currTeam, index) {
+    $rootScope.currTeamIndex = index;
+    $location.url("/TeamDetail");
+  }
   
   //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;
 }])
