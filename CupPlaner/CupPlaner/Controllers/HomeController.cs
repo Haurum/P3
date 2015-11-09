@@ -40,5 +40,11 @@ namespace CupPlaner.Controllers
             List<Tournament> ts = db.TournamentSet.ToList();
             return Json(new { Name = ts.First().Name }, JsonRequestBehavior.AllowGet);
         }
+
+        /*[HttpPost]
+        public ActionResult ExcelTest()
+        {
+           
+        }*/
     }
 }
