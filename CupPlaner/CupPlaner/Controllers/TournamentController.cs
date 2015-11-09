@@ -33,7 +33,7 @@ namespace CupPlaner.Controllers
             {
                 foreach (TimeInterval ti in t.TimeIntervals)
                 {
-                    times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTIme});
+                    times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime});
                 }
             }
             if (t.DivisionTournaments != null)
@@ -61,7 +61,7 @@ namespace CupPlaner.Controllers
                 {
                     tis.Add(new TimeInterval() { StartTime = StartTimes[i], EndTime = EndTimes[i] });
                 }
-                Tournament t = new Tournament() { Name = Name, PassWord = Password, TimeIntervals = tis };
+                Tournament t = new Tournament() { Name = Name, Password = Password, TimeIntervals = tis };
 
                 return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
             }
