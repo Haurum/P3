@@ -6,25 +6,48 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/09/2015 09:37:34
+-- Date Created: 11/09/2015 11:16:29
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
 
-DROP DATABASE IF EXISTS `tabl_app_dk_db`;
-CREATE DATABASE `tabl_app_dk_db`;
-USE `tabl_app_dk_db`;
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
 -- NOTE: if the constraint does not exist, an ignorable error will be reported.
 -- --------------------------------------------------
 
+--    ALTER TABLE `TeamMatch` DROP CONSTRAINT `FK_TeamMatch_Team`;
+--    ALTER TABLE `TeamMatch` DROP CONSTRAINT `FK_TeamMatch_Match`;
+--    ALTER TABLE `TeamSet` DROP CONSTRAINT `FK_PoolTeam`;
+--    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TeamTimeInterval`;
+--    ALTER TABLE `PoolSet` DROP CONSTRAINT `FK_DivisionPool`;
+--    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_DivisionTournamentDivision`;
+--    ALTER TABLE `DivisionSet` DROP CONSTRAINT `FK_TournamentDivision`;
+--    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_DivisionTournamentTournamentStage`;
+--    ALTER TABLE `MatchSet` DROP CONSTRAINT `FK_MatchField`;
+--    ALTER TABLE `PoolField` DROP CONSTRAINT `FK_PoolField_Pool`;
+--    ALTER TABLE `PoolField` DROP CONSTRAINT `FK_PoolField_Field`;
+--    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TournamentTimeInterval`;
+--    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_TournamentDivisionTournament`;
+--    ALTER TABLE `MatchSet` DROP CONSTRAINT `FK_TournamentStageMatch`;
+--    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_TournamentStagePool`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
 -- --------------------------------------------------
 SET foreign_key_checks = 0;
+    DROP TABLE IF EXISTS `TeamSet`;
+    DROP TABLE IF EXISTS `PoolSet`;
+    DROP TABLE IF EXISTS `DivisionSet`;
+    DROP TABLE IF EXISTS `DivisionTournamentSet`;
+    DROP TABLE IF EXISTS `FieldSet`;
+    DROP TABLE IF EXISTS `TimeIntervalSet`;
+    DROP TABLE IF EXISTS `TournamentSet`;
+    DROP TABLE IF EXISTS `MatchSet`;
+    DROP TABLE IF EXISTS `TournamentStageSet`;
+    DROP TABLE IF EXISTS `TeamMatch`;
+    DROP TABLE IF EXISTS `PoolField`;
 SET foreign_key_checks = 1;
 
 -- --------------------------------------------------
@@ -65,7 +88,6 @@ ALTER TABLE `DivisionSet` ADD PRIMARY KEY (Id);
 
 CREATE TABLE `DivisionTournamentSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
-	`Name` longtext NOT NULL, 
 	`TournamentStructure` int NOT NULL, 
 	`Division_Id` int NOT NULL, 
 	`Tournament_Id` int NOT NULL);
@@ -88,7 +110,7 @@ ALTER TABLE `FieldSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `TimeIntervalSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`StartTime` datetime( 3 )  NOT NULL, 
-	`EndTIme` datetime( 3 )  NOT NULL, 
+	`EndTime` datetime( 3 )  NOT NULL, 
 	`Team_Id` int, 
 	`Tournament_Id` int);
 
@@ -99,7 +121,8 @@ ALTER TABLE `TimeIntervalSet` ADD PRIMARY KEY (Id);
 
 CREATE TABLE `TournamentSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
-	`Name` longtext NOT NULL);
+	`Name` longtext NOT NULL, 
+	`Password` longtext NOT NULL);
 
 ALTER TABLE `TournamentSet` ADD PRIMARY KEY (Id);
 
@@ -120,7 +143,6 @@ ALTER TABLE `MatchSet` ADD PRIMARY KEY (Id);
 
 CREATE TABLE `TournamentStageSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
-	`Name` longtext NOT NULL, 
 	`TournamentStructure` int NOT NULL, 
 	`DivisionTournament_Id` int NOT NULL, 
 	`Pool_Id` int NOT NULL);

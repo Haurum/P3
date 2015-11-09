@@ -20,7 +20,6 @@ namespace CupPlaner
         }
     
         public int Id { get; set; }
-        public string Name { get; set; }
         public TournamentStructure TournamentStructure { get; set; }
     
         public virtual DivisionTournament DivisionTournament { get; set; }
