@@ -18,13 +18,7 @@
           </form>
         </div>
         <div class="btn-group-vertical col-md-12" role="group">
-          <!--<div class="row">
-            <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()"></a>
-          </div>-->
-          <a ng-if="!pool.IsOpen" class="btn btn-default" ng-click="pool.IsOpen = true" style="white-space: inherit ! important;">
-            Tilføj nyt hold
-            <span ng-click="remove()" class="glyphicon glyphicon-plus pull-right"></span>
-          </a>
+    
           <div class="pools">
             <a  ng-click="gotoTeamDetail(team, $index)" ng-repeat="team in pool.Teams track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team }}

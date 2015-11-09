@@ -50,24 +50,17 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     $scope.changeFavField = !$scope.changeFavField;
   }
   
-<<<<<<< HEAD
+
   $scope.gotoPool = function(currPool, index) {
     $rootScope.currPoolIndex = index;
     $location.url("/divisions/detail/pools")
   }
 
-//Checklist start
-
-
-  //Checklist done
-
-
-=======
   $scope.gotoTeamDetail = function(currTeam, index) {
     $rootScope.currTeamIndex = index;
     $location.url("/TeamDetail");
   }
->>>>>>> origin/master
+
   
   //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;
 }])
