@@ -98,7 +98,7 @@ namespace CupPlaner.Controllers
             }
             catch
             {
-                return Json(new { state = "ERROR: Tournament did not get edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: Tournament not edited" }, JsonRequestBehavior.AllowGet);
             }
         }
 
