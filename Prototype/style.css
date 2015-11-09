@@ -49,3 +49,13 @@ body {
 #kodeord {
   margin-bottom: 75px;
 }
+
+.poolLink{
+  color: #000;
+
+}
+
+.poolLink:hover {
+  text-decoration: none;
+  color: #5a5a5a;
+}

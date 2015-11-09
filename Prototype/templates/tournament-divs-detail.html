@@ -10,33 +10,7 @@
     <h1>{{ divisions[index].Name }}</h1>
     <hr></hr>
     <p>{{ newPoolName }}</p>
-    <div ng-repeat="pool in divisions[index].Pool track by $index" >
-      <div class="col-md-4">
-        <h2>{{ pool.Name }}</h2>
 
-        <div class="col-md-12" ng-if="pool.IsOpen">
-          <form>
-            <input type="text" ng-model="newTeamName" />
-            <input type="submit" ng-click="addTeamToPool(newTeamName, $index); newTeamName = ''" class="btn btn-default" value="Submit" /><a ng-click="pool.IsOpen = false" class="btn btn-default">Annuller</a>
-          </form>
-        </div>
-        <div class="btn-group-vertical col-md-12" role="group">
-          <!--<div class="row">
-            <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()"></a>
-          </div>-->
-          <a ng-if="!pool.IsOpen" class="btn btn-default" ng-click="pool.IsOpen = true" style="white-space: inherit ! important;">
-            Tilføj nyt hold
-            <span ng-click="remove()" class="glyphicon glyphicon-plus pull-right"></span>
-          </a>
-          <div class="pools">
-            <a  ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-              {{ team }}
-              <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div class="col-md-4 col-md-offset-4" ng-if="newPool">
         <form>
@@ -48,9 +22,24 @@
         <a ng-if="!new" class="btn btn-default col-md-12" ng-click="newPoolFunc()">Tilføj ny pulje</a>
       </div>
     </div>
-    <hr />
+    <div ng-repeat="pool in divisions[index].Pool track by $index" >
+      <div class="col-md-4">
+
+        <a class="poolLink">
+         <h2 ng-click="gotoPool(pool, $index)" >{{ pool.Name }}</h2>
+        </a>
+          <div class="pools">
+            <a  ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+              {{ team }}
+              <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
     <div class="row">
       <div class="col-md-12">
+        <hr />
         <div class="col-md-2 col-md-offset-3">
           <h4>Kamplængde</h4>
           <div ng-if="!changeDuration">
@@ -87,7 +76,7 @@
         </div>
       </div>
     </div>
-    <hr>
+    <hr />
     <div class="col-md-12">
     <!-- LAV SLUTSPILS VIEW HER! -->
     </div>

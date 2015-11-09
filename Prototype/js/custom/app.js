@@ -18,6 +18,10 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'templates/tournament-divs-detail.html',
       controller: 'DivisonDetailController'
     }).
+    when('/divisions/detail/pools', {
+      templateUrl: 'templates/pools.html',
+      controller: 'DivisonDetailController'
+    }).
     when('/addFields', {
       templateUrl: 'templates/baner.html',
       controller: 'CreateFieldsController'
@@ -173,6 +177,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $rootScope.currDivisionIndex = index;
     $location.url("/divisions/detail");
   }
+
 }])
 
 
