@@ -31,7 +31,7 @@
           <div class="pools">
             <a  ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team }}
-              <span ng-click="remove($index)" class="glyphicon glyphicon-remove pull-right"></span>
+              <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
             </a>
           </div>
         </div>
@@ -51,7 +51,7 @@
     <hr />
     <div class="row">
       <div class="col-md-12">
-        <div class="col-md-2 col-md-offset-2">
+        <div class="col-md-2 col-md-offset-3">
           <h4>Kamplængde</h4>
           <div ng-if="!changeDuration">
             <p>{{ divisions[index].MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
@@ -67,7 +67,11 @@
              <a ng-click="changeDurationFunc()" class="btn btn-default">Godkend</a>
           </div>
         </div>
-        <div class="col-md-2 col-md-offset-4">
+        <div class="col-md-2">
+          <a class="btn btn-danger" ng-click="remove()">Slet række</a>
+        </div>
+
+        <div class="col-md-2">
           <h4>Banestørrelse</h4>
           <div ng-if="!changeField">
             <p>{{ divisions[index].FieldSize }} <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
@@ -83,6 +87,9 @@
         </div>
       </div>
     </div>
-    <a class="btn btn-danger" ng-click="remove()">Slet række</a>
+    <hr>
+    <div class="col-md-12">
+    <!-- LAV SLUTSPILS VIEW HER! -->
+    </div>
   </div>
 </div>

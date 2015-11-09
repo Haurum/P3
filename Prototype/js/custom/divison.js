@@ -23,6 +23,10 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     $rootScope.divisions.splice($scope.index, 1);
     $location.path("/divisions");
   }
+
+  $scope.removeTeam = function() {
+    $rootScope.divisions[$scope.index].Pool[$scope.index].Teams.splice($scope.index, 1);
+  }
   
   $scope.addTeamToPool = function(newTeamName, index) {
     $rootScope.divisions[$scope.index].Pool[index].Teams.push(newTeamName);

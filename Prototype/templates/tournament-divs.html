@@ -16,7 +16,9 @@
     </div>
     <div class="btn-group-vertical col-md-4 col-md-offset-4" role="group">
       <div class="row">
-        <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()">Tilføj ny række</a>
+        <a ng-if="!new" class="btn btn-default col-md-12" ng-click="createNew()" style="white-space: inherit ! important;">Tilføj ny række
+          <span class="glyphicon glyphicon-plus pull-right"></span>
+        </a>
       </div>
       <div class="row">
         <a ng-click="gotoDivison(division, $index)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
