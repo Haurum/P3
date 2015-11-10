@@ -59,3 +59,16 @@ body {
   text-decoration: none;
   color: #5a5a5a;
 }
+
+#banner {
+  width:auto;
+  overflow:hidden;
+}
+
+#banner img {
+  width: 100%;
+}
+
+@media handheld, only screen and (max-width: 400px){ 
+   div#banner { display:none; 
+}
