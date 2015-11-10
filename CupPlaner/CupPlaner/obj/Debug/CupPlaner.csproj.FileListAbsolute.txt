@@ -31,3 +31,35 @@ C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\MySql.Data.Entity.EF6.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\CupPlaner.dll.config
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\CupPlaner.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\CupPlaner.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\EntityFramework.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\EntityFramework.SqlServer.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Microsoft.Web.Infrastructure.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\MySql.Data.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\MySql.Web.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Helpers.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Mvc.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Optimization.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Razor.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Deployment.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\WebGrease.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\EntityFramework.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\EntityFramework.SqlServer.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Helpers.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Mvc.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Optimization.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.Razor.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Deployment.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml

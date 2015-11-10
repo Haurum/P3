@@ -1,9 +1,11 @@
 angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
   $scope.changeField = false;
   $scope.changeDuration = false;
+  $scope.changeFavField = false;
   $scope.newPool = false;
   $scope.newPoolName = "";
   $scope.index = $rootScope.currDivisionIndex;
+
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   }
@@ -27,6 +29,11 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.removeTeam = function() {
     $rootScope.divisions[$scope.index].Pool[$scope.index].Teams.splice($scope.index, 1);
   }
+
+  $scope.removePool = function() {
+    $rootScope.divisions[$scope.index].Pool.splice($scope.index, 1);
+    $location.path("/divisions/detail");
+  }
   
   $scope.addTeamToPool = function(newTeamName, index) {
     $rootScope.divisions[$scope.index].Pool[index].Teams.push(newTeamName);
@@ -39,11 +46,21 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.changeDurationFunc = function() {
     $scope.changeDuration = !$scope.changeDuration;
   }
-  
+
+  $scope.changeFavFieldFunc = function() {
+    $scope.changeFavField = !$scope.changeFavField;
+  }
+
+  $scope.gotoPool = function(currPool, index) {
+    $rootScope.currPoolIndex = index;
+    $location.url("/divisions/detail/pools")
+  }
+
   $scope.gotoTeamDetail = function(currTeam, index) {
     $rootScope.currTeamIndex = index;
     $location.url("/TeamDetail");
   }
+
   
   //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;
 }])

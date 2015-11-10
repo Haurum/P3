@@ -49,3 +49,46 @@ body {
 #kodeord {
   margin-bottom: 75px;
 }
+
+.poolLink{
+  color: #000;
+  text-align: center;
+}
+
+.poolLink:hover {
+  text-decoration: none;
+  color: #5a5a5a;
+}
+
+#banner {
+  width:auto;
+  overflow:hidden;
+}
+
+#banner img {
+  width: 100%;
+  position:relative;
+}
+
+.footer {
+  margin-top: 250px;
+}
+
+#bannerText{
+  position:absolute;
+}
+
+.header-container {
+    background: url('/Images/football.jpg') no-repeat center center;
+    background-size: 100%;
+    max-width: 100%;
+    height: auto;
+}
+.header-container .txt-container {
+    text-align: center;
+    vertical-align: middle;
+}
+
+@media handheld, only screen and (max-width: 400px){ 
+   div#banner { display:none; 
+}
