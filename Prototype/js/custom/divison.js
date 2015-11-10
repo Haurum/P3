@@ -5,6 +5,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.newPool = false;
   $scope.newPoolName = "";
   $scope.index = $rootScope.currDivisionIndex;
+
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   }
@@ -49,7 +50,6 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.changeFavFieldFunc = function() {
     $scope.changeFavField = !$scope.changeFavField;
   }
-  
 
   $scope.gotoPool = function(currPool, index) {
     $rootScope.currPoolIndex = index;

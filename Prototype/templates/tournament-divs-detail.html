@@ -9,9 +9,8 @@
     </ul>
     <h1>{{ divisions[index].Name }}</h1>
     <hr></hr>
-    <p>{{ newPoolName }}</p>
-
-        <div class="col-md-12" ng-if="pool.IsOpen">
+    <!--<p>{{ newPoolName }}</p>-->
+      <!--<div class="col-md-12" ng-if="pool.IsOpen">
           <form>
             <input type="text" ng-model="newTeamName" />
             <input type="submit" ng-click="addTeamToPool(newTeamName, $index); newTeamName = ''" class="btn btn-default" value="Submit" /><a ng-click="pool.IsOpen = false" class="btn btn-default">Annuller</a>
@@ -25,9 +24,7 @@
               <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
             </a>
           </div>
-        </div>
-      </div>
-    </div>
+        </div> -->
     <div class="row">
       <div class="col-md-4 col-md-offset-4" ng-if="newPool">
         <form>
@@ -40,13 +37,13 @@
       </div>
     </div>
     <div ng-repeat="pool in divisions[index].Pool track by $index" >
-      <div class="col-md-4">
+      <div class="col-md-4 text-center">
 
         <a class="poolLink">
          <h2 ng-click="gotoPool(pool, $index)" >{{ pool.Name }}</h2>
         </a>
           <div class="pools">
-            <a  ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+            <a ng-click="gotoTeamDetail(team, $index)" ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team }}
               <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
             </a>
@@ -55,7 +52,7 @@
       </div>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 text-center">
         <hr />
         <div class="col-md-2 col-md-offset-3">
           <h4>Kamplængde</h4>
