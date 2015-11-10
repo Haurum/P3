@@ -67,6 +67,26 @@ body {
 
 #banner img {
   width: 100%;
+  position:relative;
+}
+
+.footer {
+  margin-top: 250px;
+}
+
+#bannerText{
+  position:absolute;
+}
+
+.header-container {
+    background: url('/Images/football.jpg') no-repeat center center;
+    background-size: 100%;
+    max-width: 100%;
+    height: auto;
+}
+.header-container .txt-container {
+    text-align: center;
+    vertical-align: middle;
 }
 
 @media handheld, only screen and (max-width: 400px){ 
