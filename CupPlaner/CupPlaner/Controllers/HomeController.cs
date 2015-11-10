@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CupPlaner.Controllers
 {
@@ -44,7 +44,7 @@ namespace CupPlaner.Controllers
             return Json(new { Name = ts.First().Name }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public ActionResult ExcelTest(HttpPostedFileBase file)
         {
             string tournamentName = "";
@@ -99,6 +99,6 @@ namespace CupPlaner.Controllers
 
             return Json(new { TournamentName = tournamentName, Divisions = divisions, Pools = pools }, JsonRequestBehavior.AllowGet);
             
-        }
+        }*/
     }
 }

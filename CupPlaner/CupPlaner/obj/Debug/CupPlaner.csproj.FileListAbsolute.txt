@@ -63,3 +63,4 @@ D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Deployment.x
 D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.xml
 D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.pdb
 D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\bin\MySql.Data.Entity.EF6.dll
