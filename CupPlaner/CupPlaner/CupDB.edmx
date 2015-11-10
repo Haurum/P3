@@ -409,8 +409,8 @@
             <End EntitySet="TimeIntervalSet" Role="TimeInterval" />
           </AssociationSet>
           <AssociationSet Name="TournamentDivisionTournament" Association="CupDB.TournamentDivisionTournament">
-            <End Role="Tournament" EntitySet="TournamentSet" />
-            <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
+            <End EntitySet="TournamentSet" Role="Tournament" />
+            <End EntitySet="DivisionTournamentSet" Role="DivisionTournament" />
           </AssociationSet>
           <AssociationSet Name="TournamentStageMatch" Association="CupDB.TournamentStageMatch">
             <End Role="TournamentStage" EntitySet="TournamentStageSet" />
@@ -557,8 +557,8 @@
           <End Type="CupDB.TimeInterval" Multiplicity="*" Role="TimeInterval" />
         </Association>
         <Association Name="TournamentDivisionTournament">
-          <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
-          <End Type="CupDB.DivisionTournament" Role="DivisionTournament" Multiplicity="*" />
+          <End Type="CupDB.Tournament" Multiplicity="1" Role="Tournament" />
+          <End Type="CupDB.DivisionTournament" Multiplicity="*" Role="DivisionTournament" />
         </Association>
         <Association Name="TournamentStageMatch">
           <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="1" />
