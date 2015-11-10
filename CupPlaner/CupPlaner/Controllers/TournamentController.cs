@@ -52,6 +52,7 @@ namespace CupPlaner.Controllers
         public ActionResult DetailsFromPass(string password)
         {
             Tournament t = db.TournamentSet.First(x => x.Password == password);
+            
             return Details(t.Id);
         }
 
