@@ -60,6 +60,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   $rootScope.EmFields = [];
   $rootScope.OmFields = [];
   $rootScope.FmFields = [];
+  $rootScope.Tournament = {};
 })
 
 .controller('HomeController', ['$scope', function ($scope) {
@@ -111,7 +112,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 .controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
   /* Post & Get requests */ 
-  $rootScope.Field.Id = 1;
+ /* $rootScope.Field.Id = 1;
 
   $http.get("http://localhost:50229/Field?id=" +  $rootScope.Field.Id)
   .success(function(fieldData)
@@ -137,7 +138,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
   $scope.newOm = false;
 
-  $scope.newFm = false;
+  $scope.newFm = false; */
 
   /* 11mands */
   $scope.createNewEmField = function() {
@@ -184,12 +185,12 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 }])
 
 .controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
-  $rootScope.Tournament.Id = 1;
+  $rootScope.Tournament.password = "superkode";
 
-  $http.get("http://localhost:50229/Divison?id=" +  $rootScope.Tournament.Id)
+  $http.get("http://localhost:50229/Tournament/DetailsFromPass?password=" +  $rootScope.Tournament.password)
   .success(function(data)
   {
-    $scope.divisions = data;
+    $scope.divisions = data.Divisions;
   }).error(function(err) 
   {
     $scope.error = err;

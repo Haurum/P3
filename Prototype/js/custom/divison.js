@@ -7,7 +7,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.index = $rootScope.currDivisionIndex;
 
   /* Post & Get requests */
-  $rootScope.Team.Id = 1;
+  /*$rootScope.Team.Id = 1;
 
   $http.get("http://localhost:50229/Teams?id=" +  $rootScope.Team.Id)
   .success(function(teamData)
@@ -45,7 +45,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   }).error(function(err) 
   {
     $scope.error = err;
-  })
+  })*/
 
 
 
