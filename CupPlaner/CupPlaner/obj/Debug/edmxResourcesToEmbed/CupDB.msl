@@ -31,7 +31,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(CupDB.DivisionTournament)">
         <MappingFragment StoreEntitySet="DivisionTournamentSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -50,7 +49,7 @@
         <MappingFragment StoreEntitySet="TimeIntervalSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-          <ScalarProperty Name="EndTIme" ColumnName="EndTIme" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -59,6 +58,7 @@
         <MappingFragment StoreEntitySet="TournamentSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -75,7 +75,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(CupDB.TournamentStage)">
         <MappingFragment StoreEntitySet="TournamentStageSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
         </MappingFragment>
       </EntityTypeMapping>

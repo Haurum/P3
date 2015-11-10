@@ -104,7 +104,6 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="TournamentStructure" Type="int" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
@@ -123,7 +122,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StartTime" Type="datetime" Nullable="false" Precision="3" />
-    <Property Name="EndTIme" Type="datetime" Nullable="false" Precision="3" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Team_Id" Type="int" Nullable="true" />
     <Property Name="Tournament_Id" Type="int" Nullable="true" />
   </EntityType>
@@ -133,6 +132,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="Password" Type="longtext" Nullable="false" />
   </EntityType>
   <EntityType Name="MatchSet">
     <Key>
@@ -149,7 +149,6 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="TournamentStructure" Type="int" Nullable="false" />
     <Property Name="DivisionTournament_Id" Type="int" Nullable="false" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />

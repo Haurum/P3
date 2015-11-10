@@ -101,7 +101,6 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
     <NavigationProperty Name="Division" Relationship="CupDB.DivisionTournamentDivision" FromRole="DivisionTournament" ToRole="Division" />
     <NavigationProperty Name="TournamentStages" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="DivisionTournament" ToRole="TournamentStage" />
@@ -123,7 +122,7 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="EndTIme" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
     <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
     <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
   </EntityType>
@@ -136,6 +135,7 @@
     <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
     <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
     <NavigationProperty Name="DivisionTournaments" Relationship="CupDB.TournamentDivisionTournament" FromRole="Tournament" ToRole="DivisionTournament" />
+    <Property Name="Password" Type="String" Nullable="false" />
   </EntityType>
   <EntityType Name="Match">
     <Key>
@@ -153,7 +153,6 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
     <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
     <NavigationProperty Name="Matches" Relationship="CupDB.TournamentStageMatch" FromRole="TournamentStage" ToRole="Match" />
