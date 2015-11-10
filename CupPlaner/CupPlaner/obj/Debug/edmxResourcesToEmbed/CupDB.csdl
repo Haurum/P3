@@ -19,8 +19,8 @@
       <End Role="Team" EntitySet="TeamSet" />
     </AssociationSet>
     <AssociationSet Name="TeamTimeInterval" Association="CupDB.TeamTimeInterval">
-      <End Role="Team" EntitySet="TeamSet" />
-      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+      <End EntitySet="TeamSet" Role="Team" />
+      <End EntitySet="TimeIntervalSet" Role="TimeInterval" />
     </AssociationSet>
     <AssociationSet Name="DivisionPool" Association="CupDB.DivisionPool">
       <End Role="Division" EntitySet="DivisionSet" />
@@ -47,8 +47,8 @@
       <End Role="Field" EntitySet="FieldSet" />
     </AssociationSet>
     <AssociationSet Name="TournamentTimeInterval" Association="CupDB.TournamentTimeInterval">
-      <End Role="Tournament" EntitySet="TournamentSet" />
-      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+      <End EntitySet="TournamentSet" Role="Tournament" />
+      <End EntitySet="TimeIntervalSet" Role="TimeInterval" />
     </AssociationSet>
     <AssociationSet Name="TournamentDivisionTournament" Association="CupDB.TournamentDivisionTournament">
       <End Role="Tournament" EntitySet="TournamentSet" />
@@ -120,9 +120,9 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="StartTime" Nullable="false" Precision="3" Type="DateTime" />
+    <Property Name="EndTime" Nullable="false" Precision="3" Type="DateTime" />
     <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
     <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
   </EntityType>
@@ -167,8 +167,8 @@
     <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
   </Association>
   <Association Name="TeamTimeInterval">
-    <End Type="CupDB.Team" Role="Team" Multiplicity="0..1" />
-    <End Type="CupDB.TimeInterval" Role="TimeInterval" Multiplicity="*" />
+    <End Type="CupDB.Team" Multiplicity="0..1" Role="Team" />
+    <End Type="CupDB.TimeInterval" Multiplicity="*" Role="TimeInterval" />
   </Association>
   <Association Name="DivisionPool">
     <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
@@ -195,8 +195,8 @@
     <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
   </Association>
   <Association Name="TournamentTimeInterval">
-    <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="0..1" />
-    <End Type="CupDB.TimeInterval" Role="TimeInterval" Multiplicity="*" />
+    <End Type="CupDB.Tournament" Multiplicity="0..1" Role="Tournament" />
+    <End Type="CupDB.TimeInterval" Multiplicity="*" Role="TimeInterval" />
   </Association>
   <Association Name="TournamentDivisionTournament">
     <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />

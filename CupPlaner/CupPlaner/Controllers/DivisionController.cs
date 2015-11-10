@@ -88,7 +88,7 @@ namespace CupPlaner.Controllers
                 PoolController pc = new PoolController();
                 foreach (Pool p in d.Pools)
                 {
-                    pc.Delete(d.Id);
+                    pc.Delete(p.Id);
                 }
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
