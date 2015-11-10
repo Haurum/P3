@@ -57,6 +57,10 @@ namespace CupPlaner.Controllers
 
             if (file != null && file.ContentLength > 0) 
             {
+                Tournament t = new Tournament();
+                Division d = new Division();
+                Pool p = new Pool();
+
                 // extract only the filename
                 var fileName = Path.GetFileName(file.FileName);
                 // store the file inside ~/App_Data/uploads folder
@@ -67,18 +71,24 @@ namespace CupPlaner.Controllers
                 Excel.Worksheet sheet = excel.Sheets["Cup"] as Excel.Worksheet;
                 Excel.Range range = sheet.get_Range("A1", Missing.Value);
 
-                tournamentName = range.Value;
+                t.Name = range.Value;
+
+
+
                 for (int i = 2; i < 100; i++)
                 {
                     range = sheet.get_Range("A" + i.ToString(), Missing.Value);
                     if (range.Value != null)
                     {
+                        d = new Division() { Tournament = t, Name = range.Value };
+                        t.Divisions.Add(d);
                         divisions.Add(range.Value);
                         if (divisions.Count > 1)
                         {
                             for (int j = poolStart; j <= i; j++)
                             {
                                 range = sheet.get_Range("B" + j.ToString(), Missing.Value);
+                                p = new Pool() { Division = d, Name = range.Value };
                                 pools.Add(range.Value);
                             }
                             poolStart = i;
