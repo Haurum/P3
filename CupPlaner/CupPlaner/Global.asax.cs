@@ -16,7 +16,6 @@ namespace CupPlaner
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            //Response.AppendHeader("Access-Control-Allow-Origin", "*");
         }
     }
 }

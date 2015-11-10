@@ -187,7 +187,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 .controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
   $rootScope.Tournament.password = "superkode";
 
-  $http.get("http://localhost:50229/Tournament/DetailsFromPass?password=" +  $rootScope.Tournament.password)
+  $http.get("http://localhost:50229/Tournament/DetailsFromPass/?password=" +  $rootScope.Tournament.password)
   .success(function(data)
   {
     $scope.divisions = data.Divisions;
