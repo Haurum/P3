@@ -6,10 +6,52 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.newPoolName = "";
   $scope.index = $rootScope.currDivisionIndex;
 
+  /* Post & Get requests */
+  $rootScope.Team.Id = 1;
+
+  $http.get("http://localhost:50229/Teams?id=" +  $rootScope.Team.Id)
+  .success(function(teamData)
+  {
+    $scope.Teams = teamData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
+  $http.get("http://localhost:50229/Teams", params { teamName: "teamName" } )
+  .success(function(teamData)
+  {
+    $scope.Teams = teamData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
+  $rootScope.Pool.Id = 1;
+
+  $http.get("http://localhost:50229/Pool?id=" +  $rootScope.Pool.Id)
+  .success(function(poolData)
+  {
+    $scope.Pool = poolData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
+  $http.get("http://localhost:50229/Pool", params { poolName: "poolName" } )
+  .success(function(poolData)
+  {
+    $scope.Pool = poolData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
+
+
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
-  }
-  
+  } 
   
   $scope.addPool = function(name) {
     $scope.newPoolName = "";

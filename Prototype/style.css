@@ -76,6 +76,12 @@ body {
   margin-top: 250px;
 }
 
+.navbar-brand img{
+  height: 175%;
+  margin-top: -6px;
+  display: inline;
+}
+
 @media handheld, only screen and (max-width: 400px){ 
    div#banner { display:none; 
 }

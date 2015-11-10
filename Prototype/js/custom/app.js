@@ -110,6 +110,27 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
 .controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
+  /* Post & Get requests */ 
+  $rootScope.Field.Id = 1;
+
+  $http.get("http://localhost:50229/Field?id=" +  $rootScope.Field.Id)
+  .success(function(fieldData)
+  {
+    $scope.Field = fieldData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
+  $http.post("http://localhost:50229/Field", params { hejhej: "hejgej", hej2: "htdyfg" })
+  .success(function(fieldData)
+  {
+    $scope.Field = fieldData;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
+
   $scope.newFieldName = "";
 
   $scope.newEm = false;
@@ -162,7 +183,17 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
 }])
 
-.controller('DivisonController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+.controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+  $rootScope.Tournament.Id = 1;
+
+  $http.get("http://localhost:50229/Divison?id=" +  $rootScope.Tournament.Id)
+  .success(function(data)
+  {
+    $scope.divisions = data;
+  }).error(function(err) 
+  {
+    $scope.error = err;
+  })
   
   $scope.newDivName = "";
   
@@ -256,6 +287,8 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   };
 })
 
-.controller('TeamDetailController', ['$scope', function ($scope) {
-}])
 /* DATE PICKER END! */ 
+
+.controller('TeamDetailController', ['$scope', function ($scope) {
+  /* Den rigtige controller er i app.js pt. */
+}])
