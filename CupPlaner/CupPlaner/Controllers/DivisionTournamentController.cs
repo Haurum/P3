@@ -68,11 +68,10 @@ namespace CupPlaner.Controllers
             try
             {
                 DivisionTournament dt = db.DivisionTournamentSet.Find(id);
-                // TODO TournamentStageController!!!
-                // TournamentStageController tsc = new TournamentStageController();
+                TournamentStageController tsc = new TournamentStageController();
                 foreach (TournamentStage ts in dt.TournamentStage)
                 {
-                    //tsc.Delete(ts.Id);
+                    tsc.Delete(ts.Id);
                 }
                 db.DivisionTournamentSet.Remove(dt);
                 db.SaveChanges();

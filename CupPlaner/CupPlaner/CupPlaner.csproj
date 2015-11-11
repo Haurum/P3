@@ -136,11 +136,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\DivisionController.cs" />
+    <Compile Include="Controllers\DivisionTournamentController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\PoolController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
+    <Compile Include="Controllers\TournamentStageController.cs" />
     <Compile Include="CupDB.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -255,10 +258,13 @@
     <Folder Include="App_Data\Excel\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Default\" />
+    <Folder Include="Views\DivisionTournament\" />
     <Folder Include="Views\Division\" />
     <Folder Include="Views\Field\" />
+    <Folder Include="Views\Match\" />
     <Folder Include="Views\Pool\" />
     <Folder Include="Views\Team\" />
+    <Folder Include="Views\TournamentStage\" />
     <Folder Include="Views\Tournament\" />
   </ItemGroup>
   <ItemGroup>

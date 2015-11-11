@@ -54,9 +54,9 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "new pool added" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new pool not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: new pool not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -70,6 +70,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 p.Name = name;
                 p.Division = db.DivisionSet.Find(divisionId);
+                p.FavoriteFields.Clear();
                 foreach (int fieldId in fieldIds)
                 {
                     p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
@@ -80,9 +81,9 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "pool edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: pool not edited", error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -103,9 +104,9 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "pool deleted" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not deleted" });
+                return Json(new { state = "ERROR: pool not deleted", error = ex.Message });
             }
         }
     }
