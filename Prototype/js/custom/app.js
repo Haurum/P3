@@ -10,7 +10,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'templates/OpretNT.html',
       controller: 'CreateTournyController'
     }).
-    when('/divisions', {
+    when('/divisions/:id', {
       templateUrl: 'templates/tournament-divs.html',
       controller: 'DivisonController'
     }).
@@ -63,7 +63,27 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   $rootScope.Tournament = {};
 })
 
-.controller('HomeController', ['$scope', function ($scope) {
+.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  $scope.password = "";
+
+  $scope.getId = function(password)
+  {
+    $http.post("http://localhost:50229/Tournament/IdFromPass", { password: password })
+    .success(function(passwordData)
+    {
+      if (passwordData.Id != 0)
+      {
+        $scope.error = false;
+        $location.path("#/divisions/" + passwordData.Id);
+      }
+      else
+        $scope.error = true;
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    });
+    }
+
 }])
 
 .controller('CreateTournyController', ['$scope', '$rootScope', function ($scope, $rootScope) {
@@ -109,7 +129,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 .controller('FinalStageController', ['$scope', function ($scope) {
 }])
 
-.controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+.controller('CreateFieldsController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
   /* Post & Get requests */ 
  /* $rootScope.Field.Id = 1;
@@ -130,7 +150,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   }).error(function(err) 
   {
     $scope.error = err;
-  })
+  }) */
 
   $scope.newFieldName = "";
 
@@ -138,7 +158,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
   $scope.newOm = false;
 
-  $scope.newFm = false; */
+  $scope.newFm = false; 
 
   /* 11mands */
   $scope.createNewEmField = function() {
@@ -221,12 +241,14 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
 .controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    $scope.st = new Date();
+    $scope.et = new Date();
   };
   $scope.today();
 
   $scope.clear = function () {
-    $scope.dt = null;
+    $scope.st = null;
+    $scope.et = null;
   };
 
   $scope.toggleMin = function() {
@@ -239,8 +261,12 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $scope.status.opened = true;
   };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
+  $scope.setDate1 = function(year, month, day) {
+    $scope.st = new Date(year, month, day);
+  };
+
+  $scope.setDate2 = function(year, month, day) {
+    $scope.et = new Date(year, month, day);
   };
 
   $scope.dateOptions = {

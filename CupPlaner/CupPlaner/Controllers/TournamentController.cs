@@ -42,11 +42,16 @@ namespace CupPlaner.Controllers
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult DetailsFromPass(string password)
+
+        [HttpPost]
+        public ActionResult IdFromPass(string password)
         {
-            Tournament t = db.TournamentSet.First(x => x.Password == password);
-            
-            return Details(t.Id);
+            Tournament t = db.TournamentSet.SingleOrDefault(x => x.Password == password);
+            if (t == null)
+            {
+                return Json(new { Id = 0 });
+            }
+            return Json(new { Id = t.Id });
         }
 
         // POST: Tournament/Create
@@ -55,17 +60,20 @@ namespace CupPlaner.Controllers
         {
             try
             {
-
-                List<TimeInterval> tis = new List<TimeInterval>();
-                for (int i = 0; i < startTimes.Count; i++)
+                if (!db.TournamentSet.Any(x => x.Password == password))
                 {
-                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
-                }
-                
-                db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
-                db.SaveChanges();
+                    List<TimeInterval> tis = new List<TimeInterval>();
+                    for (int i = 0; i < startTimes.Count; i++)
+                    {
+                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    }
 
-                return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
+                    db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
+                    db.SaveChanges();
+
+                    return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { state = "ERROR: password exists" }, JsonRequestBehavior.AllowGet);          
             }
             catch
             {

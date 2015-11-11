@@ -6,12 +6,23 @@
     <h1>Turnerings-login</h1>
     <div class="col-md-12 text-center">
       <div class="col-md-4 col-md-offset-4 text-center" id="kodeord">
-        <input type="password" class="form-control" placeholder="Indtast din turnerings kodeord her" />
+
+        <form class="form-inline">
+          <div class="form-group">
+            <input type="password" class="form-control" placeholder="Turnerings kodeord">
+          </div>
+          <button type="submit" class="btn btn-default" ng-click="getId(password)">Log ind</button>
+        </form>
+        <div class="col-md-12 text-center">
+          <div class="alert alert-danger" role="alert" ng-if="error" id="errorMsg">
+            <p ng-if="error">Forkert kodeord, prøv igen!</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="col-md-12 text-center">
       <div class="col-md-4 col-md-offset-4 text-center">
-        <a href="#/addTourny" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Opret ny turnering
+        <a href="#/addTourny" class="btn btn-default btn-lg" id="NewTournamentButton" style="white-space: inherit ! important;">Opret ny turnering
           <span class="glyphicon glyphicon-list-alt"> </span>
         </a>
       </div>

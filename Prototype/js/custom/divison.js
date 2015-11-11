@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', '$location', function ($scope, $rootScope, $location) {
+angular.module('tournyplanner').controller('DivisonDetailController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.changeFavField = false;
@@ -7,7 +7,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   $scope.index = $rootScope.currDivisionIndex;
 
   /* Post & Get requests */
-  /*$rootScope.Team.Id = 1;
+  $rootScope.Team.Id = 1;
 
   $http.get("http://localhost:50229/Teams?id=" +  $rootScope.Team.Id)
   .success(function(teamData)
@@ -18,7 +18,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     $scope.error = err;
   })
 
-  $http.get("http://localhost:50229/Teams", params { teamName: "teamName" } )
+  $http.get("http://localhost:50229/Teams", { teamName: "teamName" } )
   .success(function(teamData)
   {
     $scope.Teams = teamData;
@@ -26,6 +26,10 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
   {
     $scope.error = err;
   })
+
+
+
+/*
 
   $rootScope.Pool.Id = 1;
 
