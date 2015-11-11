@@ -37,15 +37,8 @@ namespace CupPlaner.Controllers
                     times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime});
                 }
             }
-            if (t.DivisionTournaments != null)
-            {
-                foreach (DivisionTournament dt in t.DivisionTournaments)
-                {
-                    dts.Add(new { Id = dt.Id });
-                }
-            }
 
-            object obj = new { Id = t.Id, Name = t.Name, Divisions = divs, TimeIntervals = times, DivisionTournaments = dts };
+            object obj = new { Id = t.Id, Name = t.Name, Divisions = divs, TimeIntervals = times};
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }

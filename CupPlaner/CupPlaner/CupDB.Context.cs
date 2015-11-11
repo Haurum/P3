@@ -28,11 +28,11 @@ namespace CupPlaner
         public virtual DbSet<Team> TeamSet { get; set; }
         public virtual DbSet<Pool> PoolSet { get; set; }
         public virtual DbSet<Division> DivisionSet { get; set; }
-        public virtual DbSet<DivisionTournament> DivisionTournamentSet { get; set; }
         public virtual DbSet<Field> FieldSet { get; set; }
         public virtual DbSet<TimeInterval> TimeIntervalSet { get; set; }
         public virtual DbSet<Tournament> TournamentSet { get; set; }
         public virtual DbSet<Match> MatchSet { get; set; }
         public virtual DbSet<TournamentStage> TournamentStageSet { get; set; }
+        public virtual DbSet<DivisionTournament> DivisionTournamentSet { get; set; }
     }
 }

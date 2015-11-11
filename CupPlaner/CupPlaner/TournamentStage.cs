@@ -22,8 +22,8 @@ namespace CupPlaner
         public int Id { get; set; }
         public TournamentStructure TournamentStructure { get; set; }
     
-        public virtual DivisionTournament DivisionTournament { get; set; }
         public virtual ICollection<Match> Matches { get; set; }
         public virtual Pool Pool { get; set; }
+        public virtual DivisionTournament DivisionTournament { get; set; }
     }
 }

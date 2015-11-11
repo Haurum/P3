@@ -16,14 +16,13 @@ namespace CupPlaner
     {
         public DivisionTournament()
         {
-            this.TournamentStages = new HashSet<TournamentStage>();
+            this.TournamentStage = new HashSet<TournamentStage>();
         }
     
         public int Id { get; set; }
         public TournamentStructure TournamentStructure { get; set; }
     
         public virtual Division Division { get; set; }
-        public virtual ICollection<TournamentStage> TournamentStages { get; set; }
-        public virtual Tournament Tournament { get; set; }
+        public virtual ICollection<TournamentStage> TournamentStage { get; set; }
     }
 }
