@@ -9,11 +9,14 @@ namespace CupPlaner.Controllers
 {
     public class PoolController : Controller
     {
-        // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
+        // GET: Pool
+        public ActionResult Index()
+        {
+            return View();
+        }
 
-        // GET: Pool/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Pool object.
-        // Returns a Json object, which contains a copy of the corresponding Pool variables.
+        // GET: Pool/Details/5
         public ActionResult Details(int id)
         {
             Pool p = db.PoolSet.Find(id);
@@ -39,11 +42,7 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Pool/Create - Tries to create a Pool object, with the parameters "name" and "divisionId".
-        // Tracks the corresponding Division the pool is to be contained in with the "divisionId".
-        // Sets the pool name and division to the parameters (name and corresponding Division object).
-        // Adds the Pool object to the database PoolSet, and saves the changes in the database.
-        // Returns a Json object with a state, indicating whether it succeeded creating the Pool object or not.
+        // POST: Pool/Create
         [HttpPost]
         public ActionResult Create(string name, int divisionId)
         {
@@ -55,16 +54,14 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "new pool added" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new pool not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: new pool not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
 
-        // POST: Pool/Edit/5 - Tries to edit a Pool, determined by the "id" parameter and "divisionId".
-        // Edits a Pools name and FavoriteFields. Saves the changes to the database, if succeeded.
-        // Returns a Json object with a state, indicating whether it succeeded editing the Pool object or not.
+        // POST: Pool/Edit/5
         [HttpPost]
         public ActionResult Edit(int id, string name, int divisionId, List<int> fieldIds)
         {
@@ -73,6 +70,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 p.Name = name;
                 p.Division = db.DivisionSet.Find(divisionId);
+                p.FavoriteFields.Clear();
                 foreach (int fieldId in fieldIds)
                 {
                     p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
@@ -83,15 +81,13 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "pool edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: pool not edited", error = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
-        // POST: Pool/Delete/5 - Tries to delete a Pool object, determined by the "id".
-        // Deletes both the Pool object, and all Team objects contained in the Pool, and saves to the database, if succeeded.
-        // Returns a Json object, indicating whether it succeeded deleting the Pool object and pools, or not.
+        // POST: Pool/Delete/5
         [HttpPost]
         public ActionResult Delete(int id)
         {
@@ -108,9 +104,9 @@ namespace CupPlaner.Controllers
 
                 return Json(new { state = "pool deleted" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not deleted" });
+                return Json(new { state = "ERROR: pool not deleted", error = ex.Message });
             }
         }
     }
