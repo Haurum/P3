@@ -12,13 +12,31 @@ namespace CupPlaner.Controllers.Tests
     public class TournamentControllerTests
     {
         [TestMethod()]
+        public void CreateTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
         public void DetailsTest()
         {
             Assert.Fail();
         }
 
         [TestMethod()]
-        public void CreateTest()
+        public void IdFromPassTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void EditTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void DeleteTest()
         {
             Assert.Fail();
         }
