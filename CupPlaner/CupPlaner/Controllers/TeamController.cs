@@ -40,57 +40,59 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                
+                Pool p = db.PoolSet.Find(poolId);
+                db.TeamSet.Add(new Team() { Name = name, Pool = p });
+                db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return Json(new { state = "new team added" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
-                return View();
+                return Json(new { state = "ERROR: new team not added" }, JsonRequestBehavior.AllowGet);
             }
-        }
-
-        // GET: Team/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
         }
 
         // POST: Team/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, string name, int poolId, List<DateTime> startTimes, List<DateTime> endTimes)
         {
             try
             {
-                // TODO: Add update logic here
+                List<TimeInterval> tis = new List<TimeInterval>();
+                for (int i = 0; i < startTimes.Count; i++)
+                {
+                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                }
+                Team t = db.TeamSet.Find(id);
+                t.Name = name;
+                t.TimeIntervals = tis;
 
-                return RedirectToAction("Index");
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return Json(new { state = "Team edited" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
-                return View();
+                return Json(new { state = "ERROR: Team not edited" }, JsonRequestBehavior.AllowGet);
             }
-        }
-
-        // GET: Team/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
         }
 
         // POST: Team/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
-                // TODO: Add delete logic here
+                Team t = db.TeamSet.Find(id);
+                db.TeamSet.Remove(t);
+                db.SaveChanges();
 
-                return RedirectToAction("Index");
+                return Json(new { state = "Team Deleted" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
-                return View();
+                return Json(new { state = "Team not deleted" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

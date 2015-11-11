@@ -27,14 +27,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DivisionTournamentSet">
-      <EntityTypeMapping TypeName="IsTypeOf(CupDB.DivisionTournament)">
-        <MappingFragment StoreEntitySet="DivisionTournamentSet">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="FieldSet">
       <EntityTypeMapping TypeName="IsTypeOf(CupDB.Field)">
         <MappingFragment StoreEntitySet="FieldSet">
@@ -79,6 +71,14 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="DivisionTournamentSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.DivisionTournament)">
+        <MappingFragment StoreEntitySet="DivisionTournamentSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="TeamMatch" TypeName="CupDB.TeamMatch" StoreEntitySet="TeamMatch">
       <EndProperty Name="Team">
         <ScalarProperty Name="Id" ColumnName="Teams_Id" />
@@ -112,27 +112,11 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
-    <AssociationSetMapping Name="DivisionTournamentDivision" TypeName="CupDB.DivisionTournamentDivision" StoreEntitySet="DivisionTournamentSet">
-      <EndProperty Name="Division">
-        <ScalarProperty Name="Id" ColumnName="Division_Id" />
-      </EndProperty>
-      <EndProperty Name="DivisionTournament">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="TournamentDivision" TypeName="CupDB.TournamentDivision" StoreEntitySet="DivisionSet">
       <EndProperty Name="Tournament">
         <ScalarProperty Name="Id" ColumnName="Tournament_Id" />
       </EndProperty>
       <EndProperty Name="Division">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="DivisionTournamentTournamentStage" TypeName="CupDB.DivisionTournamentTournamentStage" StoreEntitySet="TournamentStageSet">
-      <EndProperty Name="DivisionTournament">
-        <ScalarProperty Name="Id" ColumnName="DivisionTournament_Id" />
-      </EndProperty>
-      <EndProperty Name="TournamentStage">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
@@ -162,14 +146,6 @@
       </EndProperty>
       <Condition ColumnName="Tournament_Id" IsNull="false" />
     </AssociationSetMapping>
-    <AssociationSetMapping Name="TournamentDivisionTournament" TypeName="CupDB.TournamentDivisionTournament" StoreEntitySet="DivisionTournamentSet">
-      <EndProperty Name="Tournament">
-        <ScalarProperty Name="Id" ColumnName="Tournament_Id" />
-      </EndProperty>
-      <EndProperty Name="DivisionTournament">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="TournamentStageMatch" TypeName="CupDB.TournamentStageMatch" StoreEntitySet="MatchSet">
       <EndProperty Name="TournamentStage">
         <ScalarProperty Name="Id" ColumnName="TournamentStage_Id" />
@@ -181,6 +157,22 @@
     <AssociationSetMapping Name="TournamentStagePool" TypeName="CupDB.TournamentStagePool" StoreEntitySet="TournamentStageSet">
       <EndProperty Name="Pool">
         <ScalarProperty Name="Id" ColumnName="Pool_Id" />
+      </EndProperty>
+      <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DivisionDivisionTournament" TypeName="CupDB.DivisionDivisionTournament" StoreEntitySet="DivisionTournamentSet">
+      <EndProperty Name="Division">
+        <ScalarProperty Name="Id" ColumnName="Division_Id" />
+      </EndProperty>
+      <EndProperty Name="DivisionTournament">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DivisionTournamentTournamentStage" TypeName="CupDB.DivisionTournamentTournamentStage" StoreEntitySet="TournamentStageSet">
+      <EndProperty Name="DivisionTournament">
+        <ScalarProperty Name="Id" ColumnName="DivisionTournament_Id" />
       </EndProperty>
       <EndProperty Name="TournamentStage">
         <ScalarProperty Name="Id" ColumnName="Id" />

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+//using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CupPlaner.Controllers
 {
@@ -42,9 +45,60 @@ namespace CupPlaner.Controllers
         }
 
         /*[HttpPost]
-        public ActionResult ExcelTest()
+        public ActionResult ExcelTest(HttpPostedFileBase file)
         {
-           
+            string tournamentName = "";
+
+            List<string> divisions = new List<string>();
+            List<string> pools = new List<string>();
+            List<string> teams = new List<string>();
+
+            int poolStart = 2;
+
+            if (file != null && file.ContentLength > 0) 
+            {
+                Tournament t = new Tournament();
+                Division d = new Division();
+                Pool p = new Pool();
+
+                // extract only the filename
+                var fileName = Path.GetFileName(file.FileName);
+                // store the file inside ~/App_Data/uploads folder
+                var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);
+                file.SaveAs(path);
+                var excel = new Excel.Application();
+                excel.Workbooks.Open(path);
+                Excel.Worksheet sheet = excel.Sheets["Cup"] as Excel.Worksheet;
+                Excel.Range range = sheet.get_Range("A1", Missing.Value);
+
+                t.Name = range.Value;
+
+
+
+                for (int i = 2; i < 100; i++)
+                {
+                    range = sheet.get_Range("A" + i.ToString(), Missing.Value);
+                    if (range.Value != null)
+                    {
+                        d = new Division() { Tournament = t, Name = range.Value };
+                        t.Divisions.Add(d);
+                        divisions.Add(range.Value);
+                        if (divisions.Count > 1)
+                        {
+                            for (int j = poolStart; j <= i; j++)
+                            {
+                                range = sheet.get_Range("B" + j.ToString(), Missing.Value);
+                                p = new Pool() { Division = d, Name = range.Value };
+                                pools.Add(range.Value);
+                            }
+                            poolStart = i;
+                        }
+                    }     
+                }
+            }
+
+            return Json(new { TournamentName = tournamentName, Divisions = divisions, Pools = pools }, JsonRequestBehavior.AllowGet);
+            
         }*/
     }
 }

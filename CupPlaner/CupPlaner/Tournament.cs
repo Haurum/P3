@@ -18,7 +18,6 @@ namespace CupPlaner
         {
             this.Divisions = new HashSet<Division>();
             this.TimeIntervals = new HashSet<TimeInterval>();
-            this.DivisionTournaments = new HashSet<DivisionTournament>();
         }
     
         public int Id { get; set; }
@@ -27,6 +26,5 @@ namespace CupPlaner
     
         public virtual ICollection<Division> Divisions { get; set; }
         public virtual ICollection<TimeInterval> TimeIntervals { get; set; }
-        public virtual ICollection<DivisionTournament> DivisionTournaments { get; set; }
     }
 }

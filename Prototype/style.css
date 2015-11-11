@@ -28,6 +28,7 @@ body {
     border-radius: 32px;
     color: black;
   }
+  
 .partially button span {
 	background-color: orange;
   border-radius: 32px;
@@ -47,15 +48,41 @@ body {
 }
 
 #kodeord {
-  margin-bottom: 75px;
+  margin-bottom: 25px;
 }
 
 .poolLink{
   color: #000;
-
+  text-align: center;
 }
 
 .poolLink:hover {
-  text-decoration: none;
+  text-decoration: underline;
   color: #5a5a5a;
+}
+
+#banner {
+  width:auto;
+  overflow:hidden;
+  margin-top: -25px;
+  border-radius: 10px;
+}
+
+#banner img {
+  width: 100%;
+}
+
+.footer {
+  margin-top: 250px;
+}
+
+.navbar-brand img{
+  height: 175%;
+  margin-top: -6px;
+  display: inline;
+}
+
+
+@media handheld, only screen and (max-width: 400px){ 
+   div#banner { display:none; 
 }

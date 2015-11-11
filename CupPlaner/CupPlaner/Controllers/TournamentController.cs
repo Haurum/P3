@@ -37,17 +37,21 @@ namespace CupPlaner.Controllers
                     times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime});
                 }
             }
-            if (t.DivisionTournaments != null)
-            {
-                foreach (DivisionTournament dt in t.DivisionTournaments)
-                {
-                    dts.Add(new { Id = dt.Id });
-                }
-            }
 
-            object obj = new { Id = t.Id, Name = t.Name, Divisions = divs, TimeIntervals = times, DivisionTournaments = dts };
+            object obj = new { Id = t.Id, Name = t.Name, Divisions = divs, TimeIntervals = times};
 
             return Json(obj, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult IdFromPass(string password)
+        {
+            Tournament t = db.TournamentSet.SingleOrDefault(x => x.Password == password);
+            if (t == null)
+            {
+                return Json(new { Id = 0 });
+            }
+            return Json(new { Id = t.Id });
         }
 
         // POST: Tournament/Create
@@ -56,17 +60,20 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                List<TimeInterval> tis = new List<TimeInterval>();
-                for (int i = 0; i < startTimes.Count; i++)
+                if (!db.TournamentSet.Any(x => x.Password == password))
                 {
-                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
-                }
-                Tournament t = new Tournament() { Name = name, Password = password, TimeIntervals = tis };
-                db.TournamentSet.Add(t);
-                db.SaveChanges();
+                    List<TimeInterval> tis = new List<TimeInterval>();
+                    for (int i = 0; i < startTimes.Count; i++)
+                    {
+                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    }
 
-                return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
+                    db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
+                    db.SaveChanges();
+
+                    return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { state = "ERROR: password exists" }, JsonRequestBehavior.AllowGet);          
             }
             catch
             {
@@ -78,15 +85,15 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Edit(int id, string name, string password, List<DateTime> startTimes, List<DateTime> endTimes)
         {
-            
             try
             {
+
+                Tournament t = db.TournamentSet.Find(id);
                 List<TimeInterval> tis = new List<TimeInterval>();
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                 }
-                Tournament t = db.TournamentSet.Find(id);
                 t.Name = name;
                 t.Password = password;
                 t.TimeIntervals = tis;
@@ -98,30 +105,32 @@ namespace CupPlaner.Controllers
             }
             catch
             {
-                return Json(new { state = "ERROR: Tournament did not get edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: Tournament not edited" }, JsonRequestBehavior.AllowGet);
             }
         }
 
 
+
         // POST: Tournament/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, FormCollection collection)
         {
             try
             {
                 Tournament t = db.TournamentSet.Find(id);
                 DivisionController dc = new DivisionController();
                 foreach (Division d in t.Divisions)
-                {                  
+                {
                     dc.Delete(d.Id);
                 }
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 db.TournamentSet.Remove(t);
                 db.SaveChanges();
                 return Json(new { state = "Tournament deleted" }, JsonRequestBehavior.AllowGet);
             }
             catch
             {
-                return Json(new { state = "ERROR: Tournament did not get deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { state = "ERROR: Tournament not deleted" }, JsonRequestBehavior.AllowGet);
             }
         }
     }
