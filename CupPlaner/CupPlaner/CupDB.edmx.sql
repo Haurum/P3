@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/11/2015 11:12:37
+-- Date Created: 11/11/2015 13:24:27
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -149,6 +149,17 @@ CREATE TABLE `DivisionTournamentSet`(
 	`Division_Id` int NOT NULL);
 
 ALTER TABLE `DivisionTournamentSet` ADD PRIMARY KEY (Id);
+
+
+
+
+CREATE TABLE `FinalsLinkSet`(
+	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
+	`Finalstage` longtext NOT NULL, 
+	`PoolPlacement` int NOT NULL, 
+	`Division_Id` int NOT NULL);
+
+ALTER TABLE `FinalsLinkSet` ADD PRIMARY KEY (Id);
 
 
 
@@ -374,6 +385,21 @@ ADD CONSTRAINT `FK_DivisionTournamentTournamentStage`
 CREATE INDEX `IX_FK_DivisionTournamentTournamentStage` 
     ON `TournamentStageSet`
     (`DivisionTournament_Id`);
+
+-- Creating foreign key on `Division_Id` in table 'FinalsLinkSet'
+
+ALTER TABLE `FinalsLinkSet`
+ADD CONSTRAINT `FK_DivisionFinalsLink`
+    FOREIGN KEY (`Division_Id`)
+    REFERENCES `DivisionSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DivisionFinalsLink'
+
+CREATE INDEX `IX_FK_DivisionFinalsLink` 
+    ON `FinalsLinkSet`
+    (`Division_Id`);
 
 -- --------------------------------------------------
 -- Script has ended

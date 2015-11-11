@@ -15,6 +15,7 @@
     <EntitySet Name="MatchSet" EntityType="CupDB.Store.MatchSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TournamentStageSet" EntityType="CupDB.Store.TournamentStageSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DivisionTournamentSet" EntityType="CupDB.Store.DivisionTournamentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FinalsLinkSet" EntityType="CupDB.Store.FinalsLinkSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TeamMatch" EntityType="CupDB.Store.TeamMatch" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PoolField" EntityType="CupDB.Store.PoolField" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_TeamMatch_Team" Association="CupDB.Store.FK_TeamMatch_Team">
@@ -72,6 +73,10 @@
     <AssociationSet Name="DivisionTournamentTournamentStage" Association="CupDB.Store.DivisionTournamentTournamentStage">
       <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
       <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionFinalsLink" Association="CupDB.Store.DivisionFinalsLink">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
@@ -154,6 +159,15 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TournamentStructure" Type="int" Nullable="false" />
     <Property Name="IsScheduled" Type="bool" Nullable="false" />
+    <Property Name="Division_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FinalsLinkSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Finalstage" Type="longtext" Nullable="false" />
+    <Property Name="PoolPlacement" Type="int" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TeamMatch">
@@ -289,6 +303,18 @@
       </Principal>
       <Dependent Role="TournamentStage">
         <PropertyRef Name="DivisionTournament_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="DivisionFinalsLink">
+    <End Role="Division" Type="CupDB.Store.DivisionSet" Multiplicity="1" />
+    <End Role="FinalsLink" Type="CupDB.Store.FinalsLinkSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FinalsLink">
+        <PropertyRef Name="Division_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -662,6 +688,15 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="FinalsLinkSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.FinalsLink)">
+        <MappingFragment StoreEntitySet="FinalsLinkSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Finalstage" ColumnName="Finalstage" />
+          <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <AssociationSetMapping Name="TeamMatch" TypeName="CupDB.TeamMatch" StoreEntitySet="TeamMatch">
       <EndProperty Name="Team">
         <ScalarProperty Name="Id" ColumnName="Teams_Id" />
@@ -758,6 +793,14 @@
         <ScalarProperty Name="Id" ColumnName="DivisionTournament_Id" />
       </EndProperty>
       <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DivisionFinalsLink" TypeName="CupDB.DivisionFinalsLink" StoreEntitySet="FinalsLinkSet">
+      <EndProperty Name="Division">
+        <ScalarProperty Name="Id" ColumnName="Division_Id" />
+      </EndProperty>
+      <EndProperty Name="FinalsLink">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
