@@ -29,7 +29,7 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
   }
 }])
 
-.controller('CreateTournyController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams' function ($scope, $rootScope, $http, $location, $routeParams) {
   $scope.helper = true;
   $scope.withExcel = function() {
     if ($scope.helper)
@@ -49,5 +49,31 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
   {
     
   }
-  $scope.isCollapsed = true;
+
+  $scope.getTournamentData = function()
+  {
+    var tournamentData = {
+      tournamentName = $scope.tournamentName,
+      tournamentPassword = $scope.tournamentName,
+      tournamentStartDate = $scope.sd,
+      tournamentEndDate = $scope.ed
+    }
+
+    $http.post("http://localhost:50229/addTournament/", tournamentData).success(function(tournamentData)
+    {
+      if (tournamentData.tournamentName != 0 && tournamentData.password != 0 && tournamentData.tournamentStartDate != 0 && tournamentData.tournamentEndDate != 0)
+      {
+        $scope.error = false;
+        $location.path("tournament/1");
+      }
+      else{
+        $scope.error = true;
+      }
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    });
+  }
+
 }])
+

@@ -29,11 +29,7 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     when('/team/:id', {
       templateUrl: 'templates/team.html',
       controller: 'TeamDetailController'
-    }).
-    when('/FinalStage', {
-      templateUrl: 'templates/finalStage.html',
-      controller: 'FinalStageController'
-    }).     
+    }).   
     otherwise({
       redirectTo: '/'
     });
@@ -70,9 +66,6 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       $scope.error = err;
     });
   }
-}])
-
-.controller('FinalStageController', ['$scope', function ($scope) {
 }])
 
 /* DATE PICKER START! */
