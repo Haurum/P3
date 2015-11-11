@@ -26,12 +26,12 @@ namespace CupPlaner.Controllers
 
         // POST: Field/Create
         [HttpPost]
-        public ActionResult Create(string name, FieldSize size)
+        public ActionResult Create(string name, int size)
         {
             try
             {
                 // TODO: Add insert logic here
-                Field f = db.FieldSet.Add(new Field() { Name = name, Size = size });
+                db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size });
                 db.SaveChanges();
                 return Json(new { state = "new field added" }, JsonRequestBehavior.AllowGet);
             }
@@ -43,7 +43,7 @@ namespace CupPlaner.Controllers
 
         // POST: Field/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, string name, int size)
         {
             try
             {
@@ -52,9 +52,9 @@ namespace CupPlaner.Controllers
                 {
                     f.Name = name;
                 }
-                if (size != f.Size)
+                if ((FieldSize)size != f.Size)
                 {
-                    f.Size = size;
+                    f.Size = (FieldSize)size;
                 }
 
                 db.Entry(f).State = EntityState.Modified;
