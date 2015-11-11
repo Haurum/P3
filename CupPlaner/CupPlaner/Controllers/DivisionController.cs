@@ -31,7 +31,7 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Division/Create - Creates a Division object, with the parameters "name" and "tournamentId".
+        // POST: Division/Create - Tries to create a Division object, with the parameters "name" and "tournamentId".
         // Sets the "FieldSize" and "MatchDuration" to defaults values (FieldSize.ElevenMan, MatchDuration =60).
         // Adds the Division object to the database DivisionSet, and saves the changes in the database.
         // Returns a Json object with a state, indicating whether it succeeded creating the Division object or not.
@@ -54,7 +54,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Division/Edit/5 - 
+        // POST: Division/Edit/5 - Tries to edit a Division, determined by the "id" parameter and "tournamentId".
+        // Edits a divisions name, FieldSize and matchDuration. Saves the changes to the database, if succeeded.
+        // Returns a Json object with a state, indicating whether it succeeded editing the Division object or not.
         [HttpPost]
         public ActionResult Edit(int id, string name, int tournamentId, int fieldSizeInt, int matchDuration)
         {
@@ -78,7 +80,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Division/Delete/5
+        // POST: Division/Delete/5 - Tries to delete a Division object, determined by the "id".
+        // Deletes both the Division object, and all Pool objects contained in the Division, and saves to the database, if succeeded.
+        // Returns a Json object, indicating whether it succeeded deleting the Division object and pools, or not.
         [HttpPost]
         public ActionResult Delete(int id)
         {
