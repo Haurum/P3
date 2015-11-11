@@ -9,14 +9,11 @@ namespace CupPlaner.Controllers
 {
     public class FieldController : Controller
     {
+        // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
-        // GET: Field
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Field/Details/5
+        // GET: Field/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Field object.
+        // Returns a Json object, which contains a copy of the corresponding Field variables.
         public ActionResult Details(int id)
         {
             Field f = db.FieldSet.Find(id);
@@ -24,7 +21,10 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Field/Create
+        // POST: Field/Create - Tries to create a Field object, with the parameters "name" and "size".
+        // Sets the FieldSize and Name to the parameters ("name" and "size").
+        // Adds the Field object to the database FieldSet, and saves the changes in the database.
+        // Returns a Json object with a state, indicating whether it succeeded creating the Field object or not.
         [HttpPost]
         public ActionResult Create(string name, int size)
         {
@@ -41,7 +41,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Field/Edit/5
+        // POST: Field/Edit/5 - Tries to edit a Field, determined by the "id" parameter.
+        // Edits a Fields name and FieldSize. Saves the changes to the database, if succeeded.
+        // Returns a Json object with a state, indicating whether it succeeded editing the Field object or not.
         [HttpPost]
         public ActionResult Edit(int id, string name, int size)
         {
@@ -68,7 +70,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Field/Delete/5
+        // POST: Field/Delete/5 - Tries to delete a Field object, determined by the "id".
+        // Deletes the Field object from the FieldSet in the database, and saves the changes, if succeeded.
+        // Returns a Json object, indicating whether it succeeded deleting the Field or not.
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
