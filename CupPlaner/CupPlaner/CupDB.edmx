@@ -399,6 +399,11 @@
             <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
             <End Role="TournamentStage" EntitySet="TournamentStageSet" />
           </AssociationSet>
+          <EntitySet Name="FinalsLinkSet" EntityType="CupDB.FinalsLink" />
+          <AssociationSet Name="DivisionFinalsLink" Association="CupDB.DivisionFinalsLink">
+            <End Role="Division" EntitySet="DivisionSet" />
+            <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Team">
           <Key>
@@ -432,6 +437,7 @@
           <NavigationProperty Name="Pools" Relationship="CupDB.DivisionPool" FromRole="Division" ToRole="Pool" />
           <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
           <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
+          <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -549,6 +555,19 @@
         <Association Name="DivisionTournamentTournamentStage">
           <End Type="CupDB.DivisionTournament" Role="DivisionTournament" Multiplicity="1" />
           <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FinalsLink">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Finalstage" Type="String" Nullable="false" />
+          <Property Name="PoolPlacement" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Division" Relationship="CupDB.DivisionFinalsLink" FromRole="FinalsLink" ToRole="Division" />
+        </EntityType>
+        <Association Name="DivisionFinalsLink">
+          <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
+          <End Type="CupDB.FinalsLink" Role="FinalsLink" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
