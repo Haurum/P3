@@ -10,44 +10,42 @@
       <div class="brugerInput">
         <div class="col-md-6">
           <h4>Turnerings navn</h4>
-          <input type="text" class="form-control" placeholder="Skriv turneringens navn" />
+          <input type="text" class="form-control" ng-model="tournamentName" placeholder="Skriv turneringens navn" />
         </div>
         <div class="col-md-6">
           <h4>Turnerings kodeord</h4>
-          <input type="text" class="form-control" placeholder="Skriv turneringens kodeord" />
+          <input type="text" class="form-control" ng-model="tournamentPassword" placeholder="Skriv turneringens kodeord" />
         </div>
 
+        <div ng-controller="DatepickerDemoCtrl">
         <div class="col-md-6">
           <h4>Turnerings start dag</h4>
-          <div ng-controller="DatepickerDemoCtrl">
             <div class="row">
               <div class="col-md-12">
                 <p class="input-group">
-                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="st" is-open="statusSt.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                   <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openSt($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                   </span>
                 </p>
               </div>
             </div>
-          </div>
         </div>
-
         <div class="col-md-6">
           <h4>Turnerings slut dag</h4>
-          <div ng-controller="DatepickerDemoCtrl">
             <div class="row">
               <div class="col-md-12">
                 <p class="input-group">
-                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="dt" is-open="status.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+                  <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="et" is-open="statusEt.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
                   <span class="input-group-btn">
-                    <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                    <button type="button" class="btn btn-default" ng-click="openEt($event)"><i class="glyphicon glyphicon-calendar"></i></button>
                   </span>
-                </p>
+                </p>      
+                <p> {{ st }}</p><p> {{ et }}</p><p>{{ (et-st)/(1000*60*60*24) }}</p>
               </div>
             </div>
-          </div>
         </div>
+      </div>
       </div>
 
         <div class="col-md-4">
@@ -78,7 +76,7 @@
         </div>
         <div class="row">
           <div class="col-md-12 add-button">
-            <a href="#/divisions/1" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Fortsæt
+            <a href="#/division/1" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Fortsæt
               <span class="glyphicon glyphicon-arrow-right"> </span>
             </a>
           </div>

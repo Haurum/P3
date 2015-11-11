@@ -48,7 +48,7 @@ body {
 }
 
 #kodeord {
-  margin-bottom: 25px;
+
 }
 
 .poolLink{
@@ -80,6 +80,16 @@ body {
   height: 175%;
   margin-top: -6px;
   display: inline;
+}
+
+#errorMsg {
+  margin-top: 10px;
+  width: 80%;
+  margin-left: 10%;
+}
+
+#NewTournamentButton {
+  margin-top: 10px;
 }
 
 
