@@ -6,11 +6,14 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/11/2015 13:24:27
+-- Date Created: 11/11/2015 13:49:03
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
 
+DROP DATABASE IF EXISTS `tabl_app_dk_db`;
+CREATE DATABASE `tabl_app_dk_db`;
+USE `tabl_app_dk_db`;
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
@@ -31,6 +34,7 @@
 --    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_TournamentStagePool`;
 --    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_DivisionDivisionTournament`;
 --    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_DivisionTournamentTournamentStage`;
+--    ALTER TABLE `FinalsLinkSet` DROP CONSTRAINT `FK_DivisionFinalsLink`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -45,6 +49,7 @@ SET foreign_key_checks = 0;
     DROP TABLE IF EXISTS `MatchSet`;
     DROP TABLE IF EXISTS `TournamentStageSet`;
     DROP TABLE IF EXISTS `DivisionTournamentSet`;
+    DROP TABLE IF EXISTS `FinalsLinkSet`;
     DROP TABLE IF EXISTS `TeamMatch`;
     DROP TABLE IF EXISTS `PoolField`;
 SET foreign_key_checks = 1;
