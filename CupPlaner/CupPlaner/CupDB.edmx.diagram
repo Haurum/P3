@@ -9,7 +9,7 @@
         <EntityTypeShape EntityType="CupDB.Pool" Width="1.5" PointX="5.375" PointY="6.75" />
         <EntityTypeShape EntityType="CupDB.Division" Width="1.5" PointX="3.125" PointY="6.75" />
         <EntityTypeShape EntityType="CupDB.Field" Width="1.5" PointX="7.875" PointY="5" />
-        <EntityTypeShape EntityType="CupDB.TimeInterval" PointX="0.625" PointY="7.5" Width="1.5" />
+        <EntityTypeShape EntityType="CupDB.TimeInterval" PointX="0.625" PointY="7.75" Width="1.5" />
         <EntityTypeShape EntityType="CupDB.Tournament" Width="1.5" PointX="0.75" PointY="4.125" />
         <EntityTypeShape EntityType="CupDB.Match" Width="1.5" PointX="10.125" PointY="3.125" />
         <EntityTypeShape EntityType="CupDB.TournamentStage" Width="1.5" PointX="5.5" PointY="3.125" />
@@ -26,6 +26,8 @@
         <EntityTypeShape EntityType="CupDB.DivisionTournament" Width="1.5" PointX="3" PointY="3.125" />
         <AssociationConnector Association="CupDB.DivisionDivisionTournament" />
         <AssociationConnector Association="CupDB.DivisionTournamentTournamentStage" />
+        <EntityTypeShape EntityType="CupDB.FinalsLink" Width="1.5" PointX="3.125" PointY="10" />
+        <AssociationConnector Association="CupDB.DivisionFinalsLink" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

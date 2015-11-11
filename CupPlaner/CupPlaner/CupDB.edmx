@@ -15,6 +15,7 @@
     <EntitySet Name="MatchSet" EntityType="CupDB.Store.MatchSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TournamentStageSet" EntityType="CupDB.Store.TournamentStageSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DivisionTournamentSet" EntityType="CupDB.Store.DivisionTournamentSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="FinalsLinkSet" EntityType="CupDB.Store.FinalsLinkSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TeamMatch" EntityType="CupDB.Store.TeamMatch" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PoolField" EntityType="CupDB.Store.PoolField" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_TeamMatch_Team" Association="CupDB.Store.FK_TeamMatch_Team">
@@ -72,6 +73,10 @@
     <AssociationSet Name="DivisionTournamentTournamentStage" Association="CupDB.Store.DivisionTournamentTournamentStage">
       <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
       <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionFinalsLink" Association="CupDB.Store.DivisionFinalsLink">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
@@ -133,6 +138,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StartTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Duration" Type="int" Nullable="false" />
+    <Property Name="IsScheduled" Type="bool" Nullable="false" />
     <Property Name="Field_Id" Type="int" Nullable="true" />
     <Property Name="TournamentStage_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -142,6 +148,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TournamentStructure" Type="int" Nullable="false" />
+    <Property Name="IsScheduled" Type="bool" Nullable="false" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />
     <Property Name="DivisionTournament_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -151,6 +158,16 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TournamentStructure" Type="int" Nullable="false" />
+    <Property Name="IsScheduled" Type="bool" Nullable="false" />
+    <Property Name="Division_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="FinalsLinkSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Finalstage" Type="longtext" Nullable="false" />
+    <Property Name="PoolPlacement" Type="int" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TeamMatch">
@@ -289,6 +306,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="DivisionFinalsLink">
+    <End Role="Division" Type="CupDB.Store.DivisionSet" Multiplicity="1" />
+    <End Role="FinalsLink" Type="CupDB.Store.FinalsLinkSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Division">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FinalsLink">
+        <PropertyRef Name="Division_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TeamMatch_Team">
     <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="1" />
     <End Role="TeamMatch" Type="CupDB.Store.TeamMatch" Multiplicity="*" />
@@ -399,6 +428,11 @@
             <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
             <End Role="TournamentStage" EntitySet="TournamentStageSet" />
           </AssociationSet>
+          <EntitySet Name="FinalsLinkSet" EntityType="CupDB.FinalsLink" />
+          <AssociationSet Name="DivisionFinalsLink" Association="CupDB.DivisionFinalsLink">
+            <End Role="Division" EntitySet="DivisionSet" />
+            <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Team">
           <Key>
@@ -432,6 +466,7 @@
           <NavigationProperty Name="Pools" Relationship="CupDB.DivisionPool" FromRole="Division" ToRole="Pool" />
           <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
           <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
+          <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -473,6 +508,7 @@
           <NavigationProperty Name="Teams" Relationship="CupDB.TeamMatch" FromRole="Match" ToRole="Team" />
           <NavigationProperty Name="Field" Relationship="CupDB.MatchField" FromRole="Match" ToRole="Field" />
           <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageMatch" FromRole="Match" ToRole="TournamentStage" />
+          <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="TournamentStage">
           <Key>
@@ -483,6 +519,7 @@
           <NavigationProperty Name="Matches" Relationship="CupDB.TournamentStageMatch" FromRole="TournamentStage" ToRole="Match" />
           <NavigationProperty Name="Pool" Relationship="CupDB.TournamentStagePool" FromRole="TournamentStage" ToRole="Pool" />
           <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
+          <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="TeamMatch">
           <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
@@ -541,6 +578,7 @@
           <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
           <NavigationProperty Name="Division" Relationship="CupDB.DivisionDivisionTournament" FromRole="DivisionTournament" ToRole="Division" />
           <NavigationProperty Name="TournamentStage" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="DivisionTournament" ToRole="TournamentStage" />
+          <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
         </EntityType>
         <Association Name="DivisionDivisionTournament">
           <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
@@ -549,6 +587,19 @@
         <Association Name="DivisionTournamentTournamentStage">
           <End Type="CupDB.DivisionTournament" Role="DivisionTournament" Multiplicity="1" />
           <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="*" />
+        </Association>
+        <EntityType Name="FinalsLink">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Finalstage" Type="String" Nullable="false" />
+          <Property Name="PoolPlacement" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Division" Relationship="CupDB.DivisionFinalsLink" FromRole="FinalsLink" ToRole="Division" />
+        </EntityType>
+        <Association Name="DivisionFinalsLink">
+          <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
+          <End Type="CupDB.FinalsLink" Role="FinalsLink" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -615,6 +666,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="StartTime" ColumnName="StartTime" />
           <ScalarProperty Name="Duration" ColumnName="Duration" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -623,6 +675,7 @@
         <MappingFragment StoreEntitySet="TournamentStageSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -631,6 +684,16 @@
         <MappingFragment StoreEntitySet="DivisionTournamentSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FinalsLinkSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.FinalsLink)">
+        <MappingFragment StoreEntitySet="FinalsLinkSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Finalstage" ColumnName="Finalstage" />
+          <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -730,6 +793,14 @@
         <ScalarProperty Name="Id" ColumnName="DivisionTournament_Id" />
       </EndProperty>
       <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DivisionFinalsLink" TypeName="CupDB.DivisionFinalsLink" StoreEntitySet="FinalsLinkSet">
+      <EndProperty Name="Division">
+        <ScalarProperty Name="Id" ColumnName="Division_Id" />
+      </EndProperty>
+      <EndProperty Name="FinalsLink">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

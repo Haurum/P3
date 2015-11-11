@@ -22,6 +22,7 @@ namespace CupPlaner
         public int Id { get; set; }
         public System.DateTime StartTime { get; set; }
         public int Duration { get; set; }
+        public bool IsScheduled { get; set; }
     
         public virtual ICollection<Team> Teams { get; set; }
         public virtual Field Field { get; set; }

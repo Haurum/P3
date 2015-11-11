@@ -9,14 +9,11 @@ namespace CupPlaner.Controllers
 {
     public class TeamController : Controller
     {
+        // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
-        // GET: Team
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Team/Details/5
+        // GET: Team/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Team object.
+        // Returns a Json object, which contains a copy of the corresponding Team variables.
         public ActionResult Details(int id)
         {
             Team t = db.TeamSet.Find(id);
@@ -34,7 +31,11 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Team/Create
+        // POST: Team/Create - Tries to create a Team object, with the parameters "name" and "poolId".
+        // Tracks the corresponding Pool the team is to be contained in with the "poolId".
+        // Sets the team name and pool to the parameters (name and corresponding Pool object).
+        // Adds the Team object to the database TeamSet, and saves the changes in the database.
+        // Returns a Json object with a state, indicating whether it succeeded creating the Team object or not.
         [HttpPost]
         public ActionResult Create(string name, int poolId)
         {
@@ -52,7 +53,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Team/Edit/5
+        // POST: Team/Edit/5 - Tries to edit a Team, determined by the "id" parameter and "poolId".
+        // Edits a Teams name and list of TimeIntervals. Saves the changes to the database, if succeeded.
+        // Returns a Json object with a state, indicating whether it succeeded editing the Team object or not.
         [HttpPost]
         public ActionResult Edit(int id, string name, int poolId, List<DateTime> startTimes, List<DateTime> endTimes)
         {
@@ -78,7 +81,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Team/Delete/5
+        // POST: Team/Delete/5 - Tries to delete a Team object, determined by the "id".
+        // Deletes the Team object and saves to the database, if succeeded.
+        // Returns a Json object, indicating whether it succeeded deleting the Team object or not.
         [HttpPost]
         public ActionResult Delete(int id)
         {

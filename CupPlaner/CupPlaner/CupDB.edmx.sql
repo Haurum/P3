@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/11/2015 09:09:37
+-- Date Created: 11/11/2015 13:24:27
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -29,6 +29,8 @@
 --    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TournamentTimeInterval`;
 --    ALTER TABLE `MatchSet` DROP CONSTRAINT `FK_TournamentStageMatch`;
 --    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_TournamentStagePool`;
+--    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_DivisionDivisionTournament`;
+--    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_DivisionTournamentTournamentStage`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -42,6 +44,7 @@ SET foreign_key_checks = 0;
     DROP TABLE IF EXISTS `TournamentSet`;
     DROP TABLE IF EXISTS `MatchSet`;
     DROP TABLE IF EXISTS `TournamentStageSet`;
+    DROP TABLE IF EXISTS `DivisionTournamentSet`;
     DROP TABLE IF EXISTS `TeamMatch`;
     DROP TABLE IF EXISTS `PoolField`;
 SET foreign_key_checks = 1;
@@ -118,6 +121,7 @@ CREATE TABLE `MatchSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`StartTime` datetime( 3 )  NOT NULL, 
 	`Duration` int NOT NULL, 
+	`IsScheduled` bool NOT NULL, 
 	`Field_Id` int, 
 	`TournamentStage_Id` int NOT NULL);
 
@@ -129,6 +133,7 @@ ALTER TABLE `MatchSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `TournamentStageSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`TournamentStructure` int NOT NULL, 
+	`IsScheduled` bool NOT NULL, 
 	`Pool_Id` int NOT NULL, 
 	`DivisionTournament_Id` int NOT NULL);
 
@@ -140,9 +145,21 @@ ALTER TABLE `TournamentStageSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `DivisionTournamentSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`TournamentStructure` int NOT NULL, 
+	`IsScheduled` bool NOT NULL, 
 	`Division_Id` int NOT NULL);
 
 ALTER TABLE `DivisionTournamentSet` ADD PRIMARY KEY (Id);
+
+
+
+
+CREATE TABLE `FinalsLinkSet`(
+	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
+	`Finalstage` longtext NOT NULL, 
+	`PoolPlacement` int NOT NULL, 
+	`Division_Id` int NOT NULL);
+
+ALTER TABLE `FinalsLinkSet` ADD PRIMARY KEY (Id);
 
 
 
@@ -368,6 +385,21 @@ ADD CONSTRAINT `FK_DivisionTournamentTournamentStage`
 CREATE INDEX `IX_FK_DivisionTournamentTournamentStage` 
     ON `TournamentStageSet`
     (`DivisionTournament_Id`);
+
+-- Creating foreign key on `Division_Id` in table 'FinalsLinkSet'
+
+ALTER TABLE `FinalsLinkSet`
+ADD CONSTRAINT `FK_DivisionFinalsLink`
+    FOREIGN KEY (`Division_Id`)
+    REFERENCES `DivisionSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DivisionFinalsLink'
+
+CREATE INDEX `IX_FK_DivisionFinalsLink` 
+    ON `FinalsLinkSet`
+    (`Division_Id`);
 
 -- --------------------------------------------------
 -- Script has ended

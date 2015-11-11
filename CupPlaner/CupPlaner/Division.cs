@@ -17,6 +17,7 @@ namespace CupPlaner
         public Division()
         {
             this.Pools = new HashSet<Pool>();
+            this.FinalsLinks = new HashSet<FinalsLink>();
         }
     
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace CupPlaner
         public virtual ICollection<Pool> Pools { get; set; }
         public virtual Tournament Tournament { get; set; }
         public virtual DivisionTournament DivisionTournament { get; set; }
+        public virtual ICollection<FinalsLink> FinalsLinks { get; set; }
     }
 }
