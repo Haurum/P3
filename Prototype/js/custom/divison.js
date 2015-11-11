@@ -18,7 +18,7 @@ angular.module('tournyplanner').controller('DivisonDetailController', ['$scope',
     $scope.error = err;
   })
 
-  $http.get("http://localhost:50229/Teams", params { teamName: "teamName" } )
+  $http.get("http://localhost:50229/Teams", { teamName: "teamName" } )
   .success(function(teamData)
   {
     $scope.Teams = teamData;
