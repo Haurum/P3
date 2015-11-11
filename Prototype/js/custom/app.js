@@ -10,7 +10,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'templates/OpretNT.html',
       controller: 'CreateTournyController'
     }).
-    when('/divisions', {
+    when('/divisions/:id', {
       templateUrl: 'templates/tournament-divs.html',
       controller: 'DivisonController'
     }).
@@ -63,7 +63,21 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   $rootScope.Tournament = {};
 })
 
-.controller('HomeController', ['$scope', function ($scope) {
+.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  $scope.password = "";
+
+  $scope.getId = function(password)
+  {
+    $http.post("http://localhost:50229/Tournament/", {params: { password: password }})
+    .success(function(passwordData)
+    {
+      $location.url("#/divisions/" + passwordData.Id);
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    });
+    }
+
 }])
 
 .controller('CreateTournyController', ['$scope', '$rootScope', function ($scope, $rootScope) {
@@ -109,7 +123,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 .controller('FinalStageController', ['$scope', function ($scope) {
 }])
 
-.controller('CreateFieldsController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+.controller('CreateFieldsController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
   /* Post & Get requests */ 
  /* $rootScope.Field.Id = 1;
@@ -130,7 +144,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
   }).error(function(err) 
   {
     $scope.error = err;
-  })
+  }) */
 
   $scope.newFieldName = "";
 
@@ -138,7 +152,7 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
   $scope.newOm = false;
 
-  $scope.newFm = false; */
+  $scope.newFm = false; 
 
   /* 11mands */
   $scope.createNewEmField = function() {
