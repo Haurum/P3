@@ -132,6 +132,7 @@
     <NavigationProperty Name="Teams" Relationship="CupDB.TeamMatch" FromRole="Match" ToRole="Team" />
     <NavigationProperty Name="Field" Relationship="CupDB.MatchField" FromRole="Match" ToRole="Field" />
     <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageMatch" FromRole="Match" ToRole="TournamentStage" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="TournamentStage">
     <Key>
@@ -142,6 +143,7 @@
     <NavigationProperty Name="Matches" Relationship="CupDB.TournamentStageMatch" FromRole="TournamentStage" ToRole="Match" />
     <NavigationProperty Name="Pool" Relationship="CupDB.TournamentStagePool" FromRole="TournamentStage" ToRole="Pool" />
     <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="TeamMatch">
     <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
@@ -200,6 +202,7 @@
     <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
     <NavigationProperty Name="Division" Relationship="CupDB.DivisionDivisionTournament" FromRole="DivisionTournament" ToRole="Division" />
     <NavigationProperty Name="TournamentStage" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="DivisionTournament" ToRole="TournamentStage" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
   </EntityType>
   <Association Name="DivisionDivisionTournament">
     <End Type="CupDB.Division" Role="Division" Multiplicity="1" />

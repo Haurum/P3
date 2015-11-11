@@ -21,6 +21,7 @@ namespace CupPlaner
     
         public int Id { get; set; }
         public TournamentStructure TournamentStructure { get; set; }
+        public bool IsScheduled { get; set; }
     
         public virtual ICollection<Match> Matches { get; set; }
         public virtual Pool Pool { get; set; }
