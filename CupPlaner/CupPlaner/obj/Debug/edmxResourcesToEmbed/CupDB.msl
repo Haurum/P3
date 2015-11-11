@@ -82,11 +82,12 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="DivisionTournamentSet">
-      <EntityTypeMapping TypeName="IsTypeOf(CupDB.DivisionTournament)">
-        <MappingFragment StoreEntitySet="DivisionTournamentSet">
+    <EntitySetMapping Name="FinalsLinkSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.FinalsLink)">
+        <MappingFragment StoreEntitySet="FinalsLinkSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
+          <ScalarProperty Name="Finalstage" ColumnName="Finalstage" />
+          <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -186,6 +187,14 @@
         <ScalarProperty Name="Id" ColumnName="DivisionTournament_Id" />
       </EndProperty>
       <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="DivisionFinalsLink" TypeName="CupDB.DivisionFinalsLink" StoreEntitySet="FinalsLinkSet">
+      <EndProperty Name="Division">
+        <ScalarProperty Name="Id" ColumnName="Division_Id" />
+      </EndProperty>
+      <EndProperty Name="FinalsLink">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>

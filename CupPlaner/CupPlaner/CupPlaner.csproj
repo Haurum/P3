@@ -171,6 +171,9 @@
     <Compile Include="FieldSize.cs">
       <DependentUpon>CupDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="FinalsLink.cs">
+      <DependentUpon>CupDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
