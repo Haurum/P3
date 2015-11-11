@@ -68,10 +68,16 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
   $scope.getId = function(password)
   {
-    $http.post("http://localhost:50229/Tournament/", {params: { password: password }})
+    $http.post("http://localhost:50229/Tournament/IdFromPass", { password: password })
     .success(function(passwordData)
     {
-      $location.url("#/divisions/" + passwordData.Id);
+      if (passwordData.Id != 0)
+      {
+        $scope.error = false;
+        $location.path("#/divisions/" + passwordData.Id);
+      }
+      else
+        $scope.error = true;
     }).error(function(err) 
     {
       $scope.error = err;
@@ -235,12 +241,14 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
 
 .controller('DatepickerDemoCtrl', function ($scope) {
   $scope.today = function() {
-    $scope.dt = new Date();
+    $scope.st = new Date();
+    $scope.et = new Date();
   };
   $scope.today();
 
   $scope.clear = function () {
-    $scope.dt = null;
+    $scope.st = null;
+    $scope.et = null;
   };
 
   $scope.toggleMin = function() {
@@ -253,8 +261,12 @@ angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     $scope.status.opened = true;
   };
 
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
+  $scope.setDate1 = function(year, month, day) {
+    $scope.st = new Date(year, month, day);
+  };
+
+  $scope.setDate2 = function(year, month, day) {
+    $scope.et = new Date(year, month, day);
   };
 
   $scope.dateOptions = {

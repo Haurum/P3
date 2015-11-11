@@ -51,7 +51,7 @@ namespace CupPlaner.Controllers
             {
                 TournamentStructure ts = (TournamentStructure)tsi;
                 Division d = db.DivisionSet.Find(divisionID);
-                db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d});
+                db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
                 db.SaveChanges();
                 return Json(new { state = "new division tournament added" }, JsonRequestBehavior.AllowGet);
             }
