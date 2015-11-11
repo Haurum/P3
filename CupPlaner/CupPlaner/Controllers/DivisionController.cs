@@ -9,14 +9,11 @@ namespace CupPlaner.Controllers
 {
     public class DivisionController : Controller
     {
+        // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
-        // GET: Division
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Division/Details/5
+        // GET: Division/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Divison object.
+        // Returns a Json object, which contains a copy of the corresponding Divisions variables.
         public ActionResult Details(int id)
         {
             Division d = db.DivisionSet.Find(id);
@@ -34,7 +31,10 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // POST: Division/Create
+        // POST: Division/Create - Creates a Division object, with the parameters "name" and "tournamentId".
+        // Sets the "FieldSize" and "MatchDuration" to defaults values (FieldSize.ElevenMan, MatchDuration =60).
+        // Adds the Division object to the database DivisionSet, and saves the changes in the database.
+        // Returns a Json object with a state, indicating whether it succeeded creating the Division object or not.
         [HttpPost]
         public ActionResult Create(string name, int tournamentId)
         {
@@ -54,7 +54,7 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Division/Edit/5
+        // POST: Division/Edit/5 - 
         [HttpPost]
         public ActionResult Edit(int id, string name, int tournamentId, int fieldSizeInt, int matchDuration)
         {
