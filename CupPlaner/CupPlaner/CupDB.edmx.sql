@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/09/2015 11:16:29
+-- Date Created: 11/11/2015 09:09:37
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -22,14 +22,11 @@
 --    ALTER TABLE `TeamSet` DROP CONSTRAINT `FK_PoolTeam`;
 --    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TeamTimeInterval`;
 --    ALTER TABLE `PoolSet` DROP CONSTRAINT `FK_DivisionPool`;
---    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_DivisionTournamentDivision`;
 --    ALTER TABLE `DivisionSet` DROP CONSTRAINT `FK_TournamentDivision`;
---    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_DivisionTournamentTournamentStage`;
 --    ALTER TABLE `MatchSet` DROP CONSTRAINT `FK_MatchField`;
 --    ALTER TABLE `PoolField` DROP CONSTRAINT `FK_PoolField_Pool`;
 --    ALTER TABLE `PoolField` DROP CONSTRAINT `FK_PoolField_Field`;
 --    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TournamentTimeInterval`;
---    ALTER TABLE `DivisionTournamentSet` DROP CONSTRAINT `FK_TournamentDivisionTournament`;
 --    ALTER TABLE `MatchSet` DROP CONSTRAINT `FK_TournamentStageMatch`;
 --    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_TournamentStagePool`;
 
@@ -40,7 +37,6 @@ SET foreign_key_checks = 0;
     DROP TABLE IF EXISTS `TeamSet`;
     DROP TABLE IF EXISTS `PoolSet`;
     DROP TABLE IF EXISTS `DivisionSet`;
-    DROP TABLE IF EXISTS `DivisionTournamentSet`;
     DROP TABLE IF EXISTS `FieldSet`;
     DROP TABLE IF EXISTS `TimeIntervalSet`;
     DROP TABLE IF EXISTS `TournamentSet`;
@@ -82,17 +78,6 @@ CREATE TABLE `DivisionSet`(
 	`Tournament_Id` int NOT NULL);
 
 ALTER TABLE `DivisionSet` ADD PRIMARY KEY (Id);
-
-
-
-
-CREATE TABLE `DivisionTournamentSet`(
-	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
-	`TournamentStructure` int NOT NULL, 
-	`Division_Id` int NOT NULL, 
-	`Tournament_Id` int NOT NULL);
-
-ALTER TABLE `DivisionTournamentSet` ADD PRIMARY KEY (Id);
 
 
 
@@ -144,10 +129,20 @@ ALTER TABLE `MatchSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `TournamentStageSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`TournamentStructure` int NOT NULL, 
-	`DivisionTournament_Id` int NOT NULL, 
-	`Pool_Id` int NOT NULL);
+	`Pool_Id` int NOT NULL, 
+	`DivisionTournament_Id` int NOT NULL);
 
 ALTER TABLE `TournamentStageSet` ADD PRIMARY KEY (Id);
+
+
+
+
+CREATE TABLE `DivisionTournamentSet`(
+	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
+	`TournamentStructure` int NOT NULL, 
+	`Division_Id` int NOT NULL);
+
+ALTER TABLE `DivisionTournamentSet` ADD PRIMARY KEY (Id);
 
 
 
@@ -245,21 +240,6 @@ CREATE INDEX `IX_FK_DivisionPool`
     ON `PoolSet`
     (`Division_Id`);
 
--- Creating foreign key on `Division_Id` in table 'DivisionTournamentSet'
-
-ALTER TABLE `DivisionTournamentSet`
-ADD CONSTRAINT `FK_DivisionTournamentDivision`
-    FOREIGN KEY (`Division_Id`)
-    REFERENCES `DivisionSet`
-        (`Id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DivisionTournamentDivision'
-
-CREATE INDEX `IX_FK_DivisionTournamentDivision` 
-    ON `DivisionTournamentSet`
-    (`Division_Id`);
-
 -- Creating foreign key on `Tournament_Id` in table 'DivisionSet'
 
 ALTER TABLE `DivisionSet`
@@ -274,21 +254,6 @@ ADD CONSTRAINT `FK_TournamentDivision`
 CREATE INDEX `IX_FK_TournamentDivision` 
     ON `DivisionSet`
     (`Tournament_Id`);
-
--- Creating foreign key on `DivisionTournament_Id` in table 'TournamentStageSet'
-
-ALTER TABLE `TournamentStageSet`
-ADD CONSTRAINT `FK_DivisionTournamentTournamentStage`
-    FOREIGN KEY (`DivisionTournament_Id`)
-    REFERENCES `DivisionTournamentSet`
-        (`Id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_DivisionTournamentTournamentStage'
-
-CREATE INDEX `IX_FK_DivisionTournamentTournamentStage` 
-    ON `TournamentStageSet`
-    (`DivisionTournament_Id`);
 
 -- Creating foreign key on `Field_Id` in table 'MatchSet'
 
@@ -344,21 +309,6 @@ CREATE INDEX `IX_FK_TournamentTimeInterval`
     ON `TimeIntervalSet`
     (`Tournament_Id`);
 
--- Creating foreign key on `Tournament_Id` in table 'DivisionTournamentSet'
-
-ALTER TABLE `DivisionTournamentSet`
-ADD CONSTRAINT `FK_TournamentDivisionTournament`
-    FOREIGN KEY (`Tournament_Id`)
-    REFERENCES `TournamentSet`
-        (`Id`)
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_TournamentDivisionTournament'
-
-CREATE INDEX `IX_FK_TournamentDivisionTournament` 
-    ON `DivisionTournamentSet`
-    (`Tournament_Id`);
-
 -- Creating foreign key on `TournamentStage_Id` in table 'MatchSet'
 
 ALTER TABLE `MatchSet`
@@ -388,6 +338,36 @@ ADD CONSTRAINT `FK_TournamentStagePool`
 CREATE INDEX `IX_FK_TournamentStagePool` 
     ON `TournamentStageSet`
     (`Pool_Id`);
+
+-- Creating foreign key on `Division_Id` in table 'DivisionTournamentSet'
+
+ALTER TABLE `DivisionTournamentSet`
+ADD CONSTRAINT `FK_DivisionDivisionTournament`
+    FOREIGN KEY (`Division_Id`)
+    REFERENCES `DivisionSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DivisionDivisionTournament'
+
+CREATE INDEX `IX_FK_DivisionDivisionTournament` 
+    ON `DivisionTournamentSet`
+    (`Division_Id`);
+
+-- Creating foreign key on `DivisionTournament_Id` in table 'TournamentStageSet'
+
+ALTER TABLE `TournamentStageSet`
+ADD CONSTRAINT `FK_DivisionTournamentTournamentStage`
+    FOREIGN KEY (`DivisionTournament_Id`)
+    REFERENCES `DivisionTournamentSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_DivisionTournamentTournamentStage'
+
+CREATE INDEX `IX_FK_DivisionTournamentTournamentStage` 
+    ON `TournamentStageSet`
+    (`DivisionTournament_Id`);
 
 -- --------------------------------------------------
 -- Script has ended
