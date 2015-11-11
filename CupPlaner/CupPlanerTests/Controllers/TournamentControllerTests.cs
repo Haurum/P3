@@ -1,12 +1,26 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CupPlaner.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CupPlanerTests.Controllers
+namespace CupPlaner.Controllers.Tests
 {
-    class TournamentControllerTests
+    [TestClass()]
+    public class TournamentControllerTests
     {
+        [TestMethod()]
+        public void DetailsTest()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void CreateTest()
+        {
+            Assert.Fail();
+        }
     }
 }
