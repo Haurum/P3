@@ -6,13 +6,31 @@
       <li class="active"><a href="#/tournament">Rækkesoversigt</a></li>
     </ul>
       <h1>
-        <span>Rækker</span>
-        <a ng-click="editUser(user.id)" class="btn btn-small btn-primary divisionEdit">Rediger</a>
+        <span>Turneringsoversigt</span>
+        <a ng-click="editUser(user.id)" class="btn btn-xs btn-primary tournamentEditBtn">Rediger
+        <span class="glyphicon glyphicon-pencil"></span>
+        </a>
       </h1>
+      <hr />
+      <h3>Rækker</h3>
     <div class="col-md-4 col-md-offset-4" ng-if="new">
       <form>
-        <input type="text" ng-model="newDivName" />
-        <input type="submit" ng-click="submit(newDivName)" class="btn btn-default" value="Submit" /><a ng-click="createNew()" class="btn btn-default">Annuller</a>
+        <label class="pull-left">Tilføj banens navn</label>
+        <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." required="true" />
+        <label class="pull-left">Tid for kamp</label>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp
+          </div>
+        </div>
+        <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" ng-model="newMatchDuration" />
+        <label class="pull-left">Vælg banestørrelse</label>
+        <select class="form-control" ng-model="chooseField">
+          <option value="11">11-mands bane</option>
+          <option value="8">8-mands bane</option>
+          <option value="5">5-mands bane</option>
+        </select>
+        <input type="submit" ng-click="submit(newDivName)" class="btn btn-success" value="Submit" id="divisionBtn" /><a ng-click="createNew()" class="btn btn-danger" id="divisionBtn">Annuller</a>
       </form>
       
     </div>
@@ -29,8 +47,8 @@
       </div>
     </div>
     <div class="col-lg-12 text-center">
-      <h1>Baner</h1>
       <hr />
+      <h3>Baner</h3>
       <div class="fieldHeadings">
         <div class="col-md-4">
           <h4>11-mands baner</h4>

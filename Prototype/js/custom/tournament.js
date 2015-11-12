@@ -15,15 +15,19 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.getDivisions();
   
   $scope.newDivName = "";
+  $scope.chooseField = "";
+  $scope.newMatchDuration = "";
   
   $scope.new = false;
   
   $scope.createNew = function() {
     $scope.new = !$scope.new;
   }
-  $scope.submit = function(newName) {
-    $rootScope.divisions.push({ MatchDuration: "30", FieldSize: "11-mands", Name: newName, Pool: []});
+  $scope.submit = function(newDivName, newMatchDuration, chooseField) {
+    $http.post("http://localhost:50229/Division/Create", { newDivName: newDivName, newMatchDuration: newMatchDuration, chooseField: chooseField } )
     $scope.newDivName = "";
+    $scope.newMatchDuration = "";
+    $scope.chooseField = "";
     $scope.createNew();
   }
   
@@ -31,6 +35,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     $rootScope.currDivisionIndex = index;
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
+
 }]);
 
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
