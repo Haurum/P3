@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $rootScope.Tournament.password = "";
 
   $http.get("http://localhost:50229/Tournament/Details/" +  $routeParams.id)
@@ -27,9 +27,9 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
     $rootScope.currDivisionIndex = index;
     $location.url("/division");
   }
-}])
+}]);
 
-.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams' function ($scope, $rootScope, $http, $location, $routeParams) {
+app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
   $scope.helper = true;
   $scope.withExcel = function() {
     if ($scope.helper)
@@ -53,10 +53,10 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
   $scope.getTournamentData = function()
   {
     var tournamentData = {
-      tournamentName = $scope.tournamentName,
-      tournamentPassword = $scope.tournamentName,
-      tournamentStartDate = $scope.sd,
-      tournamentEndDate = $scope.ed
+      tournamentName: $scope.tournamentName,
+      tournamentPassword: $scope.tournamentName,
+      tournamentStartDate: $scope.sd,
+      tournamentEndDate: $scope.ed
     }
 
     $http.post("http://localhost:50229/addTournament/", tournamentData).success(function(tournamentData)
@@ -144,4 +144,4 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
   /* DATE PICKER END */ 
 
 
-}])
+}]);

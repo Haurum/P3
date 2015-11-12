@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('PoolController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
 /*
   $rootScope.Pool.Id = 1;
 
@@ -37,4 +37,4 @@ angular.module('tournyplanner').controller('PoolController', ['$scope', '$rootSc
     $scope.changeFavField = !$scope.changeFavField;
   }
 
-}
+}]);

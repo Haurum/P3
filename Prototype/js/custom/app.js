@@ -1,6 +1,6 @@
-var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
+var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap']);
 
-.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', {
       templateUrl: 'templates/home.html',
@@ -33,17 +33,17 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
     otherwise({
       redirectTo: '/'
     });
-}])
+}]);
 
-.run(function($rootScope) {
+app.run(function($rootScope) {
   $rootScope.divisions = [];
   $rootScope.EmFields = [];
   $rootScope.OmFields = [];
   $rootScope.FmFields = [];
   $rootScope.Tournament = {};
-})
+});
 
-.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
   $scope.password = "";
 
   $scope.getId = function(password)
@@ -66,4 +66,4 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       $scope.error = err;
     });
   }
-}])
+}]);

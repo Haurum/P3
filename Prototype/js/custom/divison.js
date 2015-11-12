@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+app.controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.changeFavField = false;
@@ -43,4 +43,4 @@ angular.module('tournyplanner').controller('DivisonController', ['$scope', '$roo
   }
   
   //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;
-}])
+}]);
