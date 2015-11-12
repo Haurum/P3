@@ -4,9 +4,10 @@
       <li><a href="#/">Forside</a></li>
       <li><a href="#/addTournament">Opret ny turnering</a></li>
       <li><a href="#/tournament">Turneringsoversigt</a></li>
-      <li class="active"><a href="">{{ divisions[index].Name }}</a></li>
+      <li class="active"><a href="">{{ divisions.Name }}</a></li>
+
     </ul>
-    <h1>{{ divisions[index].Name }}</h1>
+    <h1>{{ division.Name }}</h1>
     <hr />
     <div class="row">
       <div class="col-md-4 col-md-offset-4" ng-if="newPool">
@@ -19,7 +20,7 @@
         <a ng-if="!new" class="btn btn-default col-md-12" ng-click="newPoolFunc()">Tilføj ny pulje</a>
       </div>
     </div>
-    <div ng-repeat="pool in divisions[index].Pool track by $index" >
+    <div ng-repeat="pool in divisions.Pool track by $index" >
       <div class="col-md-4 text-center">
 
         <a class="poolLink">
