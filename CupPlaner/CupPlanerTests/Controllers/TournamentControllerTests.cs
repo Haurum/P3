@@ -15,13 +15,14 @@ namespace CupPlaner.Controllers.Tests
     public class TournamentControllerTests
     {
         TournamentController controller = new TournamentController();
+        
 
         [TestMethod()]
         public void CreateTest()
         {
             
-            dynamic result = controller.Create("TestName", "TestPassword", new List<DateTime>() { DateTime.Now }, new List<DateTime>() { DateTime.Now.AddMinutes(60) }) as JsonResult;
-            Debug.Write("xxcc");
+            var result = controller.Create("TestName", "TestPassword", new List<DateTime>() { DateTime.Now }, new List<DateTime>() { DateTime.Now.AddMinutes(60) }) as JsonResult;
+            Console.Write(result.Data);
             //var status = JsonConvert.DeserializeObject(result.status);
             //Assert.AreEqual(status, "success");
         }
@@ -29,7 +30,6 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DetailsTest()
         {
-            Trace.Write("xxcc");
             Assert.IsTrue(true);
             //Assert.Fail();
         }
@@ -37,7 +37,6 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void IdFromPassTest()
         {
-            Trace.Write("xxcc");
             //Assert.Fail();
         }
 
