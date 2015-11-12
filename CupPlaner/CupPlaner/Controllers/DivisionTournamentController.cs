@@ -53,11 +53,11 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(divisionID);
                 db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
                 db.SaveChanges();
-                return Json(new { state = "new division tournament added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division tournament added" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new division tournament not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New division tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
 
             }
         }
@@ -75,11 +75,11 @@ namespace CupPlaner.Controllers
                 }
                 db.DivisionTournamentSet.Remove(dt);
                 db.SaveChanges();
-                return Json(new { state = "division tournament deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Division tournament deleted" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: division tournament not deleted", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Division tournament not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 

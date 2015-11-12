@@ -52,11 +52,11 @@ namespace CupPlaner.Controllers
                 db.PoolSet.Add(new Pool() { Name = name, Division = d });
                 db.SaveChanges();
 
-                return Json(new { state = "new pool added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New pool added" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new pool not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New pool not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -79,11 +79,11 @@ namespace CupPlaner.Controllers
                 db.Entry(p).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "pool edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Pool edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not edited", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Pool not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -102,11 +102,11 @@ namespace CupPlaner.Controllers
                 db.PoolSet.Remove(p);
                 db.SaveChanges();
 
-                return Json(new { state = "pool deleted" });
+                return Json(new { status = "success", message = "Pool deleted" });
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: pool not deleted", error = ex.Message });
+                return Json(new { status = "error", message = "Pool not deleted", details = ex.Message });
             }
         }
     }

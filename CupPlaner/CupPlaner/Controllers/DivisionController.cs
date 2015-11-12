@@ -46,11 +46,11 @@ namespace CupPlaner.Controllers
                 db.DivisionSet.Add(new Division() { Name = name, FieldSize = defaultFieldSize, MatchDuration = defaultMatchDuration, Tournament = t });
                 db.SaveChanges();
 
-                return Json(new { state = "new division added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division added" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new division not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New division not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -72,11 +72,11 @@ namespace CupPlaner.Controllers
                 db.Entry(d).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "Division edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Division edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: Division not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Division not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -96,11 +96,11 @@ namespace CupPlaner.Controllers
                 }
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
-                return Json(new { state = "division deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Division deleted" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: division not deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Division not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

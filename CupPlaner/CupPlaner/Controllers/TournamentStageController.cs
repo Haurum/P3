@@ -47,11 +47,11 @@ namespace CupPlaner.Controllers
                 db.TournamentStageSet.Add(new TournamentStage() { TournamentStructure = (TournamentStructure)tournamentStructure, DivisionTournament = dt, Pool = p });
                 db.SaveChanges();
 
-                return Json(new { state = "new tournament stage added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New tournament stage added" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new tournament stage not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New tournament stage not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -71,11 +71,11 @@ namespace CupPlaner.Controllers
                 db.Entry(ts).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "´tournament edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: tournament stage not edited", ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Tournament stage not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
 
             }
         }
@@ -96,11 +96,11 @@ namespace CupPlaner.Controllers
                 db.TournamentStageSet.Remove(ts);
                 db.SaveChanges();
 
-                return Json(new { state = "tournament stage deleted" });
+                return Json(new { status = "success", message = "Tournament stage deleted" });
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: tournament stage not deleted", error = ex.Message });
+                return Json(new { status = "error", message = "Tournament stage not deleted", details = ex.Message });
             }
         }
     }
