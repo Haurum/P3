@@ -71,13 +71,13 @@ namespace CupPlaner.Controllers
                     db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
                     db.SaveChanges();
 
-                    return Json(new { state = "new Tournament added" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = "success", message = "New tournament added" }, JsonRequestBehavior.AllowGet);
                 }
-                return Json(new { state = "ERROR: password exists" }, JsonRequestBehavior.AllowGet);          
+                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new Tournament not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -101,11 +101,11 @@ namespace CupPlaner.Controllers
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "Tournament edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: Tournament not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Tournament not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -126,11 +126,11 @@ namespace CupPlaner.Controllers
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 db.TournamentSet.Remove(t);
                 db.SaveChanges();
-                return Json(new { state = "Tournament deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Tournament deleted" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: Tournament not deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Tournament not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

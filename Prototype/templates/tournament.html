@@ -5,7 +5,10 @@
       <li><a href="#/addTournament">Opret ny turnering</a></li>
       <li class="active"><a href="#/tournament">Rækkesoversigt</a></li>
     </ul>
-    <h1>Rækker</h1>
+      <h1>
+        <span>Rækker</span>
+        <a ng-click="editUser(user.id)" class="btn btn-small btn-primary divisionEdit">Rediger</a>
+      </h1>
     <div class="col-md-4 col-md-offset-4" ng-if="new">
       <form>
         <input type="text" ng-model="newDivName" />

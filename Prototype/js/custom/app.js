@@ -10,23 +10,23 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/addTournament.html',
       controller: 'CreateTournyController'
     }).
-    when('/tournament/:id', {
+    when('/tournament/:tournamentId', {
       templateUrl: 'templates/tournament.html',
       controller: 'TournamentController'
     }).
-    when('/division/:id', {
+    when('tournament/:tournamentId/division/:divisionId', {
       templateUrl: 'templates/division.html',
       controller: 'DivisonController'
     }).
-    when('/pool/:id', {
+    when('tournament/:tournamentId/division/:divisionId/pool/:poolId', {
       templateUrl: 'templates/pool.html',
       controller: 'PoolController'
     }).
-    when('/field', {
+    when('/tournament/:tournamentId/field', {
       templateUrl: 'templates/field.html',
       controller: 'CreateFieldsController'
     }).
-    when('/team/:id', {
+    when('tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
       templateUrl: 'templates/team.html',
       controller: 'TeamDetailController'
     }).   

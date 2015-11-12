@@ -45,11 +45,11 @@ namespace CupPlaner.Controllers
                 db.TeamSet.Add(new Team() { Name = name, Pool = p });
                 db.SaveChanges();
 
-                return Json(new { state = "new team added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New team added" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new team not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New team not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -73,11 +73,11 @@ namespace CupPlaner.Controllers
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "Team edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Team edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: Team not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Team not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -93,11 +93,11 @@ namespace CupPlaner.Controllers
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
 
-                return Json(new { state = "Team Deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "Team not deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Team not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
     }

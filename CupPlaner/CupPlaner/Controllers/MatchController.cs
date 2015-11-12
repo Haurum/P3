@@ -33,11 +33,11 @@ namespace CupPlaner.Controllers
                 DateTime st = Convert.ToDateTime(startTime);
                 db.MatchSet.Add(new Match() { StartTime = st, Duration = duration });
                 db.SaveChanges();
-                return Json(new { state = "new match added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new match not added", error = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New match not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
 
             }
         }
@@ -54,11 +54,11 @@ namespace CupPlaner.Controllers
                 db.Entry(m).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "match edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Match edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: match not edited", error = ex.Message}, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Match not edited", details = ex.Message}, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -72,11 +72,11 @@ namespace CupPlaner.Controllers
                 db.MatchSet.Remove(m);
                 db.SaveChanges();
 
-                return Json(new { state = "match deleted" });
+                return Json(new { status = "success", message = "Match deleted" });
             }
             catch (Exception ex)
             {
-                return Json(new { state = "ERROR: match not deleted", error = ex.Message });
+                return Json(new { status = "error",  message = "Match not deleted", details = ex.Message });
             }
         }
     }

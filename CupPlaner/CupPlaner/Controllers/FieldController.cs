@@ -33,11 +33,11 @@ namespace CupPlaner.Controllers
                 // TODO: Add insert logic here
                 db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size });
                 db.SaveChanges();
-                return Json(new { state = "new field added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New field added" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: new field not added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "New field not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -62,11 +62,11 @@ namespace CupPlaner.Controllers
                 db.Entry(f).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { state = "field edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Field edited" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: field not edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Field not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -82,11 +82,11 @@ namespace CupPlaner.Controllers
                 db.FieldSet.Remove(f);
                 db.SaveChanges();
 
-                return Json(new { state = "field deleted" });
+                return Json(new { status = "status", message = "Field deleted" });
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { state = "ERROR: field not deleted" });
+                return Json(new { status = "error", message = "Field not deleted", details = ex.Message });
             }
         }
     }
