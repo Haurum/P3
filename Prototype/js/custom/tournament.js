@@ -72,7 +72,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
     for (var i = 0; i <= $scope.dateRange; i++)
     {
       var date = new Date($scope.startDate.getTime());
-      date.setDate(date.getDate() + i+1);
+      date.setDate(date.getDate() + i);
       $scope.dateArray.push(date);
     }
   }
