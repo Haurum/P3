@@ -1,4 +1,4 @@
-app.controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.changeFavField = false;
@@ -6,7 +6,7 @@ app.controller('DivisonController', ['$scope', '$rootScope', '$location', '$http
   $scope.newPoolName = "";
 
   $scope.getDivisionData = function() {
-    $http.get($rootScope.apiUrl + "/Divison/Details?id=" +  $routeParams.divisionId)
+    $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
     .success(function(data)
     {
       $scope.division = data;

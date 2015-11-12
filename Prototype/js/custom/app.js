@@ -16,7 +16,7 @@ app.config(['$routeProvider', function($routeProvider) {
     }).
     when('/tournament/:tournamentId/division/:divisionId', {
       templateUrl: 'templates/division.html',
-      controller: 'DivisonController'
+      controller: 'DivisionController'
     }).
     when('/tournament/:tournamentId/division/:divisionId/pool/:poolId', {
       templateUrl: 'templates/pool.html',
