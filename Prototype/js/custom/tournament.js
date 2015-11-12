@@ -2,7 +2,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $rootScope.Tournament.password = "";
 
   $scope.getDivisions = function(){
-    $http.get("http://localhost:50229/Tournament/Details" +  $routeParams.tournamentId)
+    $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
         $scope.divisions = data.Divisions;
@@ -29,6 +29,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   
   $scope.gotoDivison = function(currDiv, index) {
     $rootScope.currDivisionIndex = index;
+    console.log("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
 }]);

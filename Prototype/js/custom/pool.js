@@ -37,4 +37,9 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $scope.changeFavField = !$scope.changeFavField;
   }
 
+  $scope.removePool = function() {
+    $rootScope.divisions[$scope.index].Pool.splice($scope.index, 1);
+    $location.path("/division");
+  }
+
 }]);
