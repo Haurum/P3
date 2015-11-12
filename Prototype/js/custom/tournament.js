@@ -75,5 +75,73 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
     });
   }
 
-}])
+  /* DATE PICKER START */
+  $scope.today = function() {
+    $scope.st = new Date();
+    $scope.et = new Date(); 
+  };
+  $scope.today();
+  $scope.clear = function () {
+    $scope.dt = null;
+  };
+  $scope.toggleMin = function() {
+    $scope.minDate = $scope.minDate ? null : new Date();
+  };
+  $scope.toggleMin();
+  $scope.maxDate = new Date(2020, 5, 22);
+  $scope.openEt = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.statusEt.opened = true;
+  };
+  $scope.openSt = function($event) {
+    $event.preventDefault();
+    $event.stopPropagation();
+    $scope.statusSt.opened = true;
+  };
+  $scope.setDate = function(year, month, day) {
+    $scope.dt = new Date(year, month, day);
+  };
+  $scope.dateOptions = {
+    formatYear: 'yy',
+    startingDay: 1
+  };
+  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+  $scope.format = $scope.formats[0];
+  $scope.statusSt = {
+    opened: false
+  };
+  $scope.statusEt = {
+    opened: false
+  };
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  var afterTomorrow = new Date();
+  afterTomorrow.setDate(tomorrow.getDate() + 2);
+  $scope.events =
+    [
+      {
+        date: tomorrow,
+        status: 'full'
+      },
+      {
+        date: afterTomorrow,
+        status: 'partially'
+      }
+    ];
+  $scope.getDayClass = function(date, mode) {
+    if (mode === 'day') {
+      var dayToCheck = new Date(date).setHours(0,0,0,0);
+      for (var i=0;i<$scope.events.length;i++){
+        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+        if (dayToCheck === currentDay) {
+          return $scope.events[i].status;
+        }
+      }
+    }
+    return '';
+  };
+  /* DATE PICKER END */ 
 
+
+}])
