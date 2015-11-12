@@ -1,4 +1,4 @@
-angular.module('tournyplanner').controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
 
   /* Post & Get requests */
 
@@ -23,4 +23,4 @@ angular.module('tournyplanner').controller('TeamDetailController', ['$scope', '$
     $scope.error = err;
   }) */
 
-}
+}]);

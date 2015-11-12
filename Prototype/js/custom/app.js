@@ -1,6 +1,6 @@
-var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
+var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap']);
 
-.config(['$routeProvider', function($routeProvider) {
+app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', {
       templateUrl: 'templates/home.html',
@@ -10,40 +10,40 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       templateUrl: 'templates/addTournament.html',
       controller: 'CreateTournyController'
     }).
-    when('/tournament/:id', {
+    when('/tournament/:tournamentId', {
       templateUrl: 'templates/tournament.html',
       controller: 'TournamentController'
     }).
-    when('/division/:id', {
+    when('tournament/:tournamentId/division/:divisionId', {
       templateUrl: 'templates/division.html',
       controller: 'DivisonController'
     }).
-    when('/pool/:id', {
+    when('tournament/:tournamentId/division/:divisionId/pool/:poolId', {
       templateUrl: 'templates/pool.html',
       controller: 'PoolController'
     }).
-    when('/field', {
+    when('/tournament/:tournamentId/field', {
       templateUrl: 'templates/field.html',
       controller: 'CreateFieldsController'
     }).
-    when('/team/:id', {
+    when('tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
       templateUrl: 'templates/team.html',
       controller: 'TeamDetailController'
     }).   
     otherwise({
       redirectTo: '/'
     });
-}])
+}]);
 
-.run(function($rootScope) {
+app.run(function($rootScope) {
   $rootScope.divisions = [];
   $rootScope.EmFields = [];
   $rootScope.OmFields = [];
   $rootScope.FmFields = [];
   $rootScope.Tournament = {};
-})
+});
 
-.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+app.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
   $scope.password = "";
 
   $scope.getId = function(password)
@@ -66,4 +66,4 @@ var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap'])
       $scope.error = err;
     });
   }
-}])
+}]);

@@ -1,4 +1,4 @@
-.controller('CreateFieldsController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
+app.controller('CreateFieldsController', ['$scope', '$rootScope', '$http', function ($scope, $rootScope, $http) {
 
   /* Post & Get requests */ 
  /* $rootScope.Field.Id = 1;
@@ -71,4 +71,4 @@
     $rootScope.FmFields.splice(index, 1);
   }  
 
-}])
+}]);
