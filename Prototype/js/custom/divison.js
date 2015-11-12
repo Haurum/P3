@@ -6,6 +6,16 @@ angular.module('tournyplanner').controller('DivisonController', ['$scope', '$roo
   $scope.newPoolName = "";
   $scope.index = $rootScope.currDivisionIndex;
 
+  $http.get("http://localhost:50229/Divison/Details/" +  $routeParams.divisionId)
+    .success(function(data)
+    {
+      $scope.pools = data.Pools;
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    })
+
+
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   } 
@@ -39,7 +49,7 @@ angular.module('tournyplanner').controller('DivisonController', ['$scope', '$roo
 
   $scope.gotoPool = function(currPool, index) {
     $rootScope.currPoolIndex = index;
-    $location.url("/pool")
+    $location.url($location.url() + "/pool/" + currPool.Id);
   }
   
   //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;

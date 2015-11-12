@@ -1,24 +1,15 @@
 angular.module('tournyplanner').controller('PoolController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
-/*
   $rootScope.Pool.Id = 1;
 
-  $http.get("http://localhost:50229/Pool?id=" +  $rootScope.Pool.Id)
-  .success(function(poolData)
+  $http.get("http://localhost:50229/Pool/Details" +  $routeParams.poolId)
+  .success(function(data)
   {
-    $scope.Pool = poolData;
+    $scope.teams = data.Teams;
   }).error(function(err) 
   {
     $scope.error = err;
   })
 
-  $http.get("http://localhost:50229/Pool", params { poolName: "poolName" } )
-  .success(function(poolData)
-  {
-    $scope.Pool = poolData;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  })*/
 
   $scope.removeTeam = function() {
     $rootScope.divisions[$scope.index].Pool[$scope.index].Teams.splice($scope.index, 1);
@@ -30,7 +21,7 @@ angular.module('tournyplanner').controller('PoolController', ['$scope', '$rootSc
 
   $scope.gotoTeamDetail = function(currTeam, index) {
     $rootScope.currTeamIndex = index;
-    $location.url("/team");
+    $location.url($location.url() + "/team/" + currTeam.Id);
   }
 
   $scope.changeFavFieldFunc = function() {

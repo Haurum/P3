@@ -1,14 +1,18 @@
 angular.module('tournyplanner').controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $rootScope.Tournament.password = "";
 
-  $http.get("http://localhost:50229/Tournament/Details/" +  $routeParams.id)
-  .success(function(data)
-  {
-    $scope.divisions = data.Divisions;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  })
+  $scope.getDivisions = function(){
+    $http.get("http://localhost:50229/Tournament/Details" +  $routeParams.tournamentId)
+      .success(function(data)
+      {
+        $scope.divisions = data.Divisions;
+      }).error(function(err) 
+      {
+        $scope.error = err;
+    })
+  }
+
+  $scope.getDivisions();
   
   $scope.newDivName = "";
   
@@ -25,7 +29,7 @@ angular.module('tournyplanner').controller('TournamentController', ['$scope', '$
   
   $scope.gotoDivison = function(currDiv, index) {
     $rootScope.currDivisionIndex = index;
-    $location.url("/division");
+    $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
 }])
 

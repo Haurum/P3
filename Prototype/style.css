@@ -96,6 +96,10 @@ body {
   background-color: #222;
 }
 
+.tournamentTitlePlusEdit {
+  position: relative;
+}
+
 @media handheld, only screen and (max-width: 400px){ 
    div#banner { display:none; 
 }
