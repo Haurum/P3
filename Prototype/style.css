@@ -100,6 +100,10 @@ body {
   position: relative;
 }
 
+#uploadHeading {
+  text-align: center;
+}
+
 @media handheld, only screen and (max-width: 400px){ 
    div#banner { display:none; 
 }

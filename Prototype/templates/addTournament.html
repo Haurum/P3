@@ -51,34 +51,35 @@
             <h4>Tid for den {{x | date: "d. MMM"}}</h4>
             <div class="col-md-12" style="display: inline-flex">
               <div class="col-md-5">
-                <uib-timepicker ng-model="dates"  show-meridian="false"></uib-timepicker>
+                <uib-timepicker ng-model="startTimes[$index]"  show-meridian="false"></uib-timepicker>
               </div>            
               <div class="col-md-2" style="margin-top: auto; margin-bottom: auto; display: block;">-</div>
               <div class="col-md-5">
-                <uib-timepicker ng-model="dates" show-meridian="false"></uib-timepicker>
+                <uib-timepicker ng-model="endTimes[$index]" show-meridian="false"></uib-timepicker>
               </div>
             </div>
           </div>
         </div>
        </div>
+       <div class="col-md-12 upload-excel">
+        <hr />
+        <h4 id="uploadHeading">Upload Excel ark for turnering</h4>
+        <a class="btn btn-default" ng-click="withExcel()">Upload</a>
+        
+        <hr />
+      </div>
         <div class="row">
           <div class="col-md-12 add-button">
             <button type="submit" ng-click="uploadTournament()" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Opret turnering
               <span class="glyphicon glyphicon-list-alt"> </span>
             </button>
+            <p ng-if="error">{{error}}</p>
           </div>
         </div>
       </form>
         
 
       <hr />
-      <div class="col-md-12 upload-excel">
-      <hr />
-        <h4 id="uploadHeading">Upload Excel ark for turnering</h4>
-        <a class="btn btn-default" ng-click="withExcel()">Upload</a>
-        <p ng-if="!helper">Du har uploaded data</p>
-        <hr />
-      </div>
       
     </div>
   </div>                
