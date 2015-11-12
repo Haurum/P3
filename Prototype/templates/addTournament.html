@@ -2,69 +2,74 @@
   <div class="col-lg-12 text-center">
     <ul class="breadcrumb">
       <li><a href="#/">Forside</a></li>
-      <li class="active"><a href="#/addTourny">Opret ny turnering</a></li>
+      <li class="active"><a href="#/addTournament">Opret ny turnering</a></li>
     </ul>
     <h1>Opret ny turnering</h1>
     <hr />
     <div class="row">
-      <div class="brugerInput">
-        <div class="col-md-6">
-          <h4>Turnerings navn</h4>
-          <input type="text" class="form-control" ng-model="tournamentName" placeholder="Skriv turneringens navn" />
-        </div>
-        <div class="col-md-6">
-          <h4>Turnerings kodeord</h4>
-          <input type="text" class="form-control" ng-model="tournamentPassword" placeholder="Skriv turneringens kodeord" />
-        </div>
-
-        <div ng-controller="DatepickerDemoCtrl">
-        <div class="col-md-6">
-          <h4>Turnerings start dag</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="st" is-open="statusSt.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="openSt($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-              </p>
+      <form>
+        <div class="brugerInput">
+          <div class="col-md-6">
+            <h4>Turnerings navn</h4>
+            <input type="text" class="form-control" ng-model="tournamentName" placeholder="Skriv turneringens navn" required="true" />
+          </div>
+          <div class="col-md-6">
+            <h4>Turnerings kodeord</h4>
+            <input type="password" class="form-control" ng-model="tournamentPassword" placeholder="Skriv turneringens kodeord" required="true" />
+          </div>
+  
+  
+          <div class="col-md-6">
+            <h4>Turnerings start dag</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" ng-change="isChanged()" uib-datepicker-popup="{{format}}" ng-model="startDate" is-open="statusStartDate.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openStartDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4>Turnerings slut dag</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" ng-change="isChanged()" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="statusEndDate.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>      
+              </div>
+            </div>
+          </div>
+  
+         <div class="row">
+          <div class="col-md-4" ng-repeat="x in dateArray">
+            <h4>Tid for dag {{x}}</h4>
+            <div class="col-md-12" style="display: inline-flex">
+              <div class="col-md-5">
+                <uib-timepicker ng-model="dates"  show-meridian="false"></uib-timepicker>
+              </div>            
+              <div class="col-md-2" style="margin-top: auto; margin-bottom: auto; display: block;">-</div>
+              <div class="col-md-5">
+                <uib-timepicker ng-model="dates" show-meridian="false"></uib-timepicker>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <h4>Turnerings slut dag</h4>
-          <div class="row">
-            <div class="col-md-12">
-              <p class="input-group">
-                <input type="text" class="form-control" uib-datepicker-popup="{{format}}" ng-model="et" is-open="statusEt.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
-                <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="openEt($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-                </span>
-              </p>      
-              <p> {{ st }}</p><p> {{ et }}</p><p>{{ (et-st)/(1000*60*60*24) }}</p>
-            </div>
+       </div>
+        <div class="row">
+          <div class="col-md-12 add-button">
+            <button type="submit" ng-click="uploadTournament()" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Opret turnering
+              <span class="glyphicon glyphicon-list-alt"> </span>
+            </button>
           </div>
         </div>
-        </div>
-        <div class="col-md-4">
-          <h4>Tid for dag1</h4>
-          <input type="time" name="usr_time" />
-          -
-          <input type="time" name="usr_time" />
-        </div>
-        <div class="col-md-4">
-          <h4>Tid for dag2</h4>
-          <input type="time" name="usr_time" />
-          -
-          <input type="time" name="usr_time" />
-        </div>
-        <div class="col-md-4">
-          <h4>Tid for dag3</h4>
-          <input type="time" name="usr_time" />
-          -
-          <input type="time" name="usr_time" />
-        </div>
-      </div>
+      </form>
+        
 
       <hr />
       <div class="col-md-12 upload-excel">
@@ -74,13 +79,7 @@
         <p ng-if="!helper">Du har uploaded data</p>
         <hr />
       </div>
-      <div class="row">
-        <div class="col-md-12 add-button">
-          <a href="#/tournament/1" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Opret turnering
-            <span class="glyphicon glyphicon-list-alt"> </span>
-          </a>
-        </div>
-      </div>
+      
     </div>
   </div>                
 </div>
