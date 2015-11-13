@@ -61,8 +61,8 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   $scope.today();
 
   $scope.dateArray = [$scope.startDate];
-  $scope.startTimes = [];
-  $scope.endTimes = [];
+  $scope.startTimes = [$scope.startDate];
+  $scope.endTimes = [$scope.startDate];
 
   $scope.toggleMin = function () {
     $scope.minDate = $scope.minDate ? null : new Date();
@@ -76,10 +76,14 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   $scope.isChanged = function () {
     $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
     $scope.dateArray = [];
+    $scope.startTimes = [];
+    $scope.endTimes = [];
     for (var i = 0; i <= $scope.dateRange; i++) {
       var date = new Date($scope.startDate.getTime());
       date.setDate(date.getDate() + i);
       $scope.dateArray.push(date);
+      $scope.startTimes.push(date);
+      $scope.endTimes.push(date);
     }
   }
 
@@ -105,46 +109,50 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 
 
   $scope.uploadTournament = function () {
-    if ($scope.tournamentName && $scope.tournamentPassword)
-    {
+    if (!$scope.tournamentName || !$scope.tournamentPassword){
+      $scope.error = "Navn eller kode ikke sat";
+    }else{
       $scope.startDateTimes = [];
       $scope.endDateTimes = [];
       $scope.error = false;
-      for (var index = 0; index < $scope.startTimes.length; index++) {
-        var startDateTime = new Date($scope.dateArray[index].getTime() + $scope.startTimes[index].getHours() * 60 * 60 * 1000 + $scope.startTimes[index].getMinutes() * 60 * 1000);
-        $scope.startDateTimes[index] = startDateTime.toISOString();
-        
-        var endDateTime = new Date($scope.dateArray[index].getTime() + $scope.endTimes[index].getHours() * 60 * 60 * 1000 + $scope.endTimes[index].getMinutes() * 60 * 1000);
-        $scope.endDateTimes[index] = endDateTime.toISOString();
-        
-        if($scope.startDateTimes[index] === {} && $scope.endDateTimes[index] === null){
-          $scope.error = "en start eller slut tid er ikke sat";
-          break;
-        }
+      for (var index = 0; index <= $scope.dateRange; index++) {
+        $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
+        $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
         
       }
-      if(!$scope.error){
-        var tournamentData = {
-          name: $scope.tournamentName,
-          password: $scope.tournamentPassword,
-          startTimes: $scope.startDateTimes,
-          endTimes: $scope.endDateTimes
-        }
-    
-        $http.post("http://localhost:50229/Tournament/Create/", tournamentData).success(function(Data)
-        {
-          if(Data.status === "error"){
-            $scope.error = Data.message;
+      
+      if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
+        console.log($scope.startDateTimes.length);
+        console.log($scope.dateRange);
+        $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
+           
+      }else{
+        for(var i = 0; i <= $scope.dateRange; i++){
+          if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
+            $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
           }
-        }).error(function(err) 
-        {
-          $scope.error = "kunne ikke uploade til serveren";
-        });
-      }    
-    }else{
-      $scope.error = "navn eller kode ikke sat";
+        }
+        if(!$scope.error){
+          var tournamentData = {
+            name: $scope.tournamentName,
+            password: $scope.tournamentPassword,
+            startTimes: $scope.startDateTimes,
+            endTimes: $scope.endDateTimes
+          }
+      
+          $http.post("http://localhost:50229/Tournament/Create/", tournamentData).success(function(Data)
+          {
+            if(Data.status === "error"){
+              $scope.error = Data.message;
+            }else{
+              $location.path("tournament/" + Data.Id);
+            }
+          }).error(function(err) 
+          {
+            $scope.error = "Kunne ikke uploade til serveren";
+          });
+        }
+      }  
     }   
-    
   }
-
 }]);

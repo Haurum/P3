@@ -43,10 +43,10 @@ namespace CupPlaner.Controllers
                 FieldSize defaultFieldSize = FieldSize.ElevenMan;
                 int defaultMatchDuration = 60;
                 Tournament t = db.TournamentSet.Find(tournamentId);
-                db.DivisionSet.Add(new Division() { Name = name, FieldSize = defaultFieldSize, MatchDuration = defaultMatchDuration, Tournament = t });
+                Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = defaultFieldSize, MatchDuration = defaultMatchDuration, Tournament = t });
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "New division added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division added", id = d.Id}, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

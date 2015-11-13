@@ -49,10 +49,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(divisionId);
-                db.PoolSet.Add(new Pool() { Name = name, Division = d });
+                Pool p = db.PoolSet.Add(new Pool() { Name = name, Division = d });
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "New pool added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New pool added", id = p.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

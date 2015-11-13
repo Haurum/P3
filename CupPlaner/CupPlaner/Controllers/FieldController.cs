@@ -31,9 +31,9 @@ namespace CupPlaner.Controllers
             try
             {
                 // TODO: Add insert logic here
-                db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size });
+                Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size });
                 db.SaveChanges();
-                return Json(new { status = "success", message = "New field added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New field added", id = f.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

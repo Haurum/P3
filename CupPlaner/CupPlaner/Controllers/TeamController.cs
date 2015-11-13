@@ -42,10 +42,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(poolId);
-                db.TeamSet.Add(new Team() { Name = name, Pool = p });
+                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "New team added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

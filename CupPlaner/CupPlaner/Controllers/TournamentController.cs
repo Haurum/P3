@@ -68,10 +68,10 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                     }
 
-                    db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
+                    Tournament t = db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
                     db.SaveChanges();
 
-                    return Json(new { status = "success", message = "New tournament added" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
             }

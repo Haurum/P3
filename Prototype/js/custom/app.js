@@ -55,9 +55,7 @@ app.controller('HomeController', ['$scope', '$http', '$location', function ($sco
       if (passwordData.Id != 0)
       {
         $scope.error = false;
-        console.log($location.url);
         $location.path("tournament/" + passwordData.Id);
-        console.log($location.url);
       }
       else{
         $scope.error = true;
