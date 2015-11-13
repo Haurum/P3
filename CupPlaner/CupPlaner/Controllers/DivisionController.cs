@@ -32,18 +32,16 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Division/Create - Tries to create a Division object, with the parameters "name" and "tournamentId".
-        // Sets the "FieldSize" and "MatchDuration" to defaults values (FieldSize.ElevenMan, MatchDuration =60).
+        // Sets the "FieldSize" and "MatchDuration" to the input given in the web input.
         // Adds the Division object to the database DivisionSet, and saves the changes in the database.
         // Returns a Json object with a state, indicating whether it succeeded creating the Division object or not.
         [HttpPost]
-        public ActionResult Create(string name, int tournamentId)
+        public ActionResult Create(string name, int tournamentId, int MatchDuration, FieldSize FieldSize)
         {
             try
             {
-                FieldSize defaultFieldSize = FieldSize.ElevenMan;
-                int defaultMatchDuration = 60;
                 Tournament t = db.TournamentSet.Find(tournamentId);
-                db.DivisionSet.Add(new Division() { Name = name, FieldSize = defaultFieldSize, MatchDuration = defaultMatchDuration, Tournament = t });
+                db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New division added" }, JsonRequestBehavior.AllowGet);
