@@ -23,12 +23,16 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNew = function () {
     $scope.new = !$scope.new;
   }
-  $scope.submit = function(newDivName, newMatchDuration, chooseField) {
-    $http.post("http://localhost:50229/Division/Create", { newDivName: newDivName, newMatchDuration: newMatchDuration, chooseField: chooseField } )
-    $scope.newDivName = "";
-    $scope.newMatchDuration = "";
-    $scope.chooseField = "";
-    $scope.createNew();
+  $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
+    $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
+    .success(function(data){
+      $scope.newDivName = "";
+      $scope.newMatchDuration = "";
+      $scope.chooseField = "";
+      $scope.createNew();
+    }).error(function(data){
+      $scope.newDivError = data;
+    })
   }
 
   $scope.gotoDivison = function (currDiv, index) {
@@ -40,10 +44,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 }]);
 
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
-
- 
-  
-  
+   
   /* DATE PICKER START */
   $scope.dateRange = 0;
   $scope.today = function () {
@@ -155,4 +156,75 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
       }  
     }   
   }
+}]);
+
+app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
+  
+  $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
+    
+    $scope.tournamentName = data.Name;
+    $scope.tournamentPassword = data.Password;
+    
+    $scope.dateRange = 0;
+    $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
+    $scope.startDate.setHours(0);
+    $scope.startDate.setSeconds(0);
+    $scope.startDate.setMinutes(0);
+    $scope.startDate.setMilliseconds(0);
+    $scope.endDate = new Date(data.TimeIntervals[data.TimeIntervals.length].StartTime);
+    $scope.endDate.setHours(0);
+    $scope.endDate.setSeconds(0);
+    $scope.endDate.setMinutes(0);
+    $scope.endDate.setMilliseconds(0);
+    
+    for (var index = 0; index < data.TimeIntervals.length; index++) {
+      var date = $scope.startDate;
+      date.setDate(date.getDate() + index);
+      $scope.dateArray.push(date);
+      $scope.startTimes.push(new Date(data.TimeIntervals[index].StartTime));
+      $scope.endTimes.push(new Date(data.TimeIntervals[index].EndTIme))
+    }
+    
+    $scope.toggleMin = function () {
+      $scope.minDate = $scope.minDate ? null : new Date();
+    };
+    $scope.toggleMin();
+    $scope.maxDate = new Date(2020, 5, 22);
+    $scope.openEndDate = function ($event) {
+      $scope.statusEndDate.opened = true;
+    };
+  
+    $scope.isChanged = function () {
+      $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
+      $scope.dateArray = [];
+      $scope.startTimes = [];
+      $scope.endTimes = [];
+      for (var i = 0; i <= $scope.dateRange; i++) {
+        var date = new Date($scope.startDate.getTime());
+        date.setDate(date.getDate() + i);
+        $scope.dateArray.push(date);
+        $scope.startTimes.push(date);
+        $scope.endTimes.push(date);
+      }
+    }
+  
+    $scope.openStartDate = function ($event) {
+      $scope.statusStartDate.opened = true;
+    };
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1
+    };
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
+    $scope.statusStartDate = {
+      opened: false
+    };
+    $scope.statusEndDate = {
+      opened: false
+    };
+  }).error(function(err){
+    
+  });
+  
 }]);

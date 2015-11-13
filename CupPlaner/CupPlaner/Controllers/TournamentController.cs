@@ -38,7 +38,7 @@ namespace CupPlaner.Controllers
                 }
             }
 
-            object obj = new { Id = t.Id, Name = t.Name, Divisions = divs, TimeIntervals = times};
+            object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times};
 
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
