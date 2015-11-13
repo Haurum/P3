@@ -23,12 +23,16 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNew = function () {
     $scope.new = !$scope.new;
   }
-  $scope.submit = function(newDivName, newMatchDuration, chooseField) {
-    $http.post("http://localhost:50229/Division/Create", { newDivName: newDivName, newMatchDuration: newMatchDuration, chooseField: chooseField } )
-    $scope.newDivName = "";
-    $scope.newMatchDuration = "";
-    $scope.chooseField = "";
-    $scope.createNew();
+  $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
+    $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
+    .success(function(data){
+      $scope.newDivName = "";
+      $scope.newMatchDuration = "";
+      $scope.chooseField = "";
+      $scope.createNew();
+    }).error(function(data){
+      $scope.newDivError = data;
+    })
   }
 
   $scope.gotoDivison = function (currDiv, index) {
