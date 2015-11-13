@@ -198,5 +198,13 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
+    <AssociationSetMapping Name="FieldTournament" TypeName="CupDB.FieldTournament" StoreEntitySet="FieldSet">
+      <EndProperty Name="Tournament">
+        <ScalarProperty Name="Id" ColumnName="Tournament_Id" />
+      </EndProperty>
+      <EndProperty Name="Field">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

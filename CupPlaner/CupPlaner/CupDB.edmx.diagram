@@ -28,6 +28,7 @@
         <AssociationConnector Association="CupDB.DivisionTournamentTournamentStage" />
         <EntityTypeShape EntityType="CupDB.FinalsLink" Width="1.5" PointX="3.125" PointY="10" />
         <AssociationConnector Association="CupDB.DivisionFinalsLink" />
+        <AssociationConnector Association="CupDB.FieldTournament" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

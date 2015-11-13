@@ -63,6 +63,10 @@
       <End Role="Division" EntitySet="DivisionSet" />
       <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
     </AssociationSet>
+    <AssociationSet Name="FieldTournament" Association="CupDB.FieldTournament">
+      <End Role="Field" EntitySet="FieldSet" />
+      <End Role="Tournament" EntitySet="TournamentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Team">
     <Key>
@@ -107,6 +111,7 @@
     <Property Name="Size" Type="CupDB.FieldSize" Nullable="false" />
     <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
     <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
+    <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
   </EntityType>
   <EntityType Name="TimeInterval">
     <Key>
@@ -127,6 +132,7 @@
     <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
     <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
     <Property Name="Password" Type="String" Nullable="false" />
+    <NavigationProperty Name="Field" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
   </EntityType>
   <EntityType Name="Match">
     <Key>
@@ -230,5 +236,9 @@
   <Association Name="DivisionFinalsLink">
     <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
     <End Type="CupDB.FinalsLink" Role="FinalsLink" Multiplicity="*" />
+  </Association>
+  <Association Name="FieldTournament">
+    <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
+    <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
   </Association>
 </Schema>

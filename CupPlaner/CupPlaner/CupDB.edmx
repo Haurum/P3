@@ -78,6 +78,10 @@
       <End Role="Division" EntitySet="DivisionSet" />
       <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
     </AssociationSet>
+    <AssociationSet Name="FieldTournament" Association="CupDB.Store.FieldTournament">
+      <End Role="Field" EntitySet="FieldSet" />
+      <End Role="Tournament" EntitySet="TournamentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -112,6 +116,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
+    <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeIntervalSet">
     <Key>
@@ -318,6 +323,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FieldTournament">
+    <End Role="Field" Type="CupDB.Store.FieldSet" Multiplicity="*" />
+    <End Role="Tournament" Type="CupDB.Store.TournamentSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Tournament">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Field">
+        <PropertyRef Name="Tournament_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TeamMatch_Team">
     <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="1" />
     <End Role="TeamMatch" Type="CupDB.Store.TeamMatch" Multiplicity="*" />
@@ -433,6 +450,10 @@
             <End Role="Division" EntitySet="DivisionSet" />
             <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
           </AssociationSet>
+          <AssociationSet Name="FieldTournament" Association="CupDB.FieldTournament">
+            <End Role="Field" EntitySet="FieldSet" />
+            <End Role="Tournament" EntitySet="TournamentSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Team">
           <Key>
@@ -477,6 +498,7 @@
           <Property Name="Size" Type="CupDB.FieldSize" Nullable="false" />
           <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
           <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
+          <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
         </EntityType>
         <EntityType Name="TimeInterval">
           <Key>
@@ -497,6 +519,7 @@
           <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
           <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
           <Property Name="Password" Type="String" Nullable="false" />
+          <NavigationProperty Name="Field" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
         </EntityType>
         <EntityType Name="Match">
           <Key>
@@ -600,6 +623,10 @@
         <Association Name="DivisionFinalsLink">
           <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
           <End Type="CupDB.FinalsLink" Role="FinalsLink" Multiplicity="*" />
+        </Association>
+        <Association Name="FieldTournament">
+          <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
+          <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -801,6 +828,14 @@
         <ScalarProperty Name="Id" ColumnName="Division_Id" />
       </EndProperty>
       <EndProperty Name="FinalsLink">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="FieldTournament" TypeName="CupDB.FieldTournament" StoreEntitySet="FieldSet">
+      <EndProperty Name="Tournament">
+        <ScalarProperty Name="Id" ColumnName="Tournament_Id" />
+      </EndProperty>
+      <EndProperty Name="Field">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
