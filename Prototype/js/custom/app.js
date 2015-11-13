@@ -14,11 +14,11 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/tournament.html',
       controller: 'TournamentController'
     }).
-    when('tournament/:tournamentId/division/:divisionId', {
+    when('/tournament/:tournamentId/division/:divisionId', {
       templateUrl: 'templates/division.html',
-      controller: 'DivisonController'
+      controller: 'DivisionController'
     }).
-    when('tournament/:tournamentId/division/:divisionId/pool/:poolId', {
+    when('/tournament/:tournamentId/division/:divisionId/pool/:poolId', {
       templateUrl: 'templates/pool.html',
       controller: 'PoolController'
     }).
@@ -26,7 +26,7 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/field.html',
       controller: 'CreateFieldsController'
     }).
-    when('tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
+    when('/tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
       templateUrl: 'templates/team.html',
       controller: 'TeamDetailController'
     }).   
@@ -41,6 +41,7 @@ app.run(function($rootScope) {
   $rootScope.OmFields = [];
   $rootScope.FmFields = [];
   $rootScope.Tournament = {};
+  $rootScope.apiUrl = "http://localhost:50229";
 });
 
 app.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {

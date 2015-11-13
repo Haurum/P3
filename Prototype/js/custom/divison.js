@@ -1,42 +1,45 @@
-app.controller('DivisonController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.changeFavField = false;
   $scope.newPool = false;
   $scope.newPoolName = "";
-  $scope.index = $rootScope.currDivisionIndex;
 
-  $http.get("http://localhost:50229/Divison/Details/" +  $routeParams.divisionId)
+  $scope.getDivisionData = function() {
+    $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
     .success(function(data)
     {
-      $scope.pools = data.Pools;
+      $scope.division = data;
     }).error(function(err) 
     {
       $scope.error = err;
     })
+  }
 
+  $scope.getDivisionData();
 
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
   } 
   
   $scope.addPool = function(name) {
-    $scope.newPoolName = "";
-    if (name != "")
-    {
-      $rootScope.divisions[$scope.index].Pool.push({ Name: name, Teams: [], IsOpen: false });
+    $http.post($rootScope.apiUrl + "/Pool/Create", { id: $routeParams.poolId })
+    .success(function(data) {
       $scope.newPoolFunc();
-    }
+    }).error(function(data){
+     $scope.deleteErr = data;
+    })
+    $scope.getDivisionData();
   }
   
   $scope.remove = function() {
-    $rootScope.divisions.splice($scope.index, 1);
-    $location.path("/tournament");
-  }
-
-  $scope.removePool = function() {
-    $rootScope.divisions[$scope.index].Pool.splice($scope.index, 1);
-    $location.path("/division");
+    $http.post($rootScope.apiUrl + "/Division/Delete", { id: $routeParams.divisionId })
+    .success(function(data) {
+      $location.path("/tournament/" + $routeParams.tournamentId);
+    }).error(function(data) {
+      $scope.deleteErr = data;
+    })
+    
   }
   
   $scope.changeFieldFunc = function() {

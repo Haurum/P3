@@ -96,8 +96,21 @@ body {
   background-color: #222;
 }
 
-.tournamentTitlePlusEdit {
-  position: relative;
+.panel {
+  margin-bottom: 0px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.panel-body {
+  font-size: 12px;
+  margin: -5px;
+}
+
+#divisionBtn {
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
 #uploadHeading {
