@@ -22,9 +22,9 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/pool.html',
       controller: 'PoolController'
     }).
-    when('/tournament/:tournamentId/field', {
+    when('/tournament/:tournamentId/field/:fieldId', {
       templateUrl: 'templates/field.html',
-      controller: 'CreateFieldsController'
+      controller: 'TournamentController'
     }).
     when('/tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
       templateUrl: 'templates/team.html',

@@ -23,19 +23,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNew = function () {
     $scope.new = !$scope.new;
   }
-  $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
-    $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
-    .success(function(data){
-      $scope.newDivName = "";
-      $scope.newMatchDuration = "";
-      $scope.chooseField = "";
-      $scope.getDivisions();
-      $scope.createNew();
-    }).error(function(data){
-      $scope.newDivError = data;
-    })   
-  }
-
 
   /* Modal start */
   $scope.animationsEnabled = true;
@@ -63,8 +50,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
   };
 
-
-
   $scope.toggleAnimation = function () {
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
@@ -76,6 +61,88 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     console.log("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
+
+  /* Field start */
+  $scope.EmField = "";
+  $scope.OmField = "";
+  $scope.FmField = "";
+  $scope.newEm = false;
+  $scope.newOm = false;
+  $scope.newFm = false;
+  
+  $scope.getFields = function(){
+    $http.get("http://localhost:50229/Field/Details?id=" +  $routeParams.fieldId)
+      .success(function(data)
+      {
+        $scope.fields = data;
+
+        /*for(int i=0; i <= data.length; i++)
+        {
+          if(data.FieldSize === 11)
+          {
+            $scope.EmField = data.Field;
+          }
+          if(data.FieldSize === 8)
+          {
+            $scope.OmField = data.Field;
+          }
+          else
+          {
+            $scope.FmField = data.Field;
+          }
+        }*/
+      }).error(function (err) {
+        $scope.error = err;
+      })
+  }
+  $scope.getFields();
+
+  /* 11man */
+  $scope.createNewEmField = function() {
+    $scope.newEm = !$scope.newEm;
+  }
+  $scope.submitField = function(EmField) {
+    
+
+
+
+    $scope.Emfield = "";
+    $scope.createNewEmField();
+  }
+  
+  $scope.removeEmField = function(index) {
+    $rootScope.EmField.splice(index, 1);
+  }
+
+  /* 8man */
+ $scope.createNewOmField = function() {
+    $scope.newOm = !$scope.newOm;
+  }
+  $scope.submitOmField = function(OmField) {
+    $rootScope.OmFields.push(OmField);
+    $scope.OmField = "";
+    $scope.createNewOmField();
+  }
+  
+  $scope.removeOmField = function(index) {
+    $rootScope.OmFields.splice(index, 1);
+  }  
+
+  /* 5man */
+  $scope.createNewFmField = function() {
+    $scope.newFm = !$scope.newFm;
+  }
+  $scope.submitFmField = function(FmField) {
+    $rootScope.FmFields.push(FmField);
+    $scope.FmField = "";
+    $scope.createNewFmField();
+  }
+  
+  $scope.removeFmField = function(index) {
+    $rootScope.FmFields.splice(index, 1);
+  }  
+
+  /* Field end */
 
 }]);
 
