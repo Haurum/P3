@@ -293,6 +293,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
     
+    console.log(data);
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
@@ -302,6 +303,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     
     $scope.dateRange = 0;
     $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
+    console.log($scope.startDate);
     $scope.startDate.setHours(0);
     $scope.startDate.setSeconds(0);
     $scope.startDate.setMinutes(0);
@@ -313,13 +315,12 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.endDate.setMilliseconds(0);
     
     for (var index = 0; index < data.TimeIntervals.length; index++) {
-      var date = $scope.startDate;
+      var date = new Date($scope.startDate.getTime());
       date.setDate(date.getDate() + index);
       $scope.dateArray.push(date);
       $scope.startTimes.push(new Date(data.TimeIntervals[index].StartTime));
       $scope.endTimes.push(new Date(data.TimeIntervals[index].EndTIme))
     }
-    
     $scope.toggleMin = function () {
       $scope.minDate = $scope.minDate ? null : new Date();
     };
