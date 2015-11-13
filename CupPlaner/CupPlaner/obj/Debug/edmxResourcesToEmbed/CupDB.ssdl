@@ -73,6 +73,10 @@
       <End Role="Division" EntitySet="DivisionSet" />
       <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
     </AssociationSet>
+    <AssociationSet Name="FieldTournament" Association="CupDB.Store.FieldTournament">
+      <End Role="Field" EntitySet="FieldSet" />
+      <End Role="Tournament" EntitySet="TournamentSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -107,6 +111,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
+    <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeIntervalSet">
     <Key>
@@ -310,6 +315,18 @@
       </Principal>
       <Dependent Role="FinalsLink">
         <PropertyRef Name="Division_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FieldTournament">
+    <End Role="Field" Type="CupDB.Store.FieldSet" Multiplicity="*" />
+    <End Role="Tournament" Type="CupDB.Store.TournamentSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Tournament">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Field">
+        <PropertyRef Name="Tournament_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

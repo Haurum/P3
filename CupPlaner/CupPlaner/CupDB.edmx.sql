@@ -6,14 +6,11 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/11/2015 13:49:03
+-- Date Created: 11/13/2015 12:48:32
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
 
-DROP DATABASE IF EXISTS `tabl_app_dk_db`;
-CREATE DATABASE `tabl_app_dk_db`;
-USE `tabl_app_dk_db`;
 
 -- --------------------------------------------------
 -- Dropping existing FOREIGN KEY constraints
@@ -93,7 +90,8 @@ ALTER TABLE `DivisionSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `FieldSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`Name` longtext NOT NULL, 
-	`Size` int NOT NULL);
+	`Size` int NOT NULL, 
+	`Tournament_Id` int NOT NULL);
 
 ALTER TABLE `FieldSet` ADD PRIMARY KEY (Id);
 
@@ -405,6 +403,21 @@ ADD CONSTRAINT `FK_DivisionFinalsLink`
 CREATE INDEX `IX_FK_DivisionFinalsLink` 
     ON `FinalsLinkSet`
     (`Division_Id`);
+
+-- Creating foreign key on `Tournament_Id` in table 'FieldSet'
+
+ALTER TABLE `FieldSet`
+ADD CONSTRAINT `FK_FieldTournament`
+    FOREIGN KEY (`Tournament_Id`)
+    REFERENCES `TournamentSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_FieldTournament'
+
+CREATE INDEX `IX_FK_FieldTournament` 
+    ON `FieldSet`
+    (`Tournament_Id`);
 
 -- --------------------------------------------------
 -- Script has ended
