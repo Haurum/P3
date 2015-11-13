@@ -293,6 +293,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
     
+    $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
     
@@ -354,6 +355,55 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.statusEndDate = {
       opened: false
     };
+    
+    $scope.uploadTournament = function () {
+      if (!$scope.tournamentName || !$scope.tournamentPassword){
+        $scope.error = "Navn eller kode ikke sat";
+      }else{
+        $scope.startDateTimes = [];
+        $scope.endDateTimes = [];
+        $scope.error = false;
+        for (var index = 0; index <= $scope.dateRange; index++) {
+          $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
+          $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
+          
+        }
+        
+        if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
+          console.log($scope.startDateTimes.length);
+          console.log($scope.dateRange);
+          $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
+            
+        }else{
+          for(var i = 0; i <= $scope.dateRange; i++){
+            if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
+              $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+            }
+          }
+          if(!$scope.error){
+            var tournamentData = {
+              id: $scope.tournamentId,
+              name: $scope.tournamentName,
+              password: $scope.tournamentPassword,
+              startTimes: $scope.startDateTimes,
+              endTimes: $scope.endDateTimes
+            }
+        
+            $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
+            {
+              if(Data.status === "error"){
+                $scope.error = Data.message;
+              }else{
+                $location.path("tournament/" + Data.Id);
+              }
+            }).error(function(err) 
+            {
+              $scope.error = "Kunne ikke uploade til serveren";
+            });
+          }
+        }  
+      }   
+    }
   }).error(function(err){
     
   });

@@ -10,6 +10,10 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/addTournament.html',
       controller: 'CreateTournyController'
     }).
+    when('/tournament/:tournamentId/edit', {
+      templateUrl: 'templates/editTournament.html',
+      controller: 'EditTournamentController'
+    }).
     when('/tournament/:tournamentId', {
       templateUrl: 'templates/tournament.html',
       controller: 'TournamentController'
