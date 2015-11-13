@@ -296,6 +296,9 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
+    $scope.dateArray = [];
+    $scope.startTimes = [];
+    $scope.endTimes = [];
     
     $scope.dateRange = 0;
     $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
@@ -303,7 +306,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.startDate.setSeconds(0);
     $scope.startDate.setMinutes(0);
     $scope.startDate.setMilliseconds(0);
-    $scope.endDate = new Date(data.TimeIntervals[data.TimeIntervals.length].StartTime);
+    $scope.endDate = new Date(data.TimeIntervals[data.TimeIntervals.length-1].StartTime);
     $scope.endDate.setHours(0);
     $scope.endDate.setSeconds(0);
     $scope.endDate.setMinutes(0);
