@@ -301,7 +301,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.endTimes = [];
     
     $scope.dateRange = 0;
-    $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
+    $scope.startDate = new Date(data.TimeIntervals[0].StartTime.toString());
     $scope.startDate.setHours(0);
     $scope.startDate.setSeconds(0);
     $scope.startDate.setMinutes(0);

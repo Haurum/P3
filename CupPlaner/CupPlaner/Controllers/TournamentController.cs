@@ -19,28 +19,35 @@ namespace CupPlaner.Controllers
         // GET: Tournament/Details/5
         public ActionResult Details(int id)
         {
-            Tournament t = db.TournamentSet.Find(id);
-            List<object> divs = new List<object>();
-            List<object> times = new List<object>();
-            List<object> dts = new List<object>();
-            if (t.Divisions != null)
+            try
             {
-                foreach (Division d in t.Divisions)
+                Tournament t = db.TournamentSet.Find(id);
+                List<object> divs = new List<object>();
+                List<object> times = new List<object>();
+                List<object> dts = new List<object>();
+                if (t.Divisions != null)
                 {
-                    divs.Add(new { Id = d.Id, Name = d.Name });
-                } 
-            }
-            if (t.TimeIntervals != null)
-            {
-                foreach (TimeInterval ti in t.TimeIntervals)
-                {
-                    times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime});
+                    foreach (Division d in t.Divisions)
+                    {
+                        divs.Add(new { Id = d.Id, Name = d.Name });
+                    }
                 }
+                if (t.TimeIntervals != null)
+                {
+                    foreach (TimeInterval ti in t.TimeIntervals)
+                    {
+                        times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
+                    }
+                }
+
+                object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times };
+
+                return Json(obj, JsonRequestBehavior.AllowGet);
             }
-
-            object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times};
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            catch(Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find Tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]
