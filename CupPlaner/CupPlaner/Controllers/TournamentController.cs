@@ -96,6 +96,7 @@ namespace CupPlaner.Controllers
             {
 
                 Tournament t = db.TournamentSet.Find(id);
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 List<TimeInterval> tis = new List<TimeInterval>();
                 for (int i = 0; i < startTimes.Count; i++)
                 {
@@ -120,7 +121,7 @@ namespace CupPlaner.Controllers
 
         // POST: Tournament/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
