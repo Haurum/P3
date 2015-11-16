@@ -194,3 +194,4 @@ C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
