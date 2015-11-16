@@ -91,26 +91,29 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.submitField = function(fieldName, fieldSize) {
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
-
+        if(fieldSize === 11){
+          $scope.createNewEmField();
+        }
+        else if(fieldSize === 8){
+          $scope.createNewOmField();
+        }
+        else {
+          $scope.createNewFmField();
+        }
     }).error(function(){
       $scope.createErr = data;
     })
     $scope.getDivisions();
   }
   
-  $scope.removeField = function(index) {
-    $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
+  $scope.removeField = function(Field) {
+    $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
     .success(function(data){
-      for(var i = 0; i < data.Fields.length; i++){
-        if(FmField[index].Id === data.Fields.Id)
-          {
-            $http.post("http://localhost:50229/Field/Delete?id=" + { id: FmField[index].Id })
-          }
-        }
-    }).error(function(data){
-      $scope.deleteErr = data;
-    })
 
+    }).error(function(err){
+      $scope.deleteErr = err;
+    })
+    $scope.getDivisions();
   }
 
   /* 11man */
