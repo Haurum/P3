@@ -107,6 +107,7 @@
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="FieldSize" Type="int" Nullable="false" />
     <Property Name="MatchDuration" Type="int" Nullable="false" />
+    <Property Name="TournamentStructure" Type="int" Nullable="true" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="FieldSet">
@@ -488,6 +489,7 @@
           <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
           <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
           <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
+          <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="true" />
         </EntityType>
         <EntityType Name="Field">
           <Key>
@@ -519,7 +521,7 @@
           <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
           <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
           <Property Name="Password" Type="String" Nullable="false" />
-          <NavigationProperty Name="Field" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
+          <NavigationProperty Name="Fields" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
         </EntityType>
         <EntityType Name="Match">
           <Key>
@@ -657,6 +659,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="FieldSize" ColumnName="FieldSize" />
           <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />
+          <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -101,6 +101,7 @@
     <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
     <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
     <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
+    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="true" />
   </EntityType>
   <EntityType Name="Field">
     <Key>
@@ -132,7 +133,7 @@
     <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
     <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
     <Property Name="Password" Type="String" Nullable="false" />
-    <NavigationProperty Name="Field" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
+    <NavigationProperty Name="Fields" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
   </EntityType>
   <EntityType Name="Match">
     <Key>
