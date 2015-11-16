@@ -46,7 +46,7 @@ namespace CupPlaner.Controllers
             }
             catch(Exception ex)
             {
-                return Json(new { status = "error", message = "Could not find Tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Could not find tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
