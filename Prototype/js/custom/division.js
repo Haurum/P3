@@ -49,8 +49,12 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.changeField = !$scope.changeField;
   }
 
+  $scope.changeNewFieldFunc = function(newField) {
+    $scope.newField = $scope.FieldSize;
+  }
+
   $scope.changeDurationFunc = function() {
-    $scope.changeDuration = !$scope.changeDuration;
+    $http.post($rootScope.apiUrl)
   }
 
   $scope.gotoPool = function(currPool, index) {

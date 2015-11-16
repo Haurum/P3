@@ -59,15 +59,15 @@
         <div class="col-md-2">
           <h4>Banestørrelse</h4>
           <div ng-if="!changeField">
-            <p>{{ division.FieldSize }}-mands bane <span ng-click="changeFieldFunc()" ng-model="fieldSize" class="glyphicon glyphicon-pencil"></span></p>
+            <p>{{ division.FieldSize }}-mands bane <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
           </div>
           <div ng-if="changeField">
-            <select ng-model="divisions.FieldSize">
+            <select ng-model="FieldSize">
               <option value="11">11-mands</option>
               <option value="8">8-mands</option>
               <option value="5">5-mands</option>
             </select>
-            <a ng-click="changeFieldFunc()" class="btn btn-xs btn-default">Godkend</a>
+            <a ng-click="changeFieldFunc(); changeNewFieldFunc(FieldSize)" class="btn btn-xs btn-default">Godkend<a/>
           </div>
         </div>
       </div>

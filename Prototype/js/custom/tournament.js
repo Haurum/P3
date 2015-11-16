@@ -28,6 +28,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       })
   }
 
+  $scope.tournamentId = $routeParams.tournamentId;
+
   $scope.getDivisions();
 
   $scope.newDivName = "";
@@ -118,52 +120,16 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
   }
-  $scope.submitField = function(fieldName, fieldSize) {
-    $http.post($rootScope.apiUrl + "/Field/Create", { id: $routeParams.fieldId})
-    .success(function(data){
-      $scope.data = data
-    }).error(function(){
-      $scope.createErr = data;
-    })
-
-
-
-    $scope.Emfield = "";
-    $scope.createNewEmField();
-  }
-  
-  $scope.removeEmField = function(index) {
-    $rootScope.EmField.splice(index, 1);
-  }
 
   /* 8man */
  $scope.createNewOmField = function() {
     $scope.newOm = !$scope.newOm;
   }
-  $scope.submitOmField = function(OmField) {
-    $rootScope.OmFields.push(OmField);
-    $scope.OmField = "";
-    $scope.createNewOmField();
-  }
-  
-  $scope.removeOmField = function(index) {
-    $rootScope.OmFields.splice(index, 1);
-  }  
 
   /* 5man */
   $scope.createNewFmField = function() {
     $scope.newFm = !$scope.newFm;
   }
-  $scope.submitFmField = function(FmField) {
-    $rootScope.FmFields.push(FmField);
-    $scope.FmField = "";
-    $scope.createNewFmField();
-  }
-  
-  $scope.removeFmField = function(index) {
-    $rootScope.FmFields.splice(index, 1);
-  }  
-
   /* Field end */
 
 }]);
