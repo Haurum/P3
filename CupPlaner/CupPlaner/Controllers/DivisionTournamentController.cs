@@ -51,11 +51,10 @@ namespace CupPlaner.Controllers
         }
 
         // GET: DivisionTournament/Create
-        public ActionResult Create(int tsi, int divisionID)
+        public ActionResult Create(TournamentStructure ts, int divisionID)
         {
             try
             {
-                TournamentStructure ts = (TournamentStructure)tsi;
                 Division d = db.DivisionSet.Find(divisionID);
                 DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
                 db.SaveChanges();

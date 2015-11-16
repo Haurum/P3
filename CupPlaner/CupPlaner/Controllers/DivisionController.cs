@@ -97,9 +97,14 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(id);
                 PoolController pc = new PoolController();
+                DivisionTournamentController dtc = new DivisionTournamentController();
                 foreach (Pool p in d.Pools)
                 {
                     pc.Delete(p.Id);
+                }
+                if (d.DivisionTournament != null)
+                {
+                    dtc.Delete(d.DivisionTournament.Id);
                 }
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
