@@ -4,7 +4,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
-        console.log(data);
         $scope.EmFields = [];
         $scope.OmFields = [];
         $scope.FmFields = [];
@@ -28,6 +27,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
         $scope.error = err;
       })
   }
+
+  $scope.tournamentId = $routeParams.tournamentId;
+
 
   $scope.getDivisions();
 
