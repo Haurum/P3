@@ -40,9 +40,9 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                if(t.Field != null)
+                if(t.Fields != null)
                 {
-                    foreach (Field f in t.Field)
+                    foreach (Field f in t.Fields)
                     {
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
                     }
