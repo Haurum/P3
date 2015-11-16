@@ -14,6 +14,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     {
       $scope.error = err;
     })
+
   }
 
   $scope.getDivisionData();
@@ -22,13 +23,14 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.newPool = !$scope.newPool;
   } 
   
+
   $scope.addPool = function(name) {
-    $http.post($rootScope.apiUrl + "/Pool/Create", { id: $routeParams.poolId })
+    $http.post($rootScope.apiUrl + "/Pool/Create", { name: name, divisionId: $routeParams.divisionId })
     .success(function(data) {
       $scope.newPoolFunc();
-    }).error(function(data){
-     $scope.deleteErr = data;
-    })
+    }).error(function(err){
+     $scope.deleteErr = err;
+    })   
     $scope.getDivisionData();
   }
   
@@ -54,6 +56,4 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $rootScope.currPoolIndex = index;
     $location.url($location.url() + "/pool/" + currPool.Id);
   }
-  
-  //$rootScope.division[$rootScope.currDivisionIndex] = $scope.divison;
 }]);
