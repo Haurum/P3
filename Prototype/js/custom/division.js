@@ -10,6 +10,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     .success(function(data)
     {
       $scope.division = data;
+      console.log(data);
     }).error(function(err) 
     {
       $scope.error = err;
