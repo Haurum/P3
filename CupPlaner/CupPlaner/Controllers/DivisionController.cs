@@ -16,19 +16,27 @@ namespace CupPlaner.Controllers
         // Returns a Json object, which contains a copy of the corresponding Divisions variables.
         public ActionResult Details(int id)
         {
-            Division d = db.DivisionSet.Find(id);
-            List<object> pools = new List<object>();
-            if (d.Pools != null)
+            try
             {
-                foreach (Pool p in d.Pools)
+                Division d = db.DivisionSet.Find(id);
+                List<object> pools = new List<object>();
+                if (d.Pools != null)
                 {
-                    pools.Add(new { Id = p.Id, Name = p.Name });
+                    foreach (Pool p in d.Pools)
+                    {
+                        pools.Add(new { Id = p.Id, Name = p.Name });
+                    }
                 }
+
+                object obj = new { Id = d.Id, Name = d.Name, Pools = pools, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
+
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find division", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
-            object obj = new { Id = d.Id, Name = d.Name, Pools = pools, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
         // POST: Division/Create - Tries to create a Division object, with the parameters "name" and "tournamentId".

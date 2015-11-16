@@ -278,8 +278,6 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
-    
-    console.log(data);
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
@@ -287,25 +285,26 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.startTimes = [];
     $scope.endTimes = [];
     
-    $scope.dateRange = 0;
-    $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
+    
+    $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
     console.log($scope.startDate);
     $scope.startDate.setHours(0);
     $scope.startDate.setSeconds(0);
     $scope.startDate.setMinutes(0);
     $scope.startDate.setMilliseconds(0);
-    $scope.endDate = new Date(data.TimeIntervals[data.TimeIntervals.length-1].StartTime);
+    $scope.endDate = new Date(parseInt(data.TimeIntervals[data.TimeIntervals.length-1].EndTime.substr(6)));
     $scope.endDate.setHours(0);
     $scope.endDate.setSeconds(0);
     $scope.endDate.setMinutes(0);
     $scope.endDate.setMilliseconds(0);
+    $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
     
     for (var index = 0; index < data.TimeIntervals.length; index++) {
       var date = new Date($scope.startDate.getTime());
       date.setDate(date.getDate() + index);
       $scope.dateArray.push(date);
-      $scope.startTimes.push(new Date(data.TimeIntervals[index].StartTime));
-      $scope.endTimes.push(new Date(data.TimeIntervals[index].EndTIme))
+      $scope.startTimes.push(new Date(parseInt(data.TimeIntervals[index].StartTime.substr(6))));
+      $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
     }
     $scope.toggleMin = function () {
       $scope.minDate = $scope.minDate ? null : new Date();
@@ -347,6 +346,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     };
     
     $scope.uploadTournament = function () {
+      
       if (!$scope.tournamentName || !$scope.tournamentPassword){
         $scope.error = "Navn eller kode ikke sat";
       }else{
@@ -358,6 +358,8 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
           
         }
+        console.log($scope.startDateTimes);
+        console.log($scope.endDateTimes);
         
         if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
           console.log($scope.startDateTimes.length);
@@ -384,7 +386,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               if(Data.status === "error"){
                 $scope.error = Data.message;
               }else{
-                $location.path("tournament/" + Data.Id);
+                //$location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {
