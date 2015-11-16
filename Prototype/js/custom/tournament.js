@@ -101,8 +101,13 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
   }
-  $scope.submitField = function(EmField) {
-    
+  $scope.submitField = function(fieldName, fieldSize) {
+    $http.post($rootScope.apiUrl + "/Field/Create", { id: $routeParams.fieldId})
+    .success(function(data){
+      $scope.data = data
+    }).error(function(){
+      $scope.createErr = data;
+    })
 
 
 
