@@ -18,7 +18,7 @@ namespace CupPlaner
         {
             this.Divisions = new HashSet<Division>();
             this.TimeIntervals = new HashSet<TimeInterval>();
-            this.Field = new HashSet<Field>();
+            this.Fields = new HashSet<Field>();
         }
     
         public int Id { get; set; }
@@ -27,6 +27,6 @@ namespace CupPlaner
     
         public virtual ICollection<Division> Divisions { get; set; }
         public virtual ICollection<TimeInterval> TimeIntervals { get; set; }
-        public virtual ICollection<Field> Field { get; set; }
+        public virtual ICollection<Field> Fields { get; set; }
     }
 }

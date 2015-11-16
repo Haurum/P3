@@ -40,14 +40,14 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                if(t.Field != null)
+                if(t.Fields != null)
                 {
-                    foreach (Field f in t.Field)
+                    foreach (Field f in t.Fields)
                     {
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
                     }
                 }
-                object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields };
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

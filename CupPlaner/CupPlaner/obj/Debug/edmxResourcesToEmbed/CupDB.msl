@@ -24,6 +24,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="FieldSize" ColumnName="FieldSize" />
           <ScalarProperty Name="MatchDuration" ColumnName="MatchDuration" />
+          <ScalarProperty Name="TournamentStructure" ColumnName="TournamentStructure" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

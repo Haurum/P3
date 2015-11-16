@@ -7,7 +7,12 @@
       <li class="active"><a href="">{{ divisions.Name }}</a></li>
 
     </ul>
-    <h1>{{ division.Name }}</h1>
+    <h1>
+        <span>{{ division.Name }}</span>
+        <a href="#/" class="btn btn-xs btn-primary divisionEditBtn">
+        <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+    </h1>
     <hr />
     <div class="row">
       <div class="col-md-4 col-md-offset-4" ng-if="newPool">

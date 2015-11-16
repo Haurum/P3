@@ -1,11 +1,9 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
- 
 
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
-
         $scope.EmFields = [];
         $scope.OmFields = [];
         $scope.FmFields = [];
@@ -29,6 +27,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
         $scope.error = err;
       })
   }
+
+  $scope.tournamentId = $routeParams.tournamentId;
+
 
   $scope.getDivisions();
 
@@ -91,26 +92,29 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.submitField = function(fieldName, fieldSize) {
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
-
+        if(fieldSize === 11){
+          $scope.createNewEmField();
+        }
+        else if(fieldSize === 8){
+          $scope.createNewOmField();
+        }
+        else {
+          $scope.createNewFmField();
+        }
     }).error(function(){
       $scope.createErr = data;
     })
     $scope.getDivisions();
   }
   
-  $scope.removeField = function(index) {
-    $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
+  $scope.removeField = function(Field) {
+    $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
     .success(function(data){
-      for(var i = 0; i < data.Fields.length; i++){
-        if(FmField[index].Id === data.Fields.Id)
-          {
-            $http.post("http://localhost:50229/Field/Delete?id=" + { id: FmField[index].Id })
-          }
-        }
-    }).error(function(data){
-      $scope.deleteErr = data;
-    })
 
+    }).error(function(err){
+      $scope.deleteErr = err;
+    })
+    $scope.getDivisions();
   }
 
   /* 11man */
@@ -122,11 +126,13 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
  $scope.createNewOmField = function() {
     $scope.newOm = !$scope.newOm;
   }
+  
 
   /* 5man */
   $scope.createNewFmField = function() {
     $scope.newFm = !$scope.newFm;
   }
+ 
 
   /* Field end */
 
@@ -263,7 +269,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
             if(Data.status === "error"){
               $scope.error = Data.message;
             }else{
-              $location.path("tournament/" + Data.Id);
+              //$location.path("tournament/" + Data.Id);
             }
           }).error(function(err) 
           {
@@ -278,13 +284,14 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
+    
+    console.log(data);
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
     $scope.dateArray = [];
     $scope.startTimes = [];
     $scope.endTimes = [];
-    
     
     $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
     console.log($scope.startDate);
@@ -346,7 +353,6 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     };
     
     $scope.uploadTournament = function () {
-      
       if (!$scope.tournamentName || !$scope.tournamentPassword){
         $scope.error = "Navn eller kode ikke sat";
       }else{
@@ -358,8 +364,6 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
           
         }
-        console.log($scope.startDateTimes);
-        console.log($scope.endDateTimes);
         
         if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
           console.log($scope.startDateTimes.length);
@@ -386,7 +390,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               if(Data.status === "error"){
                 $scope.error = Data.message;
               }else{
-                //$location.path("tournament/" + Data.Id);
+                $location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {
