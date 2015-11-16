@@ -1,11 +1,29 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
-  $rootScope.Tournament.password = "";
-
+ 
 
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
+
+        $scope.EmFields = [];
+        $scope.OmFields = [];
+        $scope.FmFields = [];
+        for (var i=0; i < data.Fields.length; i++)
+        {
+          if(data.Fields[i].fieldSize === 11)
+          {
+            $scope.EmFields.push(data.Fields[i]);
+          }
+          else if(data.Fields[i].fieldSize === 8)
+          {
+            $scope.OmFields.push(data.Fields[i]);
+          }
+          else
+          {
+            $scope.FmFields.push(data.Fields[i]);
+          }
+        }
         $scope.divisions = data.Divisions;
       }).error(function (err) {
         $scope.error = err;
@@ -69,78 +87,46 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.newEm = false;
   $scope.newOm = false;
   $scope.newFm = false;
-  
-  $scope.getFields = function(){
-    $http.get("http://localhost:50229/Field/Details?id=" +  $routeParams.fieldId)
-      .success(function(data)
-      {
-        $scope.fields = data;
 
-        /*for(int i=0; i <= data.length; i++)
-        {
-          if(data.FieldSize === 11)
-          {
-            $scope.EmField = data.Field;
-          }
-          if(data.FieldSize === 8)
-          {
-            $scope.OmField = data.Field;
-          }
-          else
-          {
-            $scope.FmField = data.Field;
-          }
-        }*/
-      }).error(function (err) {
-        $scope.error = err;
-      })
+  $scope.submitField = function(fieldName, fieldSize) {
+    $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
+    .success(function(data){
+
+    }).error(function(){
+      $scope.createErr = data;
+    })
+    $scope.getDivisions();
   }
-  $scope.getFields();
+  
+  $scope.removeField = function(index) {
+    $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
+    .success(function(data){
+      for(var i = 0; i < data.Fields.length; i++){
+        if(FmField[index].Id === data.Fields.Id)
+          {
+            $http.post("http://localhost:50229/Field/Delete?id=" + { id: FmField[index].Id })
+          }
+        }
+    }).error(function(data){
+      $scope.deleteErr = data;
+    })
+
+  }
 
   /* 11man */
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
-  }
-  $scope.submitField = function(EmField) {
-    
-
-
-
-    $scope.Emfield = "";
-    $scope.createNewEmField();
-  }
-  
-  $scope.removeEmField = function(index) {
-    $rootScope.EmField.splice(index, 1);
   }
 
   /* 8man */
  $scope.createNewOmField = function() {
     $scope.newOm = !$scope.newOm;
   }
-  $scope.submitOmField = function(OmField) {
-    $rootScope.OmFields.push(OmField);
-    $scope.OmField = "";
-    $scope.createNewOmField();
-  }
-  
-  $scope.removeOmField = function(index) {
-    $rootScope.OmFields.splice(index, 1);
-  }  
 
   /* 5man */
   $scope.createNewFmField = function() {
     $scope.newFm = !$scope.newFm;
   }
-  $scope.submitFmField = function(FmField) {
-    $rootScope.FmFields.push(FmField);
-    $scope.FmField = "";
-    $scope.createNewFmField();
-  }
-  
-  $scope.removeFmField = function(index) {
-    $rootScope.FmFields.splice(index, 1);
-  }  
 
   /* Field end */
 
@@ -292,8 +278,6 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
-    
-    console.log(data);
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
@@ -301,25 +285,26 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     $scope.startTimes = [];
     $scope.endTimes = [];
     
-    $scope.dateRange = 0;
-    $scope.startDate = new Date(data.TimeIntervals[0].StartTime);
+    
+    $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
     console.log($scope.startDate);
     $scope.startDate.setHours(0);
     $scope.startDate.setSeconds(0);
     $scope.startDate.setMinutes(0);
     $scope.startDate.setMilliseconds(0);
-    $scope.endDate = new Date(data.TimeIntervals[data.TimeIntervals.length-1].StartTime);
+    $scope.endDate = new Date(parseInt(data.TimeIntervals[data.TimeIntervals.length-1].EndTime.substr(6)));
     $scope.endDate.setHours(0);
     $scope.endDate.setSeconds(0);
     $scope.endDate.setMinutes(0);
     $scope.endDate.setMilliseconds(0);
+    $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
     
     for (var index = 0; index < data.TimeIntervals.length; index++) {
       var date = new Date($scope.startDate.getTime());
       date.setDate(date.getDate() + index);
       $scope.dateArray.push(date);
-      $scope.startTimes.push(new Date(data.TimeIntervals[index].StartTime));
-      $scope.endTimes.push(new Date(data.TimeIntervals[index].EndTIme))
+      $scope.startTimes.push(new Date(parseInt(data.TimeIntervals[index].StartTime.substr(6))));
+      $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
     }
     $scope.toggleMin = function () {
       $scope.minDate = $scope.minDate ? null : new Date();
@@ -361,6 +346,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     };
     
     $scope.uploadTournament = function () {
+      
       if (!$scope.tournamentName || !$scope.tournamentPassword){
         $scope.error = "Navn eller kode ikke sat";
       }else{
@@ -372,6 +358,8 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
           
         }
+        console.log($scope.startDateTimes);
+        console.log($scope.endDateTimes);
         
         if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
           console.log($scope.startDateTimes.length);
@@ -398,7 +386,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               if(Data.status === "error"){
                 $scope.error = Data.message;
               }else{
-                $location.path("tournament/" + Data.Id);
+                //$location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {

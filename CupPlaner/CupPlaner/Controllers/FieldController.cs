@@ -26,14 +26,15 @@ namespace CupPlaner.Controllers
         // Adds the Field object to the database FieldSet, and saves the changes in the database.
         // Returns a Json object with a state, indicating whether it succeeded creating the Field object or not.
         [HttpPost]
-        public ActionResult Create(string name, int size)
+        public ActionResult Create(string name, int size, int tournamentId)
         {
             try
             {
                 // TODO: Add insert logic here
-                Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size });
+                Tournament t = db.TournamentSet.Find(tournamentId);
+                Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size, Tournament = t });
                 db.SaveChanges();
-                return Json(new { status = "success", message = "New field added", id = f.Id }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New field added", id = f.Id, fieldName = f.Name }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
