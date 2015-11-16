@@ -33,7 +33,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created division
             dynamic jsonResult = ((JsonResult)controller.Details(ID.DivisionId)).Data;
-            Assert.AreEqual(10, jsonResult.Id);
+            Assert.AreEqual(ID.DivisionId, jsonResult.Id);
             Assert.AreEqual("U20 Drenge", jsonResult.Name);
             Assert.AreEqual(FieldSize.EightMan, jsonResult.FieldSize);
             Assert.AreEqual(60, jsonResult.MatchDuration);
@@ -53,7 +53,7 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual("Division edited", jsonResult.message);
 
             //Check to see if edits have been saved
-            jsonResult = ((JsonResult)controller.Details(10)).Data;
+            jsonResult = ((JsonResult)controller.Details(ID.DivisionId)).Data;
             Assert.AreEqual("U21 Drenge", jsonResult.Name);
             Assert.AreEqual(FieldSize.ElevenMan, jsonResult.FieldSize);
             Assert.AreEqual(75, jsonResult.MatchDuration);
@@ -68,7 +68,7 @@ namespace CupPlaner.Controllers.Tests
         public void DeleteTest()
         {
             //Delete the created division
-            dynamic jsonResult = ((JsonResult)controller.Delete(10)).Data;
+            dynamic jsonResult = ((JsonResult)controller.Delete(ID.DivisionId)).Data;
             Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual("Division deleted", jsonResult.message);
 

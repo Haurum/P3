@@ -1,11 +1,9 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
- 
 
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
-
         $scope.EmFields = [];
         $scope.OmFields = [];
         $scope.FmFields = [];
@@ -120,16 +118,51 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
   }
+  $scope.submitField = function(fieldName, fieldSize) {
+    $http.post($rootScope.apiUrl + "/Field/Create", { id: $routeParams.fieldId})
+    .success(function(data){
+      $scope.data = data
+    }).error(function(){
+      $scope.createErr = data;
+    })
+
+
+
+    $scope.Emfield = "";
+    $scope.createNewEmField();
+  }
+  
+  $scope.removeEmField = function(index) {
+    $rootScope.EmField.splice(index, 1);
+  }
 
   /* 8man */
  $scope.createNewOmField = function() {
     $scope.newOm = !$scope.newOm;
   }
+  $scope.submitOmField = function(OmField) {
+    $rootScope.OmFields.push(OmField);
+    $scope.OmField = "";
+    $scope.createNewOmField();
+  }
+  
+  $scope.removeOmField = function(index) {
+    $rootScope.OmFields.splice(index, 1);
+  }  
 
   /* 5man */
   $scope.createNewFmField = function() {
     $scope.newFm = !$scope.newFm;
   }
+  $scope.submitFmField = function(FmField) {
+    $rootScope.FmFields.push(FmField);
+    $scope.FmField = "";
+    $scope.createNewFmField();
+  }
+  
+  $scope.removeFmField = function(index) {
+    $rootScope.FmFields.splice(index, 1);
+  }  
 
   /* Field end */
 
@@ -266,7 +299,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
             if(Data.status === "error"){
               $scope.error = Data.message;
             }else{
-              $location.path("tournament/" + Data.Id);
+              //$location.path("tournament/" + Data.Id);
             }
           }).error(function(err) 
           {
@@ -281,13 +314,14 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
   
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
+    
+    console.log(data);
     $scope.tournamentId = data.Id;
     $scope.tournamentName = data.Name;
     $scope.tournamentPassword = data.Password;
     $scope.dateArray = [];
     $scope.startTimes = [];
     $scope.endTimes = [];
-    
     
     $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
     console.log($scope.startDate);
@@ -349,7 +383,6 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
     };
     
     $scope.uploadTournament = function () {
-      
       if (!$scope.tournamentName || !$scope.tournamentPassword){
         $scope.error = "Navn eller kode ikke sat";
       }else{
@@ -361,8 +394,6 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
           
         }
-        console.log($scope.startDateTimes);
-        console.log($scope.endDateTimes);
         
         if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
           console.log($scope.startDateTimes.length);
@@ -389,7 +420,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               if(Data.status === "error"){
                 $scope.error = Data.message;
               }else{
-                //$location.path("tournament/" + Data.Id);
+                $location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {

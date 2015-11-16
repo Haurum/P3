@@ -19,29 +19,35 @@ namespace CupPlaner.Controllers
         // GET: DivisionTournament/Details/5
         public ActionResult Details(int id)
         {
-            //ID, TournamentStructure, Division, list af TS
-
-            DivisionTournament dt = db.DivisionTournamentSet.Find(id);
-            List<object> tournamentStages = new List<object>();
-            if (dt.TournamentStage != null)
+            try
             {
-                foreach (TournamentStage ts in dt.TournamentStage)
+                DivisionTournament dt = db.DivisionTournamentSet.Find(id);
+                List<object> tournamentStages = new List<object>();
+                if (dt.TournamentStage != null)
                 {
-                    List<object> matches = new List<object>();
-                    if (ts.Matches != null)
+                    foreach (TournamentStage ts in dt.TournamentStage)
                     {
-                        foreach (Match m in ts.Matches)
+                        List<object> matches = new List<object>();
+                        if (ts.Matches != null)
                         {
-                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                            foreach (Match m in ts.Matches)
+                            {
+                                matches.Add(new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                            }
                         }
+                        tournamentStages.Add(new { Id = ts.Id, TournamentStructure = ts.TournamentStructure, Matches = matches });
                     }
-                    tournamentStages.Add(new { Id = ts.Id, TournamentStructure = ts.TournamentStructure, Matches = matches });
                 }
+
+                object obj = new { Id = dt.Id, TournamentStructure = dt.TournamentStructure, Division = dt.Division, TournamentStages = tournamentStages };
+
+                return Json(dt, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find division tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
 
-            object obj = new { Id = dt.Id, TournamentStructure = dt.TournamentStructure, Division = dt.Division, TournamentStages = tournamentStages };
-
-            return Json(dt, JsonRequestBehavior.AllowGet);
         }
 
         // GET: DivisionTournament/Create
@@ -51,9 +57,9 @@ namespace CupPlaner.Controllers
             {
                 TournamentStructure ts = (TournamentStructure)tsi;
                 Division d = db.DivisionSet.Find(divisionID);
-                db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
+                DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
                 db.SaveChanges();
-                return Json(new { status = "success", message = "New division tournament added" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division tournament added", id = dt.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
