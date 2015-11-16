@@ -23,8 +23,8 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(id);
                 List<object> divs = new List<object>();
+                List<object> fields = new List<object>();
                 List<object> times = new List<object>();
-                List<object> dts = new List<object>();
                 if (t.Divisions != null)
                 {
                     foreach (Division d in t.Divisions)
@@ -40,7 +40,14 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times };
+                if(t.Field != null)
+                {
+                    foreach (Field f in t.Field)
+                    {
+                        fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
+                    }
+                }
+                object obj = new { Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

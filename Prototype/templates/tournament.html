@@ -52,7 +52,6 @@
       </div>
     </div>
 -->
-{{ fields }}
     <!-- Create new division modal. The popup where the new division can be created in-->
     <script type="text/ng-template" id="myModalContent.html">
         <div class="modal-header">
@@ -106,7 +105,7 @@
           <div ng-if="newEm">
             <form>
               <input type="text" ng-model="EmField" />
-              <input type="submit" ng-click="submitEmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewEmField()" class="btn btn-default">Annuller</a>
+              <input type="submit" ng-click="submitField(EmField, 11)" class="btn btn-default" value="Submit" /><a ng-click="createNewEmField()" class="btn btn-default">Annuller</a>
             </form>  
           </div>
           <div class="btn-group-vertical col-md-12" role="group">
@@ -116,7 +115,7 @@
                 <span class="glyphicon glyphicon-plus pull-right"></span>
               </a>
               <a ng-repeat="field in EmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-                {{ field }}
+                {{ field.Name }}
                 <span ng-click="removeEmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
               </a>
             </div>
@@ -127,7 +126,7 @@
           <div ng-if="newOm">
             <form>
               <input type="text" ng-model="OmField" />
-              <input type="submit" ng-click="submitOmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewOmField()" class="btn btn-default">Annuller</a>
+              <input type="submit" ng-click="submitField(OmField, 8)" class="btn btn-default" value="Submit" /><a ng-click="createNewOmField()" class="btn btn-default">Annuller</a>
             </form>  
           </div>
           <div class="btn-group-vertical col-md-12" role="group">
@@ -137,7 +136,7 @@
                 <span class="glyphicon glyphicon-plus pull-right"></span>
               </a>
               <a ng-repeat="field in OmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-                {{ field }}
+                {{ field.Name }}
                 <span ng-click="removeOmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
               </a>
             </div>
@@ -148,7 +147,7 @@
           <div ng-if="newFm">
             <form>
               <input type="text" ng-model="FmField" />
-              <input type="submit" ng-click="submitFmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewFmField()" class="btn btn-default">Annuller</a>
+              <input type="submit" ng-click="submitField(FmField, 5)" class="btn btn-default" value="Submit" /><a ng-click="createNewFmField()" class="btn btn-default">Annuller</a>
             </form>  
           </div>
           <div class="btn-group-vertical col-md-12" role="group">
@@ -158,8 +157,8 @@
                 <span class="glyphicon glyphicon-plus pull-right"></span>
               </a>
               <a ng-repeat="field in FmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-                {{ field }}
-                <span ng-click="removeFmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
+                {{ field.Name }}
+                <span ng-click="removeField($index)" class="glyphicon glyphicon-remove pull-right"></span>
               </a>
             </div>
           </div>
