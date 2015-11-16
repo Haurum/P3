@@ -2,9 +2,10 @@
   <div class="col-lg-12 text-center">
     <ul class="breadcrumb">
       <li><a href="#/">Forside</a></li>
-      <li class="active"><a href="#/addTournament">Opret ny turnering</a></li>
+      <li><a href="#/tournament/:{{tournamentId}}">Turneringsoverblik</a></li>
+      <li class="active"><a href="/tournament/:{{tournamentId}}/edit">Rediger turnering</a></li>
     </ul>
-    <h1>Opret ny turnering</h1>
+    <h1>Rediger turnering</h1>
     <hr />
     <div class="row">
       <form>
@@ -48,7 +49,7 @@
   
          <div class="row">
           <div class="col-md-4" ng-repeat="x in dateArray">
-            <h4>Tid for den {{x | date: "d. MMM"}}</h4>
+            <h4>Tider for den {{x | date: "d. MMM"}}</h4>
             <div class="col-md-12" style="display: inline-flex">
               <div class="col-md-5">
                 <uib-timepicker ng-model="startTimes[$index]"  show-meridian="false"></uib-timepicker>
@@ -70,7 +71,7 @@
       </div>
         <div class="row">
           <div class="col-md-12 add-button">
-            <button type="submit" ng-click="uploadTournament()" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Opret turnering
+            <button type="submit" ng-click="uploadTournament()" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Gem turnering
               <span class="glyphicon glyphicon-list-alt"> </span>
             </button>
             <p ng-if="error">{{error}}</p>

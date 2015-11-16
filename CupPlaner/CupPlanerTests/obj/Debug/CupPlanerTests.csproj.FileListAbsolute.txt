@@ -9,7 +9,6 @@ C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\Microsoft.Web
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Data.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Data.Entity.EF6.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Web.dll
-C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\Newtonsoft.Json.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\nunit.framework.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Helpers.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Mvc.dll
@@ -21,7 +20,6 @@ C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Op
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlaner.pdb
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.xml
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.SqlServer.xml
-C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\Newtonsoft.Json.xml
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\nunit.framework.xml
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Helpers.xml
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Mvc.xml
