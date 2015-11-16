@@ -25,7 +25,7 @@
         <a ng-if="!new" class="btn btn-default col-md-12" ng-click="newPoolFunc()">Tilføj ny pulje</a>
       </div>
     </div>
-    <div ng-repeat="pool in divisions.Pool track by $index" >
+    <div ng-repeat="pool in division.Pools track by $index" >
       <div class="col-md-4 text-center">
 
         <a class="poolLink">
@@ -46,18 +46,12 @@
         <div class="col-md-2 col-md-offset-3">
           <h4>Kamplængde</h4>
           <div ng-if="!changeDuration">
-            <p>{{ divisions[index].MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" ng-model="matchDuration" class="glyphicon glyphicon-pencil"></span></p>
+            <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
           </div>
           <div ng-if="changeDuration">
-            <select ng-model="divisions[index].MatchDuration">
-              <option value="15">15 min. pr. kamp</option>
-              <option value="30">30 min. pr. kamp</option>
-              <option value="40">40 min. pr. kamp</option>
-              <option value="50">50 min. pr. kamp</option>
-              <option value="60">60 min. pr. kamp</option>
-            </select>
-             <a ng-click="changeDurationFunc()" class="btn btn-default">Godkend</a>
-          </div>
+            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" />
+             <a ng-click="changeDurationFunc()" class="btn btn-xs btn-default">Godkend</a>
+            </div>
         </div>
         <div class="col-md-2">
           <a class="btn btn-danger" ng-click="remove()">Slet række</a>
@@ -65,15 +59,15 @@
         <div class="col-md-2">
           <h4>Banestørrelse</h4>
           <div ng-if="!changeField">
-            <p>{{ divisions[index].FieldSize }} <span ng-click="changeFieldFunc()" ng-model="fieldSize" class="glyphicon glyphicon-pencil"></span></p>
+            <p>{{ division.FieldSize }}-mands bane <span ng-click="changeFieldFunc()" ng-model="fieldSize" class="glyphicon glyphicon-pencil"></span></p>
           </div>
           <div ng-if="changeField">
-            <select ng-model="divisions[index].FieldSize">
-              <option value="5-mands">5-mands</option>
-              <option value="8-mands">8-mands</option>
-              <option value="11-mands">11-mands</option>
+            <select ng-model="divisions.FieldSize">
+              <option value="11">11-mands</option>
+              <option value="8">8-mands</option>
+              <option value="5">5-mands</option>
             </select>
-            <a ng-click="changeFieldFunc()" class="btn btn-default">Godkend</a>
+            <a ng-click="changeFieldFunc()" class="btn btn-xs btn-default">Godkend</a>
           </div>
         </div>
       </div>

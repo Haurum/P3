@@ -101,6 +101,7 @@
   <ItemGroup>
     <Compile Include="Controllers\DivisionControllerTests.cs" />
     <Compile Include="Controllers\DivisionTournamentControllerTests.cs" />
+    <Compile Include="Controllers\PoolControllerTests.cs" />
     <Compile Include="Controllers\TournamentControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

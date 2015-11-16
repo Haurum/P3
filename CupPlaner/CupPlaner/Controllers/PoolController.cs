@@ -19,30 +19,38 @@ namespace CupPlaner.Controllers
         // GET: Pool/Details/5
         public ActionResult Details(int id)
         {
-            Pool p = db.PoolSet.Find(id);
-            List<object> teams = new List<object>();
-            List<object> ffs = new List<object>();
-            if (p.Teams != null)
+            try
             {
-                foreach (Team t in p.Teams)
+                Pool p = db.PoolSet.Find(id);
+                List<object> teams = new List<object>();
+                List<object> ffs = new List<object>();
+                if (p.Teams != null)
                 {
-                    teams.Add(new { Id = t.Id, Name = t.Name });
+                    foreach (Team t in p.Teams)
+                    {
+                        teams.Add(new { Id = t.Id, Name = t.Name });
+                    }
                 }
+                if (p.FavoriteFields != null)
+                {
+                    foreach (Field f in p.FavoriteFields)
+                    {
+                        ffs.Add(new { Id = f.Id, Name = f.Name });
+                    }
+                }
+
+                object obj = new { Id = p.Id, Name = p.Name, Teams = teams, FavoriteFields = ffs };
+
+                return Json(obj, JsonRequestBehavior.AllowGet);
             }
-            if (p.FavoriteFields != null)
+            catch (Exception ex)
             {
-                foreach (Field f in p.FavoriteFields)
-                {
-                    ffs.Add(new { Id = f.Id, Name = f.Name });
-                }
+                return Json(new { status = "error", message = "Could not find pool", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-
-            object obj = new { Id = p.Id, Name = p.Name, Teams = teams, FavoriteFields = ffs};
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
+      
         }
 
-        // POST: Pool/Create
+        // POST: Pool/
         [HttpPost]
         public ActionResult Create(string name, int divisionId)
         {
