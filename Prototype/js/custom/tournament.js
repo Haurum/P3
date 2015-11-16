@@ -400,7 +400,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               if(Data.status === "error"){
                 $scope.error = Data.message;
               }else{
-                //$location.path("tournament/" + Data.Id);
+                $location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {
@@ -411,7 +411,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
       }   
     }
   }).error(function(err){
-    
+    $scope.error = "Kunne ikke finde turneringen";
   });
   
 }]);
