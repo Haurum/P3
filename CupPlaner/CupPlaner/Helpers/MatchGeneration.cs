@@ -19,15 +19,25 @@ namespace CupPlaner.Helpers
 
             foreach (Division d in t.Divisions)
             {
-                DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = (TournamentStructure)d.TournamentStructure, Division = d });
-
-
-                GenerateGroupStage(dt.Division, dt);
+                DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = d.TournamentStructure, Division = d });
+                foreach (Pool p in d.Pools)
+                {
+                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                    List<Team> teams = p.Teams.ToList();
+                    for (int i = 0; i < teams.Count; i++)
+                    {
+                        for (int j = i + 1; j < teams.Count; j++)
+                        {
+                            
+                            db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[i], teams[j] }, TournamentStage = ts });
+                        }
+                    }
+                }
             }
             db.SaveChanges();
         }
 
-        private void GenerateGroupStage(Division division, DivisionTournament divTournament)
+        /*private void GenerateGroupStage(Division division, DivisionTournament divTournament)
         {
             foreach (Pool p in division.Pools)
             {
@@ -47,7 +57,7 @@ namespace CupPlaner.Helpers
 
                 }
             }
-        }
+        }*/
 
     }
 }
