@@ -10,6 +10,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     .success(function(data)
     {
       $scope.division = data;
+      console.log(data);
     }).error(function(err) 
     {
       $scope.error = err;
@@ -48,8 +49,12 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.changeField = !$scope.changeField;
   }
 
+  $scope.changeNewFieldFunc = function(newField) {
+    $scope.newField = $scope.FieldSize;
+  }
+
   $scope.changeDurationFunc = function() {
-    $scope.changeDuration = !$scope.changeDuration;
+    $http.post($rootScope.apiUrl)
   }
 
   $scope.gotoPool = function(currPool, index) {
