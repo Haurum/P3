@@ -20,11 +20,17 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(id);
                 List<object> pools = new List<object>();
+                List<object> teams = new List<object>();
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
                     {
-                        pools.Add(new { Id = p.Id, Name = p.Name });
+                        teams = new List<object>();
+                        foreach (Team t in p.Teams)
+                        {
+                            teams.Add(new { Name = t.Name, Id = t.Id });
+                        }
+                        pools.Add(new { Id = p.Id, Name = p.Name, Teams = teams });
                     }
                 }
 
