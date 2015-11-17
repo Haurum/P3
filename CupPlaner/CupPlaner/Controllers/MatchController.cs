@@ -24,14 +24,37 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Match/Create
         [HttpPost]
-        public ActionResult Create(string startTime, int duration)
+        public Match Create(int team1Id, int team2Id, int tournamentStageId )
         {
             try
             {
+                Team team1 = db.TeamSet.Find(team1Id);
+                Team team2 = db.TeamSet.Find(team2Id);
+                List<Team> teams = new List<Team>() { team1, team2 };
+                TournamentStage ts = db.TournamentStageSet.Find(tournamentStageId);
+                Match m = db.MatchSet.Add(new Match() { Teams = teams, Duration = team1.Pool.Division.MatchDuration, TournamentStage = ts });
+                db.SaveChanges();
+                return m;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        // GET: Match/Create
+        [HttpPost]
+        public ActionResult Schedule(int matchId, string startTime, int fieldId)
+        {
+            try
+            {
+                Match m = db.MatchSet.Find(matchId);
                 DateTime st = Convert.ToDateTime(startTime);
-                db.MatchSet.Add(new Match() { StartTime = st, Duration = duration });
+                m.StartTime = st;
+                Field f = db.FieldSet.Find(fieldId);
+                m.Field = f;
+                db.Entry(m).State = EntityState.Modified;
                 db.SaveChanges();
                 return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
             }
@@ -69,6 +92,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
+                foreach (Team t in m.Teams)
+                {
+                    t.Matches.Remove(m);
+                }
                 db.MatchSet.Remove(m);
                 db.SaveChanges();
 

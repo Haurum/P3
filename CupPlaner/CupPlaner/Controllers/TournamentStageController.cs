@@ -37,21 +37,20 @@ namespace CupPlaner.Controllers
 
         // POST: TournamentStage/Create
         [HttpPost]
-        public ActionResult Create(int tournamentStructure, int divisionTournamentId, int poolId)
+        public TournamentStage Create(int divisionTournamentId, int poolId)
         {
             try
             {
                 // TODO: Add insert logic here
                 DivisionTournament dt = db.DivisionTournamentSet.Find(divisionTournamentId);
                 Pool p = db.PoolSet.Find(poolId);
-                db.TournamentStageSet.Add(new TournamentStage() { TournamentStructure = (TournamentStructure)tournamentStructure, DivisionTournament = dt, Pool = p });
+                TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { TournamentStructure = dt.TournamentStructure, DivisionTournament = dt, Pool = p });
                 db.SaveChanges();
-
-                return Json(new { status = "success", message = "New tournament stage added" }, JsonRequestBehavior.AllowGet);
+                return ts;
             }
             catch (Exception ex)
             {
-                return Json(new { status = "error", message = "New tournament stage not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
+                throw ex;
             }
         }
 
@@ -93,6 +92,7 @@ namespace CupPlaner.Controllers
                 {
                     mc.Delete(m.Id);
                 }
+                //db.MatchSet.RemoveRange(ts.Matches);
                 db.TournamentStageSet.Remove(ts);
                 db.SaveChanges();
 

@@ -118,3 +118,36 @@ C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlanerTests\bin\D
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.csprojResolveAssemblyReference.cache
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.dll
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlanerTests.dll.config
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlanerTests.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlanerTests.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlaner.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.SqlServer.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\Microsoft.Web.Infrastructure.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Data.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Data.Entity.EF6.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\MySql.Web.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\nunit.framework.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Helpers.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Mvc.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Razor.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.Deployment.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.Razor.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Optimization.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\CupPlaner.pdb
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\EntityFramework.SqlServer.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\nunit.framework.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Helpers.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Mvc.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Razor.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.Deployment.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.WebPages.Razor.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Optimization.xml
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.csprojResolveAssemblyReference.cache
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.dll
+D:\Dokumenter\Github\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.pdb

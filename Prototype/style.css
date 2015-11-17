@@ -54,10 +54,11 @@ body {
 .poolLink{
   color: #000;
   text-align: center;
+  text-decoration: underline; 
 }
 
 .poolLink:hover {
-  text-decoration: underline;
+  text-decoration: none;
   color: #5a5a5a;
 }
 
@@ -115,6 +116,14 @@ body {
 
 #uploadHeading {
   text-align: center;
+}
+
+#changeDivName {
+
+}
+
+#newDivNameForm {
+
 }
 
 @media handheld, only screen and (max-width: 400px){ 

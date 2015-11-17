@@ -5,76 +5,92 @@
       <li><a href="#/addTournament">Opret ny turnering</a></li>
       <li><a href="#/tournament">Turneringsoversigt</a></li>
       <li class="active"><a href="">{{ divisions.Name }}</a></li>
-
     </ul>
-    <h1>
-        <span>{{ division.Name }}</span>
-        <a href="#/" class="btn btn-xs btn-primary divisionEditBtn">
-        <span class="glyphicon glyphicon-pencil"></span>
-        </a>
-    </h1>
-    <hr />
+    <div id="changeDivName">
+      <div ng-if="!changeName">
+        <h1>
+          <span>{{ division.Name }}</span>
+          <a ng-click="changeDivNameFunc()" class="btn btn-xs btn-primary divisionEditBtn">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+        </h1>
+      </div>
+      <div class="form-inline">
+        <div ng-if="changeName" class="form-group col-md-4 col-md-offset-4">
+          <input type="text" ng-model="newDivName" class="form-control" placeholder="{{division.Name}}" />
+          <span>
+          <a ng-click="changeNewDivNameFunc()" class="btn btn-primary">Gem</a>
+          <a ng-click="changeDivNameFunc()" class="btn btn-danger">Annuller</a>
+          </span>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-4 col-md-offset-4" ng-if="newPool">
-        <form>
-          <input type="text" ng-model="newPoolName"/>
-          <input type="submit" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-default" value="Submit" /><a ng-click="newPoolFunc()" class="btn btn-default">Annuller</a>
-        </form>
+        <hr />
+        <div class="form-inline">
+          <div class="form-group">
+            <form>
+              <input type="text" ng-model="newPoolName" class="form-control" placeholder="Indtast puljenavn.."/>
+              <input type="submit" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
+              <a ng-click="newPoolFunc()" class="btn btn-danger">Annuller</a>
+            </form>
+          </div>
+        </div>
       </div>
       <div class="col-md-4 col-md-offset-4" ng-if="!newPool">
+        <hr />
         <a ng-if="!new" class="btn btn-default col-md-12" ng-click="newPoolFunc()">Tilføj ny pulje</a>
       </div>
     </div>
     <div ng-repeat="pool in division.Pools track by $index" >
       <div class="col-md-4 text-center">
-
         <a class="poolLink">
          <h2 ng-click="gotoPool(pool, $index)" >{{ pool.Name }}</h2>
+       </a>
+       <div class="pools">
+        <a ng-click="gotoTeamDetail(team, $index)" ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+          {{ team }}
+          <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
         </a>
-          <div class="pools">
-            <a ng-click="gotoTeamDetail(team, $index)" ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
-              {{ team }}
-              <span ng-click="removeTeam($index)" class="glyphicon glyphicon-remove pull-right"></span>
-            </a>
-          </div>
-        </div>
       </div>
-
-    <div class="row">
-      <div class="col-md-12 text-center">
-        <hr />
-        <div class="col-md-2 col-md-offset-3">
-          <h4>Kamplængde</h4>
-          <div ng-if="!changeDuration">
-            <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
-          </div>
-          <div ng-if="changeDuration">
-            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" />
-             <a ng-click="changeDurationFunc()" class="btn btn-xs btn-default">Godkend</a>
-            </div>
-        </div>
-        <div class="col-md-2">
-          <a class="btn btn-danger" ng-click="remove()">Slet række</a>
-        </div>
-        <div class="col-md-2">
-          <h4>Banestørrelse</h4>
-          <div ng-if="!changeField">
-            <p>{{ division.FieldSize }}-mands bane <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
-          </div>
-          <div ng-if="changeField">
-            <select ng-model="FieldSize">
-              <option value="11">11-mands</option>
-              <option value="8">8-mands</option>
-              <option value="5">5-mands</option>
-            </select>
-            <a ng-click="changeFieldFunc(); changeNewFieldFunc(FieldSize)" class="btn btn-xs btn-default">Godkend<a/>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr />
-    <div class="col-md-12">
-    <!-- LAV SLUTSPILS VIEW HER! -->
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <hr />
+      <div class="col-md-2 col-md-offset-3">
+        <h4>Kamplængde</h4>
+        <div ng-if="!changeDuration">
+          <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
+        </div>
+        <div ng-if="changeDuration">
+          <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" />
+          <a ng-click="changeNewDurationFunc(newMatchDuration)" class="btn btn-xs btn-default">Gem</a>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <a class="btn btn-danger" ng-click="remove()">Slet række</a>
+      </div>
+      <div class="col-md-2">
+        <h4>Banestørrelse</h4>
+        <div ng-if="!changeField">
+          <p>{{ division.FieldSize }}-mands bane <span ng-click="changeFieldFunc()" class="glyphicon glyphicon-pencil"></span></p>
+        </div>
+        <div ng-if="changeField">
+          <select ng-model="FieldSize">
+            <option value="11">11-mands</option>
+            <option value="8">8-mands</option>
+            <option value="5">5-mands</option>
+          </select>
+          <a ng-click="changeNewFieldFunc(FieldSize)" class="btn btn-xs btn-default">Gem</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="col-md-12">
+    <!-- LAV SLUTSPILS VIEW HER! -->
+  </div>
+</div>
 </div>

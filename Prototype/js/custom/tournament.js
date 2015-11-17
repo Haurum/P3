@@ -76,7 +76,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
   $scope.gotoDivison = function (currDiv, index) {
     $rootScope.currDivisionIndex = index;
-    console.log("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
 
@@ -100,8 +99,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
         else {
           $scope.createNewFmField();
         }
-    }).error(function(){
-      $scope.createErr = data;
+    }).error(function(err){
+      $scope.createErr = err;
     })
     $scope.getDivisions();
   }
@@ -120,6 +119,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
   }
+  
 
   /* 8man */
  $scope.createNewOmField = function() {
@@ -129,7 +129,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   /* 5man */
   $scope.createNewFmField = function() {
     $scope.newFm = !$scope.newFm;
-  }
+  } 
+
   /* Field end */
 
 }]);
