@@ -51,20 +51,7 @@ namespace CupPlaner.Controllers
         }
 
         // GET: DivisionTournament/Create
-        public DivisionTournament Create(Division dList)
-        {
-                List<DivisionTournament> dtList = new List<DivisionTournament>();
-                foreach (Division d in dList)
-                {
-                    
-                    TournamentStructure ts = d.TournamentStructure.Value;
-                    DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
-                }
-                //Division d = db.DivisionSet.Find(divisionID);
-
-                db.SaveChanges();
-                return dtList;
-        }
+      
 
         // GET: DivisionTournament/Delete/5
         public ActionResult Delete(int id)
