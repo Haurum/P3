@@ -24,14 +24,37 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Match/Create
         [HttpPost]
-        public ActionResult Create(string startTime, int duration)
+        public ActionResult Create(int team1Id, int team2Id )
         {
             try
             {
+                Team t1 = db.TeamSet.Find(team1Id);
+                Team t2 = db.TeamSet.Find(team2Id);
+                List<Team> teams = new List<Team>() { t1, t2 };
+                db.MatchSet.Add(new Match() { Teams = teams, Duration = t1.Pool.Division.MatchDuration });
+                db.SaveChanges();
+                return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "New match not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
+
+            }
+        }
+
+        // GET: Match/Create
+        [HttpPost]
+        public ActionResult Schedule(int matchId, string startTime, int fieldId)
+        {
+            try
+            {
+                Match m = db.MatchSet.Find(matchId);
                 DateTime st = Convert.ToDateTime(startTime);
-                db.MatchSet.Add(new Match() { StartTime = st, Duration = duration });
+                m.StartTime = st;
+                Field f = db.FieldSet.Find(fieldId);
+                m.Field = f;
+                db.Entry(m).State = EntityState.Modified;
                 db.SaveChanges();
                 return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
             }
