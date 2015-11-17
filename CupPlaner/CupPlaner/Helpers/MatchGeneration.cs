@@ -8,77 +8,45 @@ using System.Web.Mvc;
 
 namespace CupPlaner.Helpers
 {
-    class MatchGeneration
+    public class MatchGeneration
     {
-        MatchController mc = new MatchController();
-        DivisionTournamentController dtc = new DivisionTournamentController();
-        TournamentStageController tsc = new TournamentStageController();
         CupDBContainer db = new CupDBContainer();
 
-        public bool Generate(int tournamentID)
+        public void Generate(int tournamentID)
         {
             Tournament t = db.TournamentSet.Find(tournamentID);
+            
+
             foreach (Division d in t.Divisions)
             {
-                dynamic jsonResult = ((JsonResult)dtc.Create(d.Id)).Data;
-                if(jsonResult.status == "success")
-                {
-                    DivisionTournament dt = db.DivisionTournamentSet.Find(jsonResult.id);
-                    if (!GenerateGroupStage(d, dt))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = (TournamentStructure)d.TournamentStructure, Division = d });
+
+
+                GenerateGroupStage(dt.Division, dt);
             }
-            return true;
+            db.SaveChanges();
         }
 
-        private bool GenerateGroupStage(Division division, DivisionTournament divTournament)
+        private void GenerateGroupStage(Division division, DivisionTournament divTournament)
         {
             foreach (Pool p in division.Pools)
             {
-                dynamic tsJsonResult = ((JsonResult)tsc.Create(divTournament.Id, p.Id)).Data;
-                if (tsJsonResult.status == "success")
-                {
-                    TournamentStage ts = db.TournamentStageSet.Find(tsJsonResult.id);
-
-                    if (!GenerateRoundRobin(p, ts))
-                    {
-                        return false;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                    TournamentStage ts = tsc.Create(divTournament.Id, p.Id);
+                    GenerateRoundRobin(p, ts);
             }
-            return true;
         }
 
-        private bool GenerateRoundRobin(Pool p, TournamentStage ts)
+        private void GenerateRoundRobin(Pool p, TournamentStage ts)
         {
             List<Team> teams = p.Teams.ToList();
             for (int i = 0; i < p.Teams.Count; i++)
             {
                 for (int j = i + 1; j < p.Teams.Count; j++)
                 {
-                    dynamic matchJsonResult = ((JsonResult)mc.Create(teams[i], teams[j])).Data;
-                    if (matchJsonResult.status == "success")
-                    {
-                        Match m = db.MatchSet.Find(matchJsonResult.id);
-                        ts.Matches.Add(m);
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                        mc.Create(teams[i].Id, teams[j].Id, ts.Id);
+
                 }
             }
-            return true;
         }
 
     }

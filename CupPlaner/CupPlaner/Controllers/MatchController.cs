@@ -25,19 +25,21 @@ namespace CupPlaner.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Team team1, Team team2 )
+        public Match Create(int team1Id, int team2Id, int tournamentStageId )
         {
             try
             {
+                Team team1 = db.TeamSet.Find(team1Id);
+                Team team2 = db.TeamSet.Find(team2Id);
                 List<Team> teams = new List<Team>() { team1, team2 };
-                db.MatchSet.Add(new Match() { Teams = teams, Duration = team1.Pool.Division.MatchDuration });
+                TournamentStage ts = db.TournamentStageSet.Find(tournamentStageId);
+                Match m = db.MatchSet.Add(new Match() { Teams = teams, Duration = team1.Pool.Division.MatchDuration, TournamentStage = ts });
                 db.SaveChanges();
-                return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
+                return m;
             }
             catch (Exception ex)
             {
-                return Json(new { status = "error", message = "New match not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-
+                throw ex;
             }
         }
 
@@ -90,6 +92,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
+                foreach (Team t in m.Teams)
+                {
+                    t.Matches.Remove(m);
+                }
                 db.MatchSet.Remove(m);
                 db.SaveChanges();
 
