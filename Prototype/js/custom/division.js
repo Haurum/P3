@@ -16,8 +16,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.error = err;
     })
   }
-
-
   $scope.getDivisionData();
 
   $scope.newPoolFunc = function() {
