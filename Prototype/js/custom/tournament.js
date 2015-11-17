@@ -28,6 +28,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       })
   }
 
+  $scope.tournamentId = $routeParams.tournamentId;
+
   $scope.getDivisions();
 
   $scope.newDivName = "";

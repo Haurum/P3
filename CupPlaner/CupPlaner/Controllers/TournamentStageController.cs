@@ -37,14 +37,14 @@ namespace CupPlaner.Controllers
 
         // POST: TournamentStage/Create
         [HttpPost]
-        public ActionResult Create(int tournamentStructure, int divisionTournamentId, int poolId)
+        public ActionResult Create(int divisionTournamentId, int poolId)
         {
             try
             {
                 // TODO: Add insert logic here
                 DivisionTournament dt = db.DivisionTournamentSet.Find(divisionTournamentId);
                 Pool p = db.PoolSet.Find(poolId);
-                db.TournamentStageSet.Add(new TournamentStage() { TournamentStructure = (TournamentStructure)tournamentStructure, DivisionTournament = dt, Pool = p });
+                db.TournamentStageSet.Add(new TournamentStage() { TournamentStructure = dt.TournamentStructure, DivisionTournament = dt, Pool = p });
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New tournament stage added" }, JsonRequestBehavior.AllowGet);

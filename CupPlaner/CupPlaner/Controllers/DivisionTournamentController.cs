@@ -51,11 +51,12 @@ namespace CupPlaner.Controllers
         }
 
         // GET: DivisionTournament/Create
-        public ActionResult Create(TournamentStructure ts, int divisionID)
+        public ActionResult Create(int divisionID)
         {
             try
             {
                 Division d = db.DivisionSet.Find(divisionID);
+                TournamentStructure ts = d.TournamentStructure.Value;
                 DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = ts, Division = d });
                 db.SaveChanges();
                 return Json(new { status = "success", message = "New division tournament added", id = dt.Id }, JsonRequestBehavior.AllowGet);
