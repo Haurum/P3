@@ -21,6 +21,29 @@ namespace CupPlaner.Controllers
             return Json(obj, JsonRequestBehavior.AllowGet);
         }
 
+        public ActionResult GetAllTournamentFields(int tournamentId)
+        {
+            try
+            {
+                Tournament t = db.TournamentSet.Find(tournamentId);
+                List<object> fields = new List<object>();
+
+                if(t.Fields != null)
+                {
+                    foreach(Field f in t.Fields)
+                    {
+                        fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
+                    }
+                }
+                object obj = new { Fields = fields };
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json(new { status = "error", message = "could not find fields", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         // POST: Field/Create - Tries to create a Field object, with the parameters "name" and "size".
         // Sets the FieldSize and Name to the parameters ("name" and "size").
         // Adds the Field object to the database FieldSet, and saves the changes in the database.

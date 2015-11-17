@@ -39,7 +39,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { Id = p.Id, Name = p.Name, Teams = teams, FavoriteFields = ffs };
+                object obj = new { Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

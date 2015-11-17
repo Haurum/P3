@@ -1,28 +1,50 @@
-app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
-/*
-  $rootScope.Pool.Id = 1;
-
-  $http.get("http://localhost:50229/Pool?id=" +  $rootScope.Pool.Id)
-  .success(function(poolData)
-  {
-    $scope.Pool = poolData;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  })
-
-  $http.get("http://localhost:50229/Pool", params { poolName: "poolName" } )
-  .success(function(poolData)
-  {
-    $scope.Pool = poolData;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  })*/
-
-  $scope.removeTeam = function() {
-    $rootScope.divisions[$scope.index].Pool[$scope.index].Teams.splice($scope.index, 1);
+app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+  $scope.getPoolData = function(){
+    $http.get($rootScope.apiUrl + "/Pool/Details?id=" +  $routeParams.poolId)
+    .success(function(data)
+    {
+      $scope.pool = data;
+      $scope.divisionFieldSize = data.FieldSize;
+      console.log(data.FieldSize);
+      console.log($scope.pool.FieldSize);
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    })
   }
+  $scope.EmField = [];
+  $scope.OmField = [];
+  $scope.FmField = [];
+
+  $scope.getFields = function() {
+    $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId)
+    .success(function(data){
+              console.log(data);
+      for (var i=0; i < data.Fields.length; i++)
+        {
+          if(data.Fields[i].fieldSize === 11)
+          {
+            $scope.EmField.push(data.Fields[i]);
+            console.log(EmField);
+          }
+          else if(data.Fields[i].fieldSize === 8)
+          {
+            $scope.OmField.push(data.Fields[i]);
+          }
+          else
+          {
+            $scope.FmFields.push(data.Fields[i]);
+          }
+        }
+        console.log($scope.EmField);
+    }).error(function(err){
+      $scope.error = err;
+    })
+  }
+
+  $scope.getFields();
+
+  $scope.getPoolData();
 
   $scope.addTeamToPool = function(newTeamName, index) {
     $rootScope.divisions[$scope.index].Pool[index].Teams.push(newTeamName);
@@ -37,9 +59,24 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $scope.changeFavField = !$scope.changeFavField;
   }
 
-  $scope.removePool = function() {
-    $rootScope.divisions[$scope.index].Pool.splice($scope.index, 1);
-    $location.path("/division");
+  $scope.setFavFieldFunc = function (favFieldsId) {
+    $scope.favFieldsIds = [];
+    $scope.favFieldsIds.push(favFieldsId);
+    $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: pool.Name, divisionId: $routeParams.divisionId, fieldsIds: $scope.favFieldsIds})
+    .success(function(data){
+      console.log(data);
+    }).error(function(err){
+      $scope.favFieldErr = err;
+    })
+  }
+
+  $scope.remove = function(pool) {
+    $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })
+    .success(function(data) {
+      $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+    }).error(function(data) {
+      $scope.deleteErr = data;
+    })   
   }
 
 }]);
