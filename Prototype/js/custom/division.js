@@ -79,6 +79,12 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $location.url($location.url() + "/pool/" + currPool.Id);
   }
 
+  $scope.gotoTeam = function(currTeam, indexT, currPool, indexP) {
+    $rootScope.currTeamIndex = indexT;
+    $rootScope.currPoolIndex = indexP;
+    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id)
+  }
+
   $scope.changeDivNameFunc = function() {
     $scope.changeName = !$scope.changeName;
   }
