@@ -25,14 +25,12 @@ namespace CupPlaner.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(int team1Id, int team2Id )
+        public ActionResult Create(Team team1, Team team2 )
         {
             try
             {
-                Team t1 = db.TeamSet.Find(team1Id);
-                Team t2 = db.TeamSet.Find(team2Id);
-                List<Team> teams = new List<Team>() { t1, t2 };
-                db.MatchSet.Add(new Match() { Teams = teams, Duration = t1.Pool.Division.MatchDuration });
+                List<Team> teams = new List<Team>() { team1, team2 };
+                db.MatchSet.Add(new Match() { Teams = teams, Duration = team1.Pool.Division.MatchDuration });
                 db.SaveChanges();
                 return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
             }

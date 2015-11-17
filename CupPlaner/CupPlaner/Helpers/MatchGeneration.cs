@@ -61,11 +61,12 @@ namespace CupPlaner.Helpers
 
         private bool GenerateRoundRobin(Pool p, TournamentStage ts)
         {
+            List<Team> teams = p.Teams.ToList();
             for (int i = 0; i < p.Teams.Count; i++)
             {
                 for (int j = i + 1; j < p.Teams.Count; j++)
                 {
-                    dynamic matchJsonResult = ((JsonResult)mc.Create(p.Teams[i], p.Teams[j])).Data;
+                    dynamic matchJsonResult = ((JsonResult)mc.Create(teams[i], teams[j])).Data;
                     if (matchJsonResult.status == "success")
                     {
                         Match m = db.MatchSet.Find(matchJsonResult.id);
