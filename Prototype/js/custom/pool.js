@@ -19,7 +19,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.getFields = function() {
     $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId)
     .success(function(data){
-              console.log(data);
+              console.log(data.Fields);
       for (var i=0; i < data.Fields.length; i++)
         {
           if(data.Fields[i].fieldSize === 11)

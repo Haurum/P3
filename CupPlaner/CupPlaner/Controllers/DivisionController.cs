@@ -34,7 +34,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { Id = d.Id, Name = d.Name, Pools = pools, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
+                object obj = new { Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
