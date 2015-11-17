@@ -102,7 +102,7 @@
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="FieldSize" Type="int" Nullable="false" />
     <Property Name="MatchDuration" Type="int" Nullable="false" />
-    <Property Name="TournamentStructure" Type="int" Nullable="true" />
+    <Property Name="TournamentStructure" Type="int" Nullable="false" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="FieldSet">

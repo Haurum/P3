@@ -1,4 +1,4 @@
-var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap']);
+var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap', 'angularFileUpload']);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.

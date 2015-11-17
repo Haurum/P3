@@ -24,7 +24,7 @@ namespace CupPlaner
         public string Name { get; set; }
         public FieldSize FieldSize { get; set; }
         public int MatchDuration { get; set; }
-        public Nullable<TournamentStructure> TournamentStructure { get; set; }
+        public TournamentStructure TournamentStructure { get; set; }
     
         public virtual ICollection<Pool> Pools { get; set; }
         public virtual Tournament Tournament { get; set; }

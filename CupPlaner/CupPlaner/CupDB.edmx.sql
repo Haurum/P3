@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/16/2015 14:48:23
+-- Date Created: 11/17/2015 13:26:44
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -81,7 +81,7 @@ CREATE TABLE `DivisionSet`(
 	`Name` longtext NOT NULL, 
 	`FieldSize` int NOT NULL, 
 	`MatchDuration` int NOT NULL, 
-	`TournamentStructure` int, 
+	`TournamentStructure` int NOT NULL, 
 	`Tournament_Id` int NOT NULL);
 
 ALTER TABLE `DivisionSet` ADD PRIMARY KEY (Id);

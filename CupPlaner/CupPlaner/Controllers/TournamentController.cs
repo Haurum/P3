@@ -4,6 +4,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using System.IO;
+using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CupPlaner.Controllers
 {
@@ -70,19 +73,86 @@ namespace CupPlaner.Controllers
 
         // POST: Tournament/Create
         [HttpPost]
-        public ActionResult Create(string name, string password, List<DateTime> startTimes, List<DateTime> endTimes )
+        public ActionResult Create(string name, string password, List<DateTime> startTimes, List<DateTime> endTimes)
         {
             try
             {
                 if (!db.TournamentSet.Any(x => x.Password == password))
                 {
+                    Tournament t = new Tournament();
+                    
+                    HttpPostedFileBase file = null;
+
+                    int poolStart = 2;
+                    
+
+                    if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                    {
+                        file = Request.Files[0];
+                        string charRange = "CDEFGHIJKLMNOPQRSTY";
+                        List<string> divisions = new List<string>();
+                        List<string> pools = new List<string>();
+                        List<string> teams = new List<string>();
+
+                        Division d = new Division();
+                        Pool p = new Pool();
+
+                        // extract only the filename
+                        var fileName = Path.GetFileName(file.FileName);
+                        // store the file inside ~/App_Data/uploads folder
+                        var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);
+
+                        // UNCOMMENT TO SAVE FILE
+                        //file.SaveAs(path);
+                        var excel = new Excel.Application();
+                        excel.Workbooks.Open(path);
+                        Excel.Worksheet sheet = excel.Sheets["Cup"] as Excel.Worksheet;
+                        Excel.Range range = sheet.get_Range("A1", Missing.Value);
+
+                        t.Name = range.Value;
+
+                        for (int i = 2; i < 100; i++)
+                        {
+                            range = sheet.get_Range("A" + i.ToString(), Missing.Value);
+                            if (range.Value != null)
+                            {
+                                d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
+                                db.DivisionSet.Add(d);
+                                if (t.Divisions.Count > 1)
+                                {
+                                    for (int j = poolStart; j < i; j++)
+                                    {
+                                        p = new Pool() { Division = d, Name = range.Value };
+                                        db.PoolSet.Add(p);
+
+                                        range = sheet.get_Range("B" + j.ToString(), Missing.Value);
+                                        foreach (char c in charRange)
+                                        {
+                                            var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
+                                            if (!string.IsNullOrEmpty(teamsRange.Value))
+                                            {
+                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p };
+                                                db.TeamSet.Add(newTeam);
+                                            }
+                                            else
+                                                break;
+                                        }
+                                    }
+                                    poolStart = i;
+                                }
+                            }
+                        }
+                    }
                     List<TimeInterval> tis = new List<TimeInterval>();
                     for (int i = 0; i < startTimes.Count; i++)
                     {
                         tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                     }
 
-                    Tournament t = db.TournamentSet.Add(new Tournament() { Name = name, Password = password, TimeIntervals = tis });
+                    t.Name = name;
+                    t.Password = password;
+                    t.TimeIntervals = tis;
+                    t = db.TournamentSet.Add(t);
                     db.SaveChanges();
 
                     return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);

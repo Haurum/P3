@@ -101,7 +101,7 @@
     <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
     <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
     <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
-    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="true" />
+    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
   </EntityType>
   <EntityType Name="Field">
     <Key>

@@ -162,8 +162,24 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   };
 }]);
 
-app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
-   
+app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader) {
+  
+  $scope.tournamentData =  {};
+
+  var uploader = $scope.uploader = new FileUploader({
+    url: $rootScope.apiUrl + '/Tournament/Create'
+  });
+
+  uploader.onBeforeUploadItem = function(item) {
+    item.formData.push($scope.tournamentData);
+  };
+  uploader.onSuccessItem = function(fileItem, response, status, headers) {
+    console.info('onSuccessItem', fileItem, response, status, headers);
+  };
+  uploader.onErrorItem = function(fileItem, response, status, headers) {
+    console.info('onErrorItem', fileItem, response, status, headers);
+  };
+
   /* DATE PICKER START */
   $scope.dateRange = 0;
   $scope.today = function () {
@@ -224,11 +240,8 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   };
   /* DATE PICKER END */
 
-
-
-
-
-  $scope.uploadTournament = function () {
+  $scope.uploadTournament = function () 
+  {
     if (!$scope.tournamentName || !$scope.tournamentPassword){
       $scope.error = "Navn eller kode ikke sat";
     }else{
@@ -253,27 +266,33 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           }
         }
         if(!$scope.error){
-          var tournamentData = {
+          $scope.tournamentData = {
             name: $scope.tournamentName,
             password: $scope.tournamentPassword,
             startTimes: $scope.startDateTimes,
             endTimes: $scope.endDateTimes
           }
-      
-          $http.post("http://localhost:50229/Tournament/Create/", tournamentData).success(function(Data)
+          if (uploader.queue.length > 0)
           {
-            if(Data.status === "error"){
-              $scope.error = Data.message;
-            }else{
-              $location.path("tournament/" + Data.Id);
-            }
-          }).error(function(err) 
+            uploader.queue[0].upload();
+          }
+          else
           {
-            $scope.error = "Kunne ikke uploade til serveren";
-          });
+            $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
+            {
+              if(Data.status === "error"){
+                $scope.error = Data.message;
+              } else {
+                $location.path("tournament/" + Data.Id);
+              }
+            }).error(function(err) 
+            {
+              $scope.error = "Kunne ikke uploade til serveren";
+            });
+          }
         }
       }  
-    }   
+    }  
   }
 }]);
 
