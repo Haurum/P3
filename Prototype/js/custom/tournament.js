@@ -120,7 +120,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     $scope.newEm = !$scope.newEm;
   }
   
-
   /* 8man */
  $scope.createNewOmField = function() {
     $scope.newOm = !$scope.newOm;
