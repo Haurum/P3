@@ -22,6 +22,7 @@ namespace CupPlaner
     
         public int Id { get; set; }
         public string Name { get; set; }
+        public bool IsAuto { get; set; }
     
         public virtual ICollection<Team> Teams { get; set; }
         public virtual Division Division { get; set; }

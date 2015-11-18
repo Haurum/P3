@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/18/2015 08:49:28
+-- Date Created: 11/18/2015 09:43:33
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -59,6 +59,7 @@ SET foreign_key_checks = 1;
 CREATE TABLE `TeamSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`Name` longtext NOT NULL, 
+	`IsAuto` bool NOT NULL, 
 	`Pool_Id` int NOT NULL);
 
 ALTER TABLE `TeamSet` ADD PRIMARY KEY (Id);
@@ -69,6 +70,7 @@ ALTER TABLE `TeamSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `PoolSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`Name` longtext NOT NULL, 
+	`IsAuto` bool NOT NULL, 
 	`Division_Id` int NOT NULL);
 
 ALTER TABLE `PoolSet` ADD PRIMARY KEY (Id);
