@@ -1,26 +1,17 @@
 app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', function ($scope, $rootScope, $location, $http) {
+  $scope.changeName = false;
 
-  /* Post & Get requests */
+  $scope.getTeamData = function() {
+    $http.get($rootScope.apiUrl + "/Team/Details?id=" +  $routeParams.teamId)
+    .success(function(data)
+    {
+      $scope.team = data;
+    }).error(function(err) 
+    {
+      $scope.error = err;
+    })
+  }
+  $scope.getTeamData();
 
-  /*
-  $rootScope.Team.Id = 1;
-
-  $http.get("http://localhost:50229/Teams?id=" +  $rootScope.Team.Id)
-  .success(function(teamData)
-  {
-    $scope.Teams = teamData;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  })
-
-  $http.get("http://localhost:50229/Teams", params { teamName: "teamName" } )
-  .success(function(teamData)
-  {
-    $scope.Teams = teamData;
-  }).error(function(err) 
-  {
-    $scope.error = err;
-  }) */
 
 }]);

@@ -1,4 +1,7 @@
 app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+  $scope.favFieldsIds = [];
+  $scope.changeName = false;
+
   $scope.getPoolData = function(){
     $http.get($rootScope.apiUrl + "/Pool/Details?id=" +  $routeParams.poolId)
     .success(function(data)
@@ -10,6 +13,8 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.error = err;
     })
   }
+  $scope.getPoolData();
+  
   $scope.EmField = [];
   $scope.OmField = [];
   $scope.FmField = [];
@@ -41,19 +46,25 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
 
   $scope.getPoolData();
 
-  $scope.addTeamToPool = function(newTeamName, index) {
-    $rootScope.divisions[$scope.index].Pool[index].Teams.push(newTeamName);
+  $scope.addTeamToPool = function(name, index) {
+    $http.post($rootScope.apiUrl + "/Team/Create", { name: name, poolId: $routeParams.poolId })
+    .success(function(data) {
+      
+    }).error(function(err){
+     $scope.deleteErr = err;
+    })   
+    $scope.getPoolData();
   }
 
   $scope.gotoTeamDetail = function(currTeam, index) {
     $rootScope.currTeamIndex = index;
-    $location.url("/team");
+    $location.url($location.url() + "/team/" + currTeam.Id);
   }
 
   $scope.setFavFieldFunc = function (favFieldsId) {
-    $scope.favFieldsIds = [];
-    $scope.favFieldsIds.push(favFieldsId);
-    $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: pool.Name, divisionId: $routeParams.divisionId, fieldsIds: $scope.favFieldsIds})
+    //$scope.favFieldsIds.push(favFieldsId);
+    //console.log($scope.favFieldsIds);
+    $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldsIds: favFieldsId})
     .success(function(data){
 
     }).error(function(err){
@@ -61,13 +72,22 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     })
   }
 
-  $scope.remove = function(pool) {
+  $scope.remove = function() {
     $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })
     .success(function(data) {
       $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
     }).error(function(data) {
       $scope.deleteErr = data;
     })   
+  }
+
+  $scope.removeTeam = function(team) {
+    $http.post($rootScope.apiUrl + "/Team/Delete", { id: team.Id })
+    .success(function(data){
+
+    }).error(function(data){
+      $scope.deleteErr = data;
+    })
   }
 
   $scope.changePoolNameFunc = function() {
