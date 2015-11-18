@@ -92,7 +92,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.changeNewDivNameFunc = function(newName) {
     $http.post($rootScope.apiUrl + "/Division/Edit", { name: newName, fieldSizeInt: $scope.division.FieldSize, tournamentId: $routeParams.tournamentId, id: $routeParams.divisionId, matchDuration: $scope.division.MatchDuration  })
     .success(function(data){
-      console.log(data);
       $scope.division.Name = data.newName;
       $scope.changeDivNameFunc();
       $scope.getDivisionData();
