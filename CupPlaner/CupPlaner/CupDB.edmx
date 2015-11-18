@@ -89,6 +89,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="IsAuto" Type="bool" Nullable="false" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PoolSet">
@@ -97,6 +98,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="IsAuto" Type="bool" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DivisionSet">
@@ -465,6 +467,7 @@
           <NavigationProperty Name="Matches" Relationship="CupDB.TeamMatch" FromRole="Team" ToRole="Match" />
           <NavigationProperty Name="Pool" Relationship="CupDB.PoolTeam" FromRole="Team" ToRole="Pool" />
           <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TeamTimeInterval" FromRole="Team" ToRole="TimeInterval" />
+          <Property Name="IsAuto" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Pool">
           <Key>
@@ -476,6 +479,7 @@
           <NavigationProperty Name="Division" Relationship="CupDB.DivisionPool" FromRole="Pool" ToRole="Division" />
           <NavigationProperty Name="FavoriteFields" Relationship="CupDB.PoolField" FromRole="Pool" ToRole="Field" />
           <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStagePool" FromRole="Pool" ToRole="TournamentStage" />
+          <Property Name="IsAuto" Type="Boolean" Nullable="false" ConcurrencyMode="None" />
         </EntityType>
         <EntityType Name="Division">
           <Key>
@@ -641,6 +645,7 @@
         <MappingFragment StoreEntitySet="TeamSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IsAuto" ColumnName="IsAuto" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -649,6 +654,7 @@
         <MappingFragment StoreEntitySet="PoolSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IsAuto" ColumnName="IsAuto" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -39,6 +39,21 @@ namespace CupPlaner.Helpers.Tests
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
                     //dtc.Delete(d.DivisionTournament.Id);
                 }
+
+                int maxNumOfTeams = 0;
+
+                foreach (Pool p in d.Pools)
+                {
+                    if (maxNumOfTeams < p.Teams.Count)
+                    {
+                        maxNumOfTeams = p.Teams.Count;
+                    }
+                }
+
+                for (int i = 1; i <= maxNumOfTeams; i++)
+                {
+                    db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
+                }
             }
             db.SaveChanges();
             
