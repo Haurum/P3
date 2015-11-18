@@ -230,7 +230,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Finalstage" Type="String" Nullable="false" />
+    <Property Name="Finalstage" Type="Int32" Nullable="false" />
     <Property Name="PoolPlacement" Type="Int32" Nullable="false" />
     <NavigationProperty Name="Division" Relationship="CupDB.DivisionFinalsLink" FromRole="FinalsLink" ToRole="Division" />
   </EntityType>

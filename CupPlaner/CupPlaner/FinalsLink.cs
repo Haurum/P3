@@ -15,7 +15,7 @@ namespace CupPlaner
     public partial class FinalsLink
     {
         public int Id { get; set; }
-        public string Finalstage { get; set; }
+        public int Finalstage { get; set; }
         public int PoolPlacement { get; set; }
     
         public virtual Division Division { get; set; }

@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/17/2015 13:26:44
+-- Date Created: 11/18/2015 08:49:28
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -160,7 +160,7 @@ ALTER TABLE `DivisionTournamentSet` ADD PRIMARY KEY (Id);
 
 CREATE TABLE `FinalsLinkSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
-	`Finalstage` longtext NOT NULL, 
+	`Finalstage` int NOT NULL, 
 	`PoolPlacement` int NOT NULL, 
 	`Division_Id` int NOT NULL);
 

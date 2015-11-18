@@ -167,7 +167,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Finalstage" Type="longtext" Nullable="false" />
+    <Property Name="Finalstage" Type="int" Nullable="false" />
     <Property Name="PoolPlacement" Type="int" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
   </EntityType>
