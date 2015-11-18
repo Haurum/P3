@@ -75,8 +75,8 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Create(string name, string password, List<DateTime> startTimes, List<DateTime> endTimes)
         {
-            try
-            {
+            //try
+            //{
                 if (!db.TournamentSet.Any(x => x.Password == password))
                 {
                     Tournament t = new Tournament();
@@ -107,24 +107,25 @@ namespace CupPlaner.Controllers
                         excel.Workbooks.Open(path);
                         Excel.Worksheet sheet = excel.Sheets["Cup"] as Excel.Worksheet;
                         Excel.Range range = sheet.get_Range("A1", Missing.Value);
+                        Excel.Range range2 = sheet.get_Range("A2", Missing.Value);
+                        Excel.Range poolsRange;
 
                         t.Name = range.Value;
 
-                        for (int i = 2; i < 100; i++)
+                        for (int i = 2; i < 10000; i++)
                         {
                             range = sheet.get_Range("A" + i.ToString(), Missing.Value);
-                            if (range.Value != null)
+                            range2 = sheet.get_Range("B" + i.ToString(), Missing.Value);
+                            if (range.Value != null || range2.Value == null)
                             {
-                                d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
-                                db.DivisionSet.Add(d);
-                                if (t.Divisions.Count > 1)
+                                if (t.Divisions.Count > 0)
                                 {
                                     for (int j = poolStart; j < i; j++)
                                     {
-                                        p = new Pool() { Division = d, Name = range.Value, IsAuto = false };
+                                        poolsRange = sheet.get_Range("B" + j.ToString(), Missing.Value);
+                                        p = new Pool() { Division = d, Name = poolsRange.Value, IsAuto = false };
                                         db.PoolSet.Add(p);
 
-                                        range = sheet.get_Range("B" + j.ToString(), Missing.Value);
                                         foreach (char c in charRange)
                                         {
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
@@ -137,9 +138,16 @@ namespace CupPlaner.Controllers
                                                 break;
                                         }
                                     }
-                                    poolStart = i;
                                 }
+
+                                if (range2.Value == null)
+                                    break;
+
+                                d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
+                                db.DivisionSet.Add(d);
+                                poolStart = i;
                             }
+                            
                         }
                     }
                     
@@ -158,11 +166,11 @@ namespace CupPlaner.Controllers
                     return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
-            }
+            /*}
             catch (Exception ex)
             {
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
         }
 
         // POST: Tournament/Edit/5
