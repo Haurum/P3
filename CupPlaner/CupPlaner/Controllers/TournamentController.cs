@@ -122,7 +122,7 @@ namespace CupPlaner.Controllers
                                 {
                                     for (int j = poolStart; j < i; j++)
                                     {
-                                        p = new Pool() { Division = d, Name = range.Value };
+                                        p = new Pool() { Division = d, Name = range.Value, IsAuto = false };
                                         db.PoolSet.Add(p);
 
                                         range = sheet.get_Range("B" + j.ToString(), Missing.Value);
@@ -131,7 +131,7 @@ namespace CupPlaner.Controllers
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
                                             if (!string.IsNullOrEmpty(teamsRange.Value))
                                             {
-                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p };
+                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false };
                                                 db.TeamSet.Add(newTeam);
                                             }
                                             else

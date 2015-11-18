@@ -142,6 +142,7 @@
     <Compile Include="Controllers\DivisionController.cs" />
     <Compile Include="Controllers\DivisionTournamentController.cs" />
     <Compile Include="Controllers\FieldController.cs" />
+    <Compile Include="Controllers\FinalsLinkController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\PoolController.cs" />
@@ -268,6 +269,7 @@
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Division\" />
     <Folder Include="Views\Field\" />
+    <Folder Include="Views\FinalsLink\" />
     <Folder Include="Views\Pool\" />
     <Folder Include="Views\Team\" />
     <Folder Include="Views\Tournament\" />
