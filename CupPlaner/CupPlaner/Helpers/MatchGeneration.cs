@@ -34,14 +34,6 @@ namespace CupPlaner.Helpers
                     }
                 }
 
-                int numOfFinals = d.FinalsLinks.ToList()[d.FinalsLinks.Count - 1].Finalstage;
-
-                for (int i = 1; i <= numOfFinals; i++)
-                {
-                    Pool p = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + i) + " slutspil", Division = d });
-
-                }
-
                 int finalsIndex = 0;
                 Pool autoPool = new Pool();
                 foreach (FinalsLink fl in d.FinalsLinks)
@@ -50,7 +42,7 @@ namespace CupPlaner.Helpers
                     if (finalsIndex < fl.Finalstage)
                     {
                         finalsIndex = fl.Finalstage;
-                        autoPool = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex), Division = d, IsAuto = true });
+                        autoPool = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex) + " slutspil", Division = d, IsAuto = true });
                     }
 
                     foreach (Pool p in d.Pools)
@@ -59,11 +51,29 @@ namespace CupPlaner.Helpers
                         {
                             if (p.Teams.Count >= fl.PoolPlacement)
                             {
-                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + p.Name, IsAuto = true, Pool = autoPool });
+                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + p.Name, IsAuto = true, Pool = autoPool });
                             }                          
                         }
+                    }                    
+                }
+
+
+                List<Pool> finalsPools = db.PoolSet.Where(x => x.IsAuto).ToList();
+                if (d.TournamentStructure == TournamentStructure.RoundRobin)
+                {
+                    foreach (Pool finalPool in finalsPools)
+                    {
+                        TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                        List<Team> teams = finalPool.Teams.ToList();
+                        for (int i = 0; i < teams.Count; i++)
+                        {
+                            for (int j = i + 1; j < teams.Count; j++)
+                            {
+
+                                db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[i], teams[j] }, TournamentStage = ts });
+                            }
+                        }
                     }
-                    
                 }
 
             }
