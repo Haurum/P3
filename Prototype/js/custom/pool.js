@@ -5,8 +5,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     {
       $scope.pool = data;
       $scope.divisionFieldSize = data.FieldSize;
-      console.log(data.FieldSize);
-      console.log($scope.pool.FieldSize);
     }).error(function(err) 
     {
       $scope.error = err;
@@ -19,13 +17,11 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.getFields = function() {
     $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId)
     .success(function(data){
-              console.log(data.Fields);
       for (var i=0; i < data.Fields.length; i++)
         {
           if(data.Fields[i].fieldSize === 11)
           {
             $scope.EmField.push(data.Fields[i]);
-            console.log(EmField);
           }
           else if(data.Fields[i].fieldSize === 8)
           {
@@ -36,7 +32,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
             $scope.FmFields.push(data.Fields[i]);
           }
         }
-        console.log($scope.EmField);
     }).error(function(err){
       $scope.error = err;
     })
@@ -55,16 +50,12 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $location.url("/team");
   }
 
-  $scope.changeFavFieldFunc = function() {
-    $scope.changeFavField = !$scope.changeFavField;
-  }
-
   $scope.setFavFieldFunc = function (favFieldsId) {
     $scope.favFieldsIds = [];
     $scope.favFieldsIds.push(favFieldsId);
     $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: pool.Name, divisionId: $routeParams.divisionId, fieldsIds: $scope.favFieldsIds})
     .success(function(data){
-      console.log(data);
+
     }).error(function(err){
       $scope.favFieldErr = err;
     })

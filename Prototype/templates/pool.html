@@ -40,17 +40,17 @@
           <h4>Puljes favorit bane</h4>
           <div ng-if="pool.FieldSize === 11">
             <label class="checkbox-inline" ng-repeat="Emfield in EmField track by $index" >
-              <input type="checkbox" ng-model="favFields" /> {{Emfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc()" /> {{Emfield.Name}}
             </label> 
           </div>
           <div ng-if="divisionFieldSize === 8">
             <label class="checkbox-inline" ng-repeat="Omfield in OmField track by $index" >
-              <input type="checkbox" ng-model="favFields" /> {{Omfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc()" /> {{Omfield.Name}}
             </label> 
           </div>
           <div ng-if="divisionFieldSize === 5">
             <label class="checkbox-inline" ng-repeat="Fmfield in FmField track by $index" >
-              <input type="checkbox" ng-model="favFields" /> {{Fmfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc()" /> {{Fmfield.Name}}
             </label> 
           </div>
         </div>
