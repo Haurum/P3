@@ -77,6 +77,7 @@
     <NavigationProperty Name="Matches" Relationship="CupDB.TeamMatch" FromRole="Team" ToRole="Match" />
     <NavigationProperty Name="Pool" Relationship="CupDB.PoolTeam" FromRole="Team" ToRole="Pool" />
     <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TeamTimeInterval" FromRole="Team" ToRole="TimeInterval" />
+    <Property Name="IsAuto" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="Pool">
     <Key>
@@ -88,6 +89,7 @@
     <NavigationProperty Name="Division" Relationship="CupDB.DivisionPool" FromRole="Pool" ToRole="Division" />
     <NavigationProperty Name="FavoriteFields" Relationship="CupDB.PoolField" FromRole="Pool" ToRole="Field" />
     <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStagePool" FromRole="Pool" ToRole="TournamentStage" />
+    <Property Name="IsAuto" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="Division">
     <Key>

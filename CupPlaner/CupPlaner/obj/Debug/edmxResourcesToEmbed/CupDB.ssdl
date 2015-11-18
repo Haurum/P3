@@ -84,6 +84,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="IsAuto" Type="bool" Nullable="false" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="PoolSet">
@@ -92,6 +93,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
+    <Property Name="IsAuto" Type="bool" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DivisionSet">
