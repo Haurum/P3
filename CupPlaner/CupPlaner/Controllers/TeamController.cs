@@ -42,7 +42,8 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(poolId);
-                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
+
+                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p, TimeIntervals = p.Division.Tournament.TimeIntervals });
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
