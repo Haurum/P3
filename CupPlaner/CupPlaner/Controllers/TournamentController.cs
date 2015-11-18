@@ -84,9 +84,8 @@ namespace CupPlaner.Controllers
                     HttpPostedFileBase file = null;
 
                     int poolStart = 2;
-                    
-
-                    if (Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                             
+                    if (Request != null && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         file = Request.Files[0];
                         string charRange = "CDEFGHIJKLMNOPQRSTY";
@@ -143,6 +142,7 @@ namespace CupPlaner.Controllers
                             }
                         }
                     }
+                    
                     List<TimeInterval> tis = new List<TimeInterval>();
                     for (int i = 0; i < startTimes.Count; i++)
                     {

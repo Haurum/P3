@@ -33,9 +33,9 @@ namespace CupPlaner.Controllers.Tests
         {
             //Create a new tournament
             dynamic jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
-            ID.TournamentId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual("New tournament added", jsonResult.message);
+            ID.TournamentId = jsonResult.id;
 
             //Create a new tournament with the same password
             jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;

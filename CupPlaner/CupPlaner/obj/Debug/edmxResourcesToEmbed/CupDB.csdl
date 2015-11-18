@@ -89,7 +89,7 @@
     <NavigationProperty Name="Division" Relationship="CupDB.DivisionPool" FromRole="Pool" ToRole="Division" />
     <NavigationProperty Name="FavoriteFields" Relationship="CupDB.PoolField" FromRole="Pool" ToRole="Field" />
     <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStagePool" FromRole="Pool" ToRole="TournamentStage" />
-    <Property Name="IsAuto" Type="Boolean" Nullable="false" />
+    <Property Name="IsAuto" Type="Boolean" Nullable="false" ConcurrencyMode="None" />
   </EntityType>
   <EntityType Name="Division">
     <Key>
