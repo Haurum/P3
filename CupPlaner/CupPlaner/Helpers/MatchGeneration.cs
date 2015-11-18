@@ -43,15 +43,27 @@ namespace CupPlaner.Helpers
                 }
 
                 int finalsIndex = 0;
+                Pool autoPool = new Pool();
                 foreach (FinalsLink fl in d.FinalsLinks)
                 {
                     
                     if (finalsIndex < fl.Finalstage)
                     {
                         finalsIndex = fl.Finalstage;
-                        Pool p = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex), Division = d });
+                        autoPool = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex), Division = d, IsAuto = true });
                     }
-                    Team t = db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + })
+
+                    foreach (Pool p in d.Pools)
+                    {
+                        if (!p.IsAuto)
+                        {
+                            if (p.Teams.Count >= fl.PoolPlacement)
+                            {
+                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + p.Name, IsAuto = true, Pool = autoPool });
+                            }                          
+                        }
+                    }
+                    
                 }
 
             }
