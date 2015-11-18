@@ -33,6 +33,14 @@ namespace CupPlaner.Helpers
                         }
                     }
                 }
+                int max = 0;
+                foreach (FinalsLink fl in d.FinalsLinks)
+                {
+                    if(max < fl.Finalstage)
+                    {
+                        max = fl.Finalstage;
+                    }
+                }
             }
             db.SaveChanges();
         }

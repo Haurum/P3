@@ -70,4 +70,20 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     })   
   }
 
+  $scope.changePoolNameFunc = function() {
+    $scope.changeName = !$scope.changeName;
+  }
+
+  $scope.changeNewPoolNameFunc = function(newName) {
+    $http.post($rootScope.apiUrl + "/Pool/Edit", { name: newName, id: $routeParams.poolId, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
+    .success(function(data){
+      console.log(data);
+      $scope.pool.Name = data.newName;
+      $scope.changePoolNameFunc();
+      $scope.getPoolData();
+    }).error(function(err){
+      $scope.editErr = err;
+    })
+  }
+
 }]);

@@ -78,11 +78,15 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 p.Name = name;
                 p.Division = db.DivisionSet.Find(divisionId);
-                p.FavoriteFields.Clear();
-                foreach (int fieldId in fieldIds)
+                if (fieldIds.Count > 0)
                 {
-                    p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
+                    p.FavoriteFields.Clear();
+                    foreach (int fieldId in fieldIds)
+                    {
+                        p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
+                    }
                 }
+                
 
                 db.Entry(p).State = EntityState.Modified;
                 db.SaveChanges();
