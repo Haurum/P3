@@ -33,14 +33,27 @@ namespace CupPlaner.Helpers
                         }
                     }
                 }
-                int max = 0;
+
+                int numOfFinals = d.FinalsLinks.ToList()[d.FinalsLinks.Count - 1].Finalstage;
+
+                for (int i = 1; i <= numOfFinals; i++)
+                {
+                    Pool p = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + i) + " slutspil", Division = d });
+
+                }
+
+                int finalsIndex = 0;
                 foreach (FinalsLink fl in d.FinalsLinks)
                 {
-                    if(max < fl.Finalstage)
+                    
+                    if (finalsIndex < fl.Finalstage)
                     {
-                        max = fl.Finalstage;
+                        finalsIndex = fl.Finalstage;
+                        Pool p = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex), Division = d });
                     }
+                    Team t = db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + })
                 }
+
             }
             db.SaveChanges();
         }
