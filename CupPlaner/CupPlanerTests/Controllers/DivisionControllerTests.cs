@@ -33,6 +33,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created division
             dynamic jsonResult = ((JsonResult)controller.Details(ID.DivisionId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.DivisionId, jsonResult.Id);
             Assert.AreEqual("U20 Drenge", jsonResult.Name);
             Assert.AreEqual(FieldSize.EightMan, jsonResult.FieldSize);

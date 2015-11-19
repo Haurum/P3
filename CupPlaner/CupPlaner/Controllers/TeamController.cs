@@ -102,7 +102,7 @@ namespace CupPlaner.Controllers
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Team deleted" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

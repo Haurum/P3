@@ -76,7 +76,7 @@ namespace CupPlaner.Controllers
                 db.Entry(ts).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Tournament stage edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

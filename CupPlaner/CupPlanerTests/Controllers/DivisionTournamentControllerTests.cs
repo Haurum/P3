@@ -41,6 +41,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the creared division tournament
             dynamic jsonResult = ((JsonResult)controller.Details(ID.DivisionTournamentId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.DivisionTournamentId, jsonResult.Id);
             Assert.AreEqual((TournamentStructure)0, jsonResult.TournamentStructure);
 
