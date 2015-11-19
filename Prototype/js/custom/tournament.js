@@ -260,6 +260,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
         $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
            
       }else{
+
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
             $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
@@ -272,18 +273,20 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
             startTimes: $scope.startDateTimes,
             endTimes: $scope.endDateTimes
           }
+
           if (uploader.queue.length > 0)
           {
             uploader.queue[0].upload();
           }
           else
           {
+            
             $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
               if(Data.status === "error"){
                 $scope.error = Data.message;
               } else {
-                $location.path("tournament/" + Data.Id);
+                $location.path("tournament/" + Data.id);
               }
             }).error(function(err) 
             {

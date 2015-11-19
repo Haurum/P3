@@ -84,8 +84,14 @@ namespace CupPlaner.Controllers
                     HttpPostedFileBase file = null;
 
                     int poolStart = 2;
-                             
-                    if (Request != null && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+
+                    List<TimeInterval> tis = new List<TimeInterval>();
+                    for (int i = 0; i < startTimes.Count; i++)
+                    {
+                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    }
+
+                if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         file = Request.Files[0];
                         string charRange = "CDEFGHIJKLMNOPQRSTY";
@@ -132,6 +138,7 @@ namespace CupPlaner.Controllers
                                             if (!string.IsNullOrEmpty(teamsRange.Value))
                                             {
                                                 Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false };
+                                                newTeam.TimeIntervals = tis;
                                                 db.TeamSet.Add(newTeam);
                                             }
                                             else
@@ -151,11 +158,7 @@ namespace CupPlaner.Controllers
                         }
                     }
                     
-                    List<TimeInterval> tis = new List<TimeInterval>();
-                    for (int i = 0; i < startTimes.Count; i++)
-                    {
-                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
-                    }
+                    
 
                     t.Name = name;
                     t.Password = password;
