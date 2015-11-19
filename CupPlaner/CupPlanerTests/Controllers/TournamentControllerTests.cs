@@ -17,7 +17,9 @@ namespace CupPlaner.Controllers.Tests
         public static int DivisionId = 8;
         public static int DivisionTournamentId = 7;
         public static int PoolId = 32;
-        public static int TournamentStageId = 0;
+        public static int TournamentStageId = 14;
+        public static int TeamId = 559;
+        public static int MatchId = 0;
     }
     
     [TestClass()]
@@ -61,6 +63,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created tournament
             dynamic jsonResult = ((JsonResult)controller.Details(ID.TournamentId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual("TestName", jsonResult.Name);
             Assert.AreEqual("TestPassword", jsonResult.Password);
             Assert.AreEqual(DateTime.Parse("16-11-2015 08:00:00"), jsonResult.TimeIntervals[0].StartTime);

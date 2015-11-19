@@ -34,6 +34,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created division
             dynamic jsonResult = ((JsonResult)controller.Details(ID.PoolId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
             Assert.AreEqual("Pulje Test", jsonResult.Name);
             
