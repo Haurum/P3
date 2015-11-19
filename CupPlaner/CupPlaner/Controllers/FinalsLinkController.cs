@@ -22,7 +22,7 @@ namespace CupPlaner.Controllers
             try
             {
                 FinalsLink fl = db.FinalsLinkSet.Find(id);
-                object obj = new { id = fl.Id, Finalstage = fl.Finalstage, PoolPlacement = fl.PoolPlacement, Division_Id = fl.Division };
+                object obj = new { status = "success", id = fl.Id, Finalstage = fl.Finalstage, PoolPlacement = fl.PoolPlacement, Division_Id = fl.Division };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

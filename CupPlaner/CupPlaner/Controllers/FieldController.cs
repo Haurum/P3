@@ -35,7 +35,7 @@ namespace CupPlaner.Controllers
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
                     }
                 }
-                object obj = new { Fields = fields };
+                object obj = new { status = "success", Fields = fields };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)

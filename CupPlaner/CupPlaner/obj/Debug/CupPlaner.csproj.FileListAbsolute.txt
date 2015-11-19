@@ -194,3 +194,4 @@ C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.pdb
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
+C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache

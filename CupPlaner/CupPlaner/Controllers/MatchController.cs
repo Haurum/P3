@@ -19,9 +19,16 @@ namespace CupPlaner.Controllers
         // GET: Match/Details/5
         public ActionResult Details(int id)
         {
-            Match m = db.MatchSet.Find(id);
-            object obj = new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration };
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            try
+            {
+                Match m = db.MatchSet.Find(id);
+                object obj = new { status = "success", Id = m.Id, StartTime = m.StartTime, Duration = m.Duration };
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find match", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpPost]

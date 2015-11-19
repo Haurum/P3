@@ -38,8 +38,9 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
+                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, DivisionName = p.Division.Name, Teams = teams, FavoriteFields = ffs };
+                
 
-                object obj = new { Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

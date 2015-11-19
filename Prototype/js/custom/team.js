@@ -59,6 +59,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   $scope.remove = function() {
     $http.post($rootScope.apiUrl + "/Team/Delete", { id: $routeParams.teamId })
     .success(function(data) {
+      console.log(data);
       $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
     }).error(function(data) {
       $scope.deleteErr = data;
@@ -146,7 +147,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       
           $http.post("http://localhost:50229/Team/Edit/", teamData).success(function(Data)
           {
-            console.log(Data);
             if(Data.status === "error"){
               $scope.error = Data.message;
             }

@@ -19,20 +19,26 @@ namespace CupPlaner.Controllers
         // GET: TournamentStage/Details/5
         public ActionResult Details(int id)
         {
-            TournamentStage ts = db.TournamentStageSet.Find(id);
-            List<object> matchlist = new List<object>();
-            if (ts.Matches != null)
+            try
             {
-                foreach (Match m  in ts.Matches)
+                TournamentStage ts = db.TournamentStageSet.Find(id);
+                List<object> matchlist = new List<object>();
+                if (ts.Matches != null)
                 {
-                    matchlist.Add(new Match() { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                    foreach (Match m in ts.Matches)
+                    {
+                        matchlist.Add(new Match() { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                    }
                 }
+
+                object obj = new { status = "success", Id = ts.Id, TournamentStructure = ts.TournamentStructure, Matches = matchlist };
+
+                return Json(obj, JsonRequestBehavior.AllowGet);
             }
-
-            object obj = new { Id = ts.Id, TournamentStructure = ts.TournamentStructure, Matches = matchlist };
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
-
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find tournament stage", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: TournamentStage/Create
@@ -70,7 +76,7 @@ namespace CupPlaner.Controllers
                 db.Entry(ts).State = EntityState.Modified;
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "Tournament stage edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
