@@ -52,14 +52,11 @@ body {
 }
 
 .poolLink{
-  color: #000;
-  text-align: center;
-  text-decoration: underline; 
+  color: #fff;
 }
 
 .poolLink:hover {
   text-decoration: none;
-  color: #5a5a5a;
 }
 
 #banner {
@@ -119,17 +116,20 @@ body {
   text-align: center;
 }
 
-#changeDivName {
-
-}
-
-#newDivNameForm {
-
-}
-
 .toTop {
   color: #808080;
   margin-top: 15px;
+}
+
+#puljeHeading {
+  margin-top: 50px;
+}
+
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
 }
 
 @media handheld, only screen and (max-width: 400px){ 

@@ -63,12 +63,13 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
 
   $scope.setFavFieldFunc = function (favFieldsId) {
     //$scope.favFieldsIds.push(favFieldsId);
-    //console.log($scope.favFieldsIds);
-    $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldsIds: favFieldsId})
+    console.log($scope.favFieldsId);
+    $http.post($rootScope.apiUrl + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldsIds: favFieldsId})
     .success(function(data){
 
     }).error(function(err){
       $scope.favFieldErr = err;
+      console.log(err);
     })
   }
 
