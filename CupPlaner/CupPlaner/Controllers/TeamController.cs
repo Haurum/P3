@@ -96,18 +96,19 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            try
-            {
+           // try
+           // {
                 Team t = db.TeamSet.Find(id);
+                db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
+            //}
+            /*catch (Exception ex)
             {
                 return Json(new { status = "error", message = "Team not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
         }
     }
 }
