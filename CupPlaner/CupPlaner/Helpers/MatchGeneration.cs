@@ -45,33 +45,30 @@ namespace CupPlaner.Helpers
                         autoPool = db.PoolSet.Add(new Pool() { Name = d.Name + " " + (char)(64 + finalsIndex) + " slutspil", Division = d, IsAuto = true });
                     }
 
-                    foreach (Pool p in d.Pools)
+                    foreach (Pool pool in d.Pools)
                     {
-                        if (!p.IsAuto)
+                        if (!pool.IsAuto)
                         {
-                            if (p.Teams.Count >= fl.PoolPlacement)
+                            if (pool.Teams.Count >= fl.PoolPlacement)
                             {
-                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + p.Name, IsAuto = true, Pool = autoPool });
+                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + pool.Name, IsAuto = true, Pool = autoPool });
                             }                          
                         }
                     }                    
                 }
-
+                db.SaveChanges();
 
                 List<Pool> finalsPools = db.PoolSet.Where(x => x.IsAuto).ToList();
-                if (d.TournamentStructure == TournamentStructure.RoundRobin)
+                foreach (Pool finalPool in finalsPools)
                 {
-                    foreach (Pool finalPool in finalsPools)
+                    TournamentStage tstage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                    List<Team> teams = finalPool.Teams.ToList();
+                    for (int k = 0; k < teams.Count; k++)
                     {
-                        TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
-                        List<Team> teams = finalPool.Teams.ToList();
-                        for (int i = 0; i < teams.Count; i++)
+                        for (int l = k + 1; l < teams.Count; l++)
                         {
-                            for (int j = i + 1; j < teams.Count; j++)
-                            {
 
-                                db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[i], teams[j] }, TournamentStage = ts });
-                            }
+                            db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[k], teams[l] }, TournamentStage = tstage });
                         }
                     }
                 }
@@ -79,28 +76,6 @@ namespace CupPlaner.Helpers
             }
             db.SaveChanges();
         }
-
-        /*private void GenerateGroupStage(Division division, DivisionTournament divTournament)
-        {
-            foreach (Pool p in division.Pools)
-            {
-                    TournamentStage ts = tsc.Create(divTournament.Id, p.Id);
-                    GenerateRoundRobin(p, ts);
-            }
-        }
-
-        private void GenerateRoundRobin(Pool p, TournamentStage ts)
-        {
-            List<Team> teams = p.Teams.ToList();
-            for (int i = 0; i < p.Teams.Count; i++)
-            {
-                for (int j = i + 1; j < p.Teams.Count; j++)
-                {
-                        mc.Create(teams[i].Id, teams[j].Id, ts.Id);
-
-                }
-            }
-        }*/
 
     }
 }

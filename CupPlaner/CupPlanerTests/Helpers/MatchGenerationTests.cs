@@ -40,24 +40,36 @@ namespace CupPlaner.Helpers.Tests
                     //dtc.Delete(d.DivisionTournament.Id);
                 }
 
-                int maxNumOfTeams = 0;
-
-                foreach (Pool p in d.Pools)
+                foreach (Pool pool in d.Pools.ToList())
                 {
-                    if (maxNumOfTeams < p.Teams.Count)
+                    if (pool.IsAuto)
                     {
-                        maxNumOfTeams = p.Teams.Count;
+                        db.TeamSet.RemoveRange(pool.Teams);
+                        db.PoolSet.Remove(pool);
                     }
                 }
 
-                for (int i = 1; i <= maxNumOfTeams; i++)
+                if(d.FinalsLinks.Count == 0)
                 {
-                    db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
+                    int maxNumOfTeams = 0;
+
+                    foreach (Pool p in d.Pools)
+                    {
+                        if (maxNumOfTeams < p.Teams.Count)
+                        {
+                            maxNumOfTeams = p.Teams.Count;
+                        }
+                    }
+
+                    for (int i = 1; i <= maxNumOfTeams; i++)
+                    {
+                        db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
+                    }
                 }
             }
             db.SaveChanges();
             
-           mg.Generate(1);
+            mg.Generate(1);
         }
     }
 }
