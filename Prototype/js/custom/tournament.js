@@ -99,6 +99,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
         else {
           $scope.createNewFmField();
         }
+        $scope.getDivisions();
     }).error(function(err){
       $scope.createErr = err;
     })
@@ -147,7 +148,8 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
         $scope.newDivName = "";
         $scope.newMatchDuration = "";
         $scope.chooseField = "";
-        
+
+        $scope.getDivisions();
       }).error(function(data){
         $scope.newDivError = data;
       })

@@ -13,7 +13,7 @@ namespace CupPlaner.Controllers.Tests
 {
     public class ID
     {
-        public static int TournamentId = 2;
+        public static int TournamentId = 3;
         public static int DivisionId = 7;
         public static int DivisionTournamentId = 1;
         public static int PoolId = 34;
@@ -70,7 +70,7 @@ namespace CupPlaner.Controllers.Tests
             //Find a tournament that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find Tournament", jsonResult.message);
+            Assert.AreEqual("Could not find tournament", jsonResult.message);
         }
 
         [TestMethod()]
