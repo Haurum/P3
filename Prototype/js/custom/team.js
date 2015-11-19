@@ -146,7 +146,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       
           $http.post("http://localhost:50229/Team/Edit/", teamData).success(function(Data)
           {
-            console.log(Data);
             if(Data.status === "error"){
               $scope.error = Data.message;
             }
