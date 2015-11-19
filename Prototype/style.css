@@ -75,6 +75,7 @@ body {
 
 .footer {
   margin-top: 250px;
+  display: inline;
 }
 
 .navbar-brand img{
@@ -124,6 +125,11 @@ body {
 
 #newDivNameForm {
 
+}
+
+.toTop {
+  color: #808080;
+  margin-top: 15px;
 }
 
 @media handheld, only screen and (max-width: 400px){ 
