@@ -102,16 +102,9 @@ namespace CupPlaner.Controllers
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
-
-<<<<<<< HEAD
-                return Json(new { status = "success", message = "Team deleted" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-=======
                 return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
             //}
             /*catch (Exception ex)
->>>>>>> origin/master
             {
                 return Json(new { status = "error", message = "Team not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }*/
