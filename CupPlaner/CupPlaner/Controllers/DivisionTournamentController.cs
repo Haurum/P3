@@ -39,7 +39,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { Id = dt.Id, TournamentStructure = dt.TournamentStructure, Division = dt.Division, TournamentStages = tournamentStages };
+                object obj = new { status = "success", Id = dt.Id, TournamentStructure = dt.TournamentStructure, Division = dt.Division, TournamentStages = tournamentStages };
 
                 return Json(dt, JsonRequestBehavior.AllowGet);
             }
