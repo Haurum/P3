@@ -13,10 +13,16 @@ namespace CupPlaner.Controllers.Tests
     public class DivisionTournamentControllerTests
     {
         DivisionTournamentController controller = new DivisionTournamentController();
+        CupDBContainer db = new CupDBContainer();
 
         [TestMethod()]
-        public void CreateTest()
+        public void Initialize()
         {
+            Division d = db.DivisionSet.Find(ID.DivisionId);
+            DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { Division = d, TournamentStructure = TournamentStructure.RoundRobin });
+            db.SaveChanges();
+            ID.DivisionTournamentId = dt.Id;
+
             //Create a new division tournament
             /*dynamic jsonResult = ((JsonResult)controller.Create(ID.DivisionId)).Data;
 
