@@ -69,6 +69,7 @@ namespace CupPlaner.Controllers
                 }
                 Team t = db.TeamSet.Find(id);
                 t.Name = name;
+                t.TimeIntervals.Clear();
                 t.TimeIntervals = tis;
 
                 db.Entry(t).State = EntityState.Modified;

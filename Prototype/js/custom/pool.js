@@ -49,7 +49,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.addTeamToPool = function(name, index) {
     $http.post($rootScope.apiUrl + "/Team/Create", { name: name, poolId: $routeParams.poolId })
     .success(function(data) {
-      
+      $scope.getPoolData();
     }).error(function(err){
      $scope.deleteErr = err;
     })   

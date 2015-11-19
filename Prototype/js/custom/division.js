@@ -26,6 +26,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $http.post($rootScope.apiUrl + "/Pool/Create", { name: name, divisionId: $routeParams.divisionId })
     .success(function(data) {
       $scope.newPoolFunc();
+      $scope.getDivisionData();
     }).error(function(err){
      $scope.deleteErr = err;
     })   
