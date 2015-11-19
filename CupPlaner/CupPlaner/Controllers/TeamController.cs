@@ -16,19 +16,26 @@ namespace CupPlaner.Controllers
         // Returns a Json object, which contains a copy of the corresponding Team variables.
         public ActionResult Details(int id)
         {
-            Team t = db.TeamSet.Find(id);
-            List<object> times = new List<object>();
-            if (t.TimeIntervals != null)
+            try
             {
-                foreach (TimeInterval ti in t.TimeIntervals)
+                Team t = db.TeamSet.Find(id);
+                List<object> times = new List<object>();
+                if (t.TimeIntervals != null)
                 {
-                    times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
+                    foreach (TimeInterval ti in t.TimeIntervals)
+                    {
+                        times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
+                    }
                 }
+
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, TimeIntervals = times };
+
+                return Json(obj, JsonRequestBehavior.AllowGet);
             }
-
-            object obj = new { Id = t.Id, Name = t.Name, TimeIntervals = times };
-
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find team", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         // POST: Team/Create - Tries to create a Team object, with the parameters "name" and "poolId".
@@ -89,18 +96,19 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            try
-            {
+           // try
+           // {
                 Team t = db.TeamSet.Find(id);
+                db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
+            //}
+            /*catch (Exception ex)
             {
                 return Json(new { status = "error", message = "Team not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
         }
     }
 }
