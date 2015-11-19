@@ -177,6 +177,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   };
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
     console.info('onSuccessItem', fileItem, response, status, headers);
+    $location.path("tournament/" + response.id);
   };
   uploader.onErrorItem = function(fileItem, response, status, headers) {
     console.info('onErrorItem', fileItem, response, status, headers);
