@@ -39,7 +39,7 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
-                if (p.TournamentStage != null && p.TournamentStage.Matches > 0)
+                if (p.TournamentStage != null && p.TournamentStage.Matches.Count > 0)
                 {
                     foreach (Match m in p.TournamentStage.Matches)
                     {
