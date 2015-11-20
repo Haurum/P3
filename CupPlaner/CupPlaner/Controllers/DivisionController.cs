@@ -21,6 +21,7 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
+                List<object> matches = new List<object>();
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
@@ -33,8 +34,21 @@ namespace CupPlaner.Controllers
                         pools.Add(new { Id = p.Id, Name = p.Name, Teams = teams });
                     }
                 }
+                if (d.DivisionTournament != null && d.DivisionTournament.TournamentStage.Count > 0)
+                {
+                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                    {
+                        if (ts.Matches.Count > 0)
+                        {
+                            foreach (Match m in ts.Matches)
+                            {
+                                matches.Add(new { Id = m.Id, Team1 = m.Teams.First(), Team2 = m.Teams.Last() });
+                            }
+                        }                      
+                    }
+                }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, DivisionTournament = d.DivisionTournament };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

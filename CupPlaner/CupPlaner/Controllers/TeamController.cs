@@ -20,6 +20,7 @@ namespace CupPlaner.Controllers
             {
                 Team t = db.TeamSet.Find(id);
                 List<object> times = new List<object>();
+                List<object> matches = new List<object>();
                 if (t.TimeIntervals != null)
                 {
                     foreach (TimeInterval ti in t.TimeIntervals)
@@ -27,8 +28,15 @@ namespace CupPlaner.Controllers
                         times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
                     }
                 }
+                if (t.Matches.Count > 0)
+                {
+                    foreach (Match m in t.Matches)
+                    {
+                        matches.Add(new { Id = m.Id, Team1 = m.Teams.First(), Team2 = m.Teams.Last() });
+                    }
+                }
 
-                object obj = new { status = "success", Id = t.Id, Name = t.Name, TimeIntervals = times };
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, TimeIntervals = times, Matches = matches };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

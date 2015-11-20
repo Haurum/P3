@@ -24,6 +24,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 List<object> teams = new List<object>();
                 List<object> ffs = new List<object>();
+                List<object> matches = new List<object>();
                 if (p.Teams != null)
                 {
                     foreach (Team t in p.Teams)
@@ -38,7 +39,14 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
-                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, DivisionName = p.Division.Name, Teams = teams, FavoriteFields = ffs };
+                if (p.TournamentStage != null && p.TournamentStage.Matches > 0)
+                {
+                    foreach (Match m in p.TournamentStage.Matches)
+                    {
+                        matches.Add(new { Id = m.Id, Team1 = m.Teams.First(), Team2 = m.Teams.Last() });
+                    }
+                }
+                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, DivisionName = p.Division.Name, Teams = teams, FavoriteFields = ffs, Matches = matches };
                 
 
 
