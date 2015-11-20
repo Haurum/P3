@@ -16,9 +16,16 @@ namespace CupPlaner.Controllers
         // Returns a Json object, which contains a copy of the corresponding Field variables.
         public ActionResult Details(int id)
         {
-            Field f = db.FieldSet.Find(id);
-            object obj = new { Id = f.Id, name = f.Name, size = f.Size };
-            return Json(obj, JsonRequestBehavior.AllowGet);
+            try
+            {
+                Field f = db.FieldSet.Find(id);
+                object obj = new { status = "success", Id = f.Id, name = f.Name, size = f.Size };
+                return Json(obj, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "Could not find field", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult GetAllTournamentFields(int tournamentId)
@@ -40,7 +47,7 @@ namespace CupPlaner.Controllers
             }
             catch(Exception ex)
             {
-                return Json(new { status = "error", message = "could not find fields", details = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Could not find fields", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -98,7 +105,7 @@ namespace CupPlaner.Controllers
         // Deletes the Field object from the FieldSet in the database, and saves the changes, if succeeded.
         // Returns a Json object, indicating whether it succeeded deleting the Field or not.
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult Delete(int id)
         {
             try
             {
@@ -106,7 +113,7 @@ namespace CupPlaner.Controllers
                 db.FieldSet.Remove(f);
                 db.SaveChanges();
 
-                return Json(new { status = "status", message = "Field deleted" });
+                return Json(new { status = "success", message = "Field deleted" });
             }
             catch (Exception ex)
             {

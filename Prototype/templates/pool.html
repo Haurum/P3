@@ -84,9 +84,9 @@
             <th>Hold 1</th>
             <th>Hold 2</th>
           </tr>
-          <tr ng-repeat="">
-            <td> {{}} </td>
-            <td> {{}} </td>
+          <tr ng-repeat="match in pool.Matches track by $index">
+            <td> {{match.Team1.name}} </td>
+            <td> {{match.Team2.name}} </td>
           </tr>
         </table>
       </div>
