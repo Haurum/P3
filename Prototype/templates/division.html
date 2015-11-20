@@ -1,10 +1,8 @@
 <div class="row">
   <div class="col-lg-12 text-center">
     <ul class="breadcrumb">
-      <li><a href="#/">Forside</a></li>
-      <li><a href="#/addTournament">Opret ny turnering</a></li>
-      <li><a href="#/tournament">Turneringsoversigt</a></li>
-      <li class="active"><a href="">{{ division.Name }}</a></li>
+      <li><a ng-click="gotoTournament()">Turneringsoversigt</a></li>
+      <li class="active"><a>{{ division.Name }}</a></li>
     </ul>
     <div id="changeDivName">
       <div ng-if="!changeName">
@@ -146,6 +144,11 @@
     <div class="col-md-12 text-center">
       <table class="table table-hover" id="poolViewTable">
         <tr>
+        <!--
+          <th>Pulje</th>
+          <th>Dag</th>
+          <th>Tid</th>
+          <th>Bane</th> -->
           <th>Hold 1</th>
           <th>Hold 2</th>
         </tr>

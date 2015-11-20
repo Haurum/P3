@@ -1,11 +1,10 @@
 <div class="row">
   <div class="col-md-12 text-center">
     <ul class="breadcrumb">
-      <li><a href="#/">Forside</a></li>
-      <li><a href="#/addTournament">Opret ny turnering</a></li>
-      <li><a href="#/tournament">Turneringsoversigt</a></li>
-      <li><a href="#/division">{{ division.Name }}</a></li>
-      <li><a href="#/pool">{{ pool.Name }}</a></li>
+      <li><a ng-click="gotoTournament()">Turneringsoversigt</a></li>
+      <li><a ng-click="gotoDivision()">Rækkeoversigt</a></li>
+      <li><a ng-click="gotoPool()">Puljeoversigt</a></li>
+      <li><a>{{ team.Name }}</a></li>
     </ul>
     <div id="changeTeamName">
       <div ng-if="!changeName">

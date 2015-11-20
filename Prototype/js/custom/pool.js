@@ -63,6 +63,14 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $location.url($location.url() + "/team/" + currTeam.Id);
   }
 
+  $scope.gotoTournament = function() {
+    $location.url("/tournament/" + $routeParams.tournamentId);
+  }
+
+  $scope.gotoDivision = function() {
+    $location.url("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+  }
+
   $scope.favFieldsIds = [];
   $scope.setFavFieldFunc = function (favFieldsId) {
     $scope.favFieldsIds.push(favFieldsId);

@@ -38,8 +38,8 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = t.Id, Name = t.Name, TimeIntervals = times, Matches = matches };
-
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, TimeIntervals = times, Matches = matches};
+                        
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

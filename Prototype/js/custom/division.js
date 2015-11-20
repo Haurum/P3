@@ -11,6 +11,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     .success(function(data)
     {
       $scope.division = data;
+      console.log($scope.division.tournamentId);
     }).error(function(err) 
     {
       $scope.error = err;
@@ -86,6 +87,11 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $rootScope.currPoolIndex = indexP;
     $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id)
   }
+
+$scope.gotoTournament = function() {
+  $location.url("/tournament/" + $routeParams.tournamentId);
+}
+
   $scope.changeDivNameFunc = function() {
     $scope.changeName = !$scope.changeName;
   }

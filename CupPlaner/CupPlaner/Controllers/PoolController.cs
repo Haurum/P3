@@ -48,7 +48,7 @@ namespace CupPlaner.Controllers
                         matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
                     }
                 }
-                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, DivisionName = p.Division.Name, Teams = teams, FavoriteFields = ffs, Matches = matches };
+                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs, Matches = matches };
                 
 
 
