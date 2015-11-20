@@ -38,7 +38,6 @@ namespace CupPlaner.Controllers.Tests
                 Assert.Fail();
             }
             catch { }
-
         }
 
         [TestMethod()]
@@ -58,19 +57,62 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void ScheduleTest()
         {
-            Assert.Fail();
+            //Schedule the created match
+            dynamic jsonResult = ((JsonResult)controller.Schedule(ID.MatchId, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
+            Assert.AreEqual("New match added", jsonResult.message);
+
+            //Check to see if the changes have been made successfully
+            jsonResult = ((JsonResult)controller.Details(ID.MatchId)).Data;
+            Assert.AreEqual(60, jsonResult.Duration);
+            Assert.AreEqual(DateTime.Parse("2015-11-17 11:20:00"), jsonResult.StartTime);
+
+            //Schedule a new match, but to a non-existing match ID
+            jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
+            //Schedule a new match, but with an invalid start time parameter
+            jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
+            //Schedule a new match, but to a non-existing field
+            jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
         }
 
         [TestMethod()]
         public void EditTest()
         {
-            Assert.Fail();
+            //Edit the created match
+            dynamic jsonResult = ((JsonResult)controller.Edit(ID.MatchId, "18-11-2015 12:00:00", 40)).Data;
+            Assert.AreEqual("success", jsonResult.status);
+
+            //Check to see if edits have been saved
+            jsonResult = ((JsonResult)controller.Details(ID.MatchId)).Data;
+            Assert.AreEqual(40, jsonResult.Duration);
+            Assert.AreEqual(DateTime.Parse("2015-11-18 12:00:00"), jsonResult.StartTime);
+
+            //Edit a match that does not exist
+            jsonResult = ((JsonResult)controller.Edit(999999, "18-11-2015 12:00:00", 40)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
+            //Edit a match with an unvalid date as parameter
+            jsonResult = ((JsonResult)controller.Edit(ID.MatchId, "NotADateTime", 40)).Data;
+            Assert.AreEqual("error", jsonResult.status);
         }
 
         [TestMethod()]
         public void DeleteTest()
         {
-            Assert.Fail();
+            //Delete the created pool
+            dynamic jsonResult = ((JsonResult)controller.Delete(ID.MatchId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
+            Assert.AreEqual("Match deleted", jsonResult.message);
+
+            //Delete a pool that does not exist
+            jsonResult = ((JsonResult)controller.Delete(999999)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+            Assert.AreEqual("Match not deleted", jsonResult.message);
         }
     }
 }
