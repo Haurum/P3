@@ -23,7 +23,7 @@ namespace CupPlaner.Helpers
                 DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = d.TournamentStructure, Division = d });
                 foreach (Pool p in d.Pools)
                 {
-                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = TournamentStructure.RoundRobin });
                     List<Team> teams = p.Teams.ToList();
                     for (int i = 0; i < teams.Count; i++)
                     {
@@ -61,24 +61,35 @@ namespace CupPlaner.Helpers
                 
                 //finals matches generation
                 List<Pool> finalsPools = d.Pools.Where(x => x.IsAuto).ToList();
-
-                if (d.TournamentStructure == TournamentStructure.RoundRobin)
+                foreach (Pool finalPool in finalsPools)
                 {
-                    foreach (Pool finalPool in finalsPools)
+                    TournamentStage tstage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                    List<Team> teams = finalPool.Teams.ToList();
+
+                    if (tstage.TournamentStructure == TournamentStructure.RoundRobin)
                     {
-                        TournamentStage tstage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
-                        List<Team> teams = finalPool.Teams.ToList();
                         for (int k = 0; k < teams.Count; k++)
                         {
                             for (int l = k + 1; l < teams.Count; l++)
                             {
-
                                 db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[k], teams[l] }, TournamentStage = tstage, Duration = d.MatchDuration });
                             }
                         }
                     }
-                }    
-
+                    else
+                    {
+                        int pow = 0;
+                        while (Math.Pow(2, pow) < teams.Count)
+                        {
+                            pow++;
+                        }
+                        int powOfTwo = (int)Math.Pow(2, pow);
+                        if (powOfTwo != teams.Count)
+                        {
+                            
+                        }
+                    }                
+                }               
             }
             db.SaveChanges();
         }
