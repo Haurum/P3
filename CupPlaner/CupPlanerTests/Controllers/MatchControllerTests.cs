@@ -44,7 +44,15 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DetailsTest()
         {
-            Assert.Fail();
+            //Find the created match
+            dynamic jsonResult = ((JsonResult)controller.Details(ID.MatchId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
+            Assert.AreEqual(ID.MatchId, jsonResult.Id);
+
+            //Find a match that does not exist
+            jsonResult = ((JsonResult)controller.Details(999999)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+            Assert.AreEqual("Could not find match", jsonResult.message);
         }
 
         [TestMethod()]
