@@ -125,11 +125,8 @@ body {
   margin-top: 50px;
 }
 
-.row-eq-height {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display:         flex;
+#poolViewTable {
+  margin-top: 15px;
 }
 
 @media handheld, only screen and (max-width: 400px){ 
