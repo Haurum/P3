@@ -39,11 +39,13 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
-                if (p.TournamentStage != null && p.TournamentStage.Matches > 0)
+                if (p.TournamentStage != null && p.TournamentStage.Matches.Count > 0)
                 {
                     foreach (Match m in p.TournamentStage.Matches)
                     {
-                        matches.Add(new { Id = m.Id, Team1 = m.Teams.First(), Team2 = m.Teams.Last() });
+                        Team team1 = m.Teams.First();
+                        Team team2 = m.Teams.Last();
+                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
                     }
                 }
                 object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, DivisionName = p.Division.Name, Teams = teams, FavoriteFields = ffs, Matches = matches };

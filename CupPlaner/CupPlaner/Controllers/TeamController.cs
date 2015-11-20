@@ -32,7 +32,9 @@ namespace CupPlaner.Controllers
                 {
                     foreach (Match m in t.Matches)
                     {
-                        matches.Add(new { Id = m.Id, Team1 = m.Teams.First(), Team2 = m.Teams.Last() });
+                        Team team1 = m.Teams.First();
+                        Team team2 = m.Teams.Last();
+                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id}, Team2 = new{name = team2.Name, id = team2.Id}});
                     }
                 }
 
