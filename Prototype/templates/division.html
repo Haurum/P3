@@ -133,18 +133,28 @@
             <option value="">D-slutspil</option>
           </select>
         </div>
-      </div>
-         
+      </div>         
       <select class="finals-select">
         <option value="">Knockout</option>
         <option value="">Round Robin</option>
         <option value="">Round Robin med finaler</option>
       </select>
-
-      <p></p>
       <button class="btn btn-default">Opdater</button>
+    </div>   
+  </div>
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <table class="table table-hover" id="poolViewTable">
+        <tr>
+          <th>Hold 1</th>
+          <th>Hold 2</th>
+        </tr>
+        <tr ng-repeat="match in division.Matches track by $index">
+          <td> {{match.Team1.name}} </td>
+          <td> {{match.Team2.name}} </td>
+        </tr>
+      </table>
     </div>
-    
   </div>
 </div>
 </div>
