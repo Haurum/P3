@@ -53,7 +53,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a tournament stage that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find tournament stage", jsonResult.message);
         }
 
         [TestMethod()]
@@ -62,7 +61,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created tournament stage
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.TournamentStageId, MatchIDs)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament stage edited", jsonResult.message);
 
             //Check to see if the edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.TournamentStageId)).Data;
@@ -72,12 +70,10 @@ namespace CupPlaner.Controllers.Tests
             //Edit a tournament stage that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, MatchIDs)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament stage not edited", jsonResult.message);
 
             //Edit a tournament stage passing null as the second parameter
             jsonResult = ((JsonResult)controller.Edit(ID.TournamentStageId, null)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament stage not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -86,12 +82,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created tournament
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.TournamentStageId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament stage deleted", jsonResult.message);
 
             //Delete a tournament that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament stage not deleted", jsonResult.message);
         }
     }
 }

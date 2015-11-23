@@ -51,7 +51,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a match that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find match", jsonResult.message);
         }
 
         [TestMethod()]
@@ -60,7 +59,6 @@ namespace CupPlaner.Controllers.Tests
             //Schedule the created match
             dynamic jsonResult = ((JsonResult)controller.Schedule(ID.MatchId, "17-11-2015 11:20:00", ID.FieldId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New match added", jsonResult.message);
 
             //Check to see if the changes have been made successfully
             jsonResult = ((JsonResult)controller.Details(ID.MatchId)).Data;
@@ -107,12 +105,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created pool
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.MatchId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Match deleted", jsonResult.message);
 
             //Delete a pool that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Match not deleted", jsonResult.message);
         }
     }
 }

@@ -21,12 +21,10 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Create("U20 Drenge", ID.TournamentId, 60, FieldSize.EightMan)).Data;
             ID.DivisionId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New division added", jsonResult.message);
 
             //Create a new division, but to a non-existing tournament
             jsonResult = ((JsonResult)controller.Create("U20 Drenge", 999999, 60, FieldSize.EightMan)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("New division not added", jsonResult.message);
         }
         [TestMethod()]
         public void DetailsTest()
@@ -42,7 +40,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a division that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find division", jsonResult.message);
         }
 
         [TestMethod()]
@@ -51,7 +48,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created division
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.DivisionId, "U21 Drenge", ID.TournamentId, 11, 75)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Division edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.DivisionId)).Data;
@@ -62,7 +58,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit a division that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "U21 Drenge", ID.TournamentId, 11, 75)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Division not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -71,12 +66,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created division
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.DivisionId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Division deleted", jsonResult.message);
 
             //Delete a tournament that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Division not deleted", jsonResult.message);
         }
     }
 }
