@@ -16,9 +16,9 @@ namespace CupPlaner.Helpers.Tests
         DivisionTournamentController dtc = new DivisionTournamentController();
 
         [TestMethod()]
-        public void GenerateTest()
+        public void sletTest()
         {
-            MatchGeneration mg = new MatchGeneration();
+            
             Tournament t = db.TournamentSet.Find(1);
             foreach (Division d in t.Divisions.ToList())
             {
@@ -66,8 +66,13 @@ namespace CupPlaner.Helpers.Tests
                     db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
                 }
             }
-            db.SaveChanges();
-            
+            db.SaveChanges();                      
+        }
+
+        [TestMethod()]
+        public void generateTest()
+        {
+            MatchGeneration mg = new MatchGeneration();
             mg.Generate(1);
         }
     }
