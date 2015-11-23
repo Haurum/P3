@@ -40,6 +40,7 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
+            db.SaveChanges();
         }
 
         //Generate matches

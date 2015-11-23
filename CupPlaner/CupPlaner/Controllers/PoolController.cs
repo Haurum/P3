@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
     public class PoolController : Controller
     {
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
         // GET: Pool
         public ActionResult Index()
         {
@@ -117,6 +119,7 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
+                sm.DeleteSchedule(p.Division.Tournament.Id);
                 TeamController tc = new TeamController();
                 foreach (Team team in p.Teams)
                 {

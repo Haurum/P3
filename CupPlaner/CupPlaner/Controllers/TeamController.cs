@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
@@ -11,6 +12,7 @@ namespace CupPlaner.Controllers
     {
         // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
 
         // GET: Team/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Team object.
         // Returns a Json object, which contains a copy of the corresponding Team variables.
@@ -109,6 +111,7 @@ namespace CupPlaner.Controllers
            // try
            // {
                 Team t = db.TeamSet.Find(id);
+            sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();

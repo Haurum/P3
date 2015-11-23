@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
@@ -11,6 +11,7 @@ namespace CupPlaner.Controllers
     {
         // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
 
         // GET: Division/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Divison object.
         // Returns a Json object, which contains a copy of the corresponding Divisions variables.
@@ -118,6 +119,7 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(id);
+                sm.DeleteSchedule(d.Tournament.Id);
                 PoolController pc = new PoolController();
                 DivisionTournamentController dtc = new DivisionTournamentController();
                 foreach (Pool p in d.Pools)
