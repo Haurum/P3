@@ -77,6 +77,10 @@
       <End Role="Field" EntitySet="FieldSet" />
       <End Role="Tournament" EntitySet="TournamentSet" />
     </AssociationSet>
+    <AssociationSet Name="TeamPrevPool" Association="CupDB.Store.TeamPrevPool">
+      <End Role="Team" EntitySet="TeamSet" />
+      <End Role="Pool" EntitySet="PoolSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -85,7 +89,9 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="IsAuto" Type="bool" Nullable="false" />
+    <Property Name="PoolPlacement" Type="int" Nullable="true" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />
+    <Property Name="PrevPool_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="PoolSet">
     <Key>
@@ -142,6 +148,7 @@
     <Property Name="StartTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Duration" Type="int" Nullable="false" />
     <Property Name="IsScheduled" Type="bool" Nullable="false" />
+    <Property Name="Number" Type="int" Nullable="false" />
     <Property Name="Field_Id" Type="int" Nullable="true" />
     <Property Name="TournamentStage_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -330,6 +337,18 @@
       </Principal>
       <Dependent Role="Field">
         <PropertyRef Name="Tournament_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TeamPrevPool">
+    <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="*" />
+    <End Role="Pool" Type="CupDB.Store.PoolSet" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Pool">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Team">
+        <PropertyRef Name="PrevPool_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

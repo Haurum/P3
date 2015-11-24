@@ -23,9 +23,11 @@ namespace CupPlaner
         public int Id { get; set; }
         public string Name { get; set; }
         public bool IsAuto { get; set; }
+        public Nullable<int> PoolPlacement { get; set; }
     
         public virtual ICollection<Match> Matches { get; set; }
         public virtual Pool Pool { get; set; }
         public virtual ICollection<TimeInterval> TimeIntervals { get; set; }
+        public virtual Pool PrevPool { get; set; }
     }
 }

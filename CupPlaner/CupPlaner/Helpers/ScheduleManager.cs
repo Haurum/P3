@@ -36,6 +36,7 @@ namespace CupPlaner.Helpers
                     if (pool.IsAuto)
                     {
                         db.TeamSet.RemoveRange(pool.Teams);
+                        pool.FavoriteFields.Clear();
                         db.PoolSet.Remove(pool);
                     }
                 }

@@ -62,7 +62,7 @@
              <span class="glyphicon glyphicon-info-sign pull-right"></span>
             </a>
             <div class="pools">
-              <a ng-click="gotoTeam(team, $indexT, division.Pools[$index+1], $indexP)" ng-repeat="team in division.Pools[$index+1].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+              <a ng-click="gotoTeam(team, $indexT, division.Pools[index+1], $indexP)" ng-repeat="team in division.Pools[$index+1].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team.Name }}
               </a>
             </div>
@@ -124,20 +124,18 @@
       <div class="col-md-12">
         <div class="col-md-3" ng-repeat="team in division.Pools[0].Teams track by $index">
           {{ $index+1 }}. plads går videre til
-          <select >
-            <option value="">A-slutspil</option>
-            <option value="">B-slutspil</option>
-            <option value="">C-slutspil</option>
-            <option value="">D-slutspil</option>
-          </select>
+          <select ng-options="letter as letter.ch for letter in division.letters" ng-model="selectedLetter" ng-change="finalsLinkChanged(selectedLetter, $index)"></select>
         </div>
-      </div>         
+      </div>
       <select class="finals-select">
         <option value="">Knockout</option>
         <option value="">Round Robin</option>
         <option value="">Round Robin med finaler</option>
       </select>
-      <button class="btn btn-default">Opdater</button>
+      <p></p>
+      <p>{{ selectedLetter }}</p>
+      <p></p>
+      <button ng-click="updateFL()" class="btn btn-default">Opdater</button>
     </div>   
   </div>
   <div class="row">
