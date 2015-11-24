@@ -60,9 +60,16 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                TimeInterval timeinterval = new TimeInterval();
                 Pool p = db.PoolSet.Find(poolId);
 
-                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p, TimeIntervals = p.Division.Tournament.TimeIntervals });
+                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
+                foreach (TimeInterval ti in p.Division.Tournament.TimeIntervals)
+                {
+                    timeinterval = new TimeInterval() { Team = t, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                    db.TimeIntervalSet.Add(timeinterval);
+                    t.TimeIntervals.Add(timeinterval);
+                }
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
