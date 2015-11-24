@@ -129,9 +129,9 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       $scope.error = false;
       console.log($scope.dateRange);
       console.log($scope.startTimes);
-      for (var index = 0; index <= $scope.startTimes.length; index++) {
-        $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
-        $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
+      for (var index = 0; index < $scope.startTimes.length; index++) {
+        $scope.startDateTimes[index] = $scope.startTimes[index];
+        $scope.endDateTimes[index] = $scope.endTimes[index];        
         
       }
       
