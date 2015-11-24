@@ -40,7 +40,6 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
             ID.TournamentId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New tournament added", jsonResult.message);
 
             //Create a new tournament with the same password
             jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
@@ -76,7 +75,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a tournament that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find tournament", jsonResult.message);
         }
 
         [TestMethod()]
@@ -85,7 +83,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created tournament
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.TournamentId, "TestName2", "TestPassword2", startDates2, endDates2)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.TournamentId)).Data;
@@ -99,7 +96,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit a tournament that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "TestName2", "TestPassword2", startDates2, endDates2)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -108,12 +104,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created tournament
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.TournamentId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament deleted", jsonResult.message);
 
             //Delete a tournament that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament not deleted", jsonResult.message);
         }
     }
 }

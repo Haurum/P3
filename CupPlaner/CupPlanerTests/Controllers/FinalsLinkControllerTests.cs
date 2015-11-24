@@ -40,7 +40,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a field that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find finals link", jsonResult.message);
         }
 
         [TestMethod()]
@@ -49,7 +48,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created finals link
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.FinalsLinkId, 2,2,ID.DivisionId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Finals link edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.FinalsLinkId)).Data;
@@ -72,12 +70,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created finals link
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.FinalsLinkId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Finals link deleted", jsonResult.message);
 
             //Delete a finals link that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Finals link not deleted", jsonResult.message);
         }
     }
 }
