@@ -118,7 +118,12 @@ namespace CupPlaner.Controllers
             try
             {
                 Team t = db.TeamSet.Find(id);
+                Pool p = db.PoolSet.Find(t.Pool.Id);
                 sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+                foreach (TimeInterval ti in t.TimeIntervals.ToList())
+                {
+                    t.TimeIntervals.Remove(ti);
+                }
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();

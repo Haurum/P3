@@ -126,7 +126,7 @@ namespace CupPlaner.Controllers
                     foreach (Team team in p.Teams.ToList())
                     {
                         db.MatchSet.RemoveRange(team.Matches);
-                        
+                        team.TimeIntervals.Clear();
                     }
                     db.TeamSet.RemoveRange(p.Teams);
                     p.FavoriteFields.Clear();
