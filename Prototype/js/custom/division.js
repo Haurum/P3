@@ -5,12 +5,26 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.changeName = false;
   $scope.newPool = false;
   $scope.newPoolName = "";
+  $scope.allLetters = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+  $scope.division = "";
+  $scope.division.letters = [];
+  $scope.let = [];
+  $scope.let[0] = "A";
+  $scope.let[1] = "B";
+  $scope.let[2] = "C";
+  $scope.let[3] = "D";
 
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
     .success(function(data)
     {
       $scope.division = data;
+      $scope.division.letters = [];
+      
+      for (var i = 0; i < $scope.division.Pools[0].Teams.length; i++)
+      {
+        $scope.division.letters.push({ nr: i, ch: $scope.allLetters[i]});
+      }
     }).error(function(err) 
     {
       $scope.error = err;
@@ -99,4 +113,23 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.editErr = err;
     })
   }
+
+
+  $scope.updateFinalstageLink = function(finalsLink, index)
+  {
+    $http.post($rootScope.apiUrl + "FinalsLink/Edit", { id: finalsLink.Id, finalsStage: "", poolPlacement: finalsLink.PoolPlacement })
+    .success(function(data) {
+      console.log(data);
+    })
+    .error(function(err) {
+      $scope.uflErr = err;
+    })
+  }
+
+  $scope.finalsLinkChanged = function(finalsLink, index)
+  {
+    console.log(finalsLink);
+    console.log(index);
+  }
+
 }]);

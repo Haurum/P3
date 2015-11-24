@@ -108,7 +108,7 @@ namespace CupPlaner.Controllers
                         var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);
 
                         // UNCOMMENT TO SAVE FILE
-                        file.SaveAs(path);
+                        //file.SaveAs(path);
                         var excel = new Excel.Application();
                         excel.Workbooks.Open(path);
                         Excel.Worksheet sheet = excel.Sheets["Cup"] as Excel.Worksheet;
@@ -156,7 +156,7 @@ namespace CupPlaner.Controllers
                             }
                             
                         }
-                        System.IO.File.Delete(path);
+                        //System.IO.File.Delete(path);
                     }
 
 
