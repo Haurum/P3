@@ -31,6 +31,15 @@ namespace CupPlaner.Helpers
                     }
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
                 }
+                foreach (Pool pool in d.Pools.ToList())
+                {
+                    if (pool.IsAuto)
+                    {
+                        db.TeamSet.RemoveRange(pool.Teams);
+                        pool.FavoriteFields.Clear();
+                        db.PoolSet.Remove(pool);
+                    }
+                }
             }
             db.SaveChanges();
         }

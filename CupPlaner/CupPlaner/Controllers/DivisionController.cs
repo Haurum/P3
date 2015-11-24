@@ -120,16 +120,19 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(id);
                 sm.DeleteSchedule(d.Tournament.Id);
-                PoolController pc = new PoolController();
                 DivisionTournamentController dtc = new DivisionTournamentController();
                 foreach (Pool p in d.Pools)
                 {
-                    pc.Delete(p.Id);
+                    foreach (Team team in p.Teams.ToList())
+                    {
+                        db.MatchSet.RemoveRange(team.Matches);
+                        
+                    }
+                    db.TeamSet.RemoveRange(p.Teams);
+                    p.FavoriteFields.Clear();
                 }
-                if (d.DivisionTournament != null)
-                {
-                    dtc.Delete(d.DivisionTournament.Id);
-                }
+                db.PoolSet.RemoveRange(d.Pools);
+                db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
                 return Json(new { status = "success", message = "Division deleted" }, JsonRequestBehavior.AllowGet);

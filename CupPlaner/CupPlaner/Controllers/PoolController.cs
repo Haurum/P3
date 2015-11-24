@@ -120,11 +120,12 @@ namespace CupPlaner.Controllers
             {
                 Pool p = db.PoolSet.Find(id);
                 sm.DeleteSchedule(p.Division.Tournament.Id);
-                TeamController tc = new TeamController();
-                foreach (Team team in p.Teams)
+                foreach (Team team in p.Teams.ToList())
                 {
-                    tc.Delete(team.Id);
+                    db.MatchSet.RemoveRange(team.Matches);
                 }
+                db.TeamSet.RemoveRange(p.Teams);
+                p.FavoriteFields.Clear();
                 db.PoolSet.Remove(p);
                 db.SaveChanges();
 
