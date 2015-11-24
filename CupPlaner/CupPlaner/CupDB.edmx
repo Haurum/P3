@@ -82,6 +82,10 @@
       <End Role="Field" EntitySet="FieldSet" />
       <End Role="Tournament" EntitySet="TournamentSet" />
     </AssociationSet>
+    <AssociationSet Name="TeamPrevPool" Association="CupDB.Store.TeamPrevPool">
+      <End Role="Team" EntitySet="TeamSet" />
+      <End Role="Pool" EntitySet="PoolSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -90,7 +94,9 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="IsAuto" Type="bool" Nullable="false" />
+    <Property Name="PoolPlacement" Type="int" Nullable="true" />
     <Property Name="Pool_Id" Type="int" Nullable="false" />
+    <Property Name="PrevPool_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="PoolSet">
     <Key>
@@ -338,6 +344,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="TeamPrevPool">
+    <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="*" />
+    <End Role="Pool" Type="CupDB.Store.PoolSet" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Pool">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Team">
+        <PropertyRef Name="PrevPool_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TeamMatch_Team">
     <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="1" />
     <End Role="TeamMatch" Type="CupDB.Store.TeamMatch" Multiplicity="*" />
@@ -457,6 +475,10 @@
             <End Role="Field" EntitySet="FieldSet" />
             <End Role="Tournament" EntitySet="TournamentSet" />
           </AssociationSet>
+          <AssociationSet Name="TeamPrevPool" Association="CupDB.TeamPrevPool">
+            <End Role="Team" EntitySet="TeamSet" />
+            <End Role="Pool" EntitySet="PoolSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Team">
           <Key>
@@ -468,6 +490,8 @@
           <NavigationProperty Name="Pool" Relationship="CupDB.PoolTeam" FromRole="Team" ToRole="Pool" />
           <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TeamTimeInterval" FromRole="Team" ToRole="TimeInterval" />
           <Property Name="IsAuto" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="PrevPool" Relationship="CupDB.TeamPrevPool" FromRole="Team" ToRole="Pool" />
+          <Property Name="PoolPlacement" Type="Int32" Nullable="true" />
         </EntityType>
         <EntityType Name="Pool">
           <Key>
@@ -634,6 +658,10 @@
           <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
           <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
         </Association>
+        <Association Name="TeamPrevPool">
+          <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
+          <End Type="CupDB.Pool" Role="Pool" Multiplicity="0..1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -646,6 +674,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="IsAuto" ColumnName="IsAuto" />
+          <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -847,6 +876,15 @@
       <EndProperty Name="Field">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TeamPrevPool" TypeName="CupDB.TeamPrevPool" StoreEntitySet="TeamSet">
+      <EndProperty Name="Pool">
+        <ScalarProperty Name="Id" ColumnName="PrevPool_Id" />
+      </EndProperty>
+      <EndProperty Name="Team">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="PrevPool_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
