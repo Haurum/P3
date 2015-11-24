@@ -128,13 +128,13 @@ namespace CupPlaner.Helpers
                                 {
                                     for (int j = i+1; j < extraTeams.Count; j++)
                                     {
-                                        if (extraTeams[i].Pool != extraTeams[j].Pool)
-                                        {
+                                        //if (extraTeams[i].Pool != extraTeams[j].Pool)
+                                        //{
                                             db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
                                             break;
-                                        }
+                                        //}
                                     }
-                                    db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[i+1] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
+                                    //db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[i+1] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
                                 }
                                 extraTeams[i].Pool = KOPool;
                                 db.TeamSet.Add(extraTeams[i]);
@@ -178,11 +178,11 @@ namespace CupPlaner.Helpers
                                 {
                                     for (int j = i + 1; j < teamsToAdd.Count; j++)
                                     {
-                                        if (teamsToAdd[i].Pool != teamsToAdd[j].Pool)
-                                        {
+                                        //if (teamsToAdd[i].Pool != teamsToAdd[j].Pool)
+                                        //{
                                             db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
                                             break;
-                                        }
+                                        //}
                                     }
                                 }
                                 teamsToAdd[i].Pool = KOPool;
