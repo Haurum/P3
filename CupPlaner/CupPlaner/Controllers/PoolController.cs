@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
     public class PoolController : Controller
     {
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
         // GET: Pool
         public ActionResult Index()
         {
@@ -24,6 +26,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 List<object> teams = new List<object>();
                 List<object> ffs = new List<object>();
+                List<object> matches = new List<object>();
                 if (p.Teams != null)
                 {
                     foreach (Team t in p.Teams)
@@ -38,8 +41,18 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
+                if (p.TournamentStage != null && p.TournamentStage.Matches.Count > 0)
+                {
+                    foreach (Match m in p.TournamentStage.Matches)
+                    {
+                        Team team1 = m.Teams.First();
+                        Team team2 = m.Teams.Last();
+                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
+                    }
+                }
+                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs, Matches = matches };
+                
 
-                object obj = new { Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -106,11 +119,13 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
-                TeamController tc = new TeamController();
-                foreach (Team team in p.Teams)
+                sm.DeleteSchedule(p.Division.Tournament.Id);
+                foreach (Team team in p.Teams.ToList())
                 {
-                    tc.Delete(team.Id);
+                    db.MatchSet.RemoveRange(team.Matches);
                 }
+                db.TeamSet.RemoveRange(p.Teams);
+                p.FavoriteFields.Clear();
                 db.PoolSet.Remove(p);
                 db.SaveChanges();
 

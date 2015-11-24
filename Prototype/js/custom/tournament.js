@@ -23,6 +23,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
           }
         }
         $scope.divisions = data.Divisions;
+        $scope.tournament = data;
       }).error(function (err) {
         $scope.error = err;
       })

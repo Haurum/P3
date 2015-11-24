@@ -25,6 +25,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       {
         $scope.division.letters.push({ nr: i, ch: $scope.allLetters[i]});
       }
+      console.log($scope.division.tournamentId);
     }).error(function(err) 
     {
       $scope.error = err;
@@ -94,10 +95,16 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $location.url($location.url() + "/pool/" + currPool.Id);
   }
 
-  $scope.gotoTeam = function(currTeam, indexT) {
+
+  $scope.gotoTeam = function(currTeam, indexT, currPool, indexP) {
     $rootScope.currTeamIndex = indexT;
-    $location.url($location.url() + "/pool/" + $routeParams.poolId + "/team/" + currTeam.Id)
+    $rootScope.currPoolIndex = indexP;
+    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id)
   }
+
+$scope.gotoTournament = function() {
+  $location.url("/tournament/" + $routeParams.tournamentId);
+}
 
   $scope.changeDivNameFunc = function() {
     $scope.changeName = !$scope.changeName;

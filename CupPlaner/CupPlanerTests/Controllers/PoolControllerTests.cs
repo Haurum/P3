@@ -21,12 +21,10 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Create("Pulje Test", ID.DivisionId)).Data;
             ID.PoolId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New pool added", jsonResult.message);
 
             //Create a new pool, but to a non-existing division
             jsonResult = ((JsonResult)controller.Create("Pulje Test", 999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("New pool not added", jsonResult.message);
         }
 
         [TestMethod()]
@@ -34,13 +32,13 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created division
             dynamic jsonResult = ((JsonResult)controller.Details(ID.PoolId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
             Assert.AreEqual("Pulje Test", jsonResult.Name);
             
             //Find a pool that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find pool", jsonResult.message);
         }
 
         [TestMethod()]
@@ -49,7 +47,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created pool
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Pool edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.PoolId)).Data;
@@ -59,7 +56,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit a pool that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Pool not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -68,12 +64,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created pool
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.PoolId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Pool deleted", jsonResult.message);
 
             //Delete a pool that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Pool not deleted", jsonResult.message);
         }
     }
 }

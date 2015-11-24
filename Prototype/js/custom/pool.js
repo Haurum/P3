@@ -1,12 +1,14 @@
 app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
-  $scope.favFieldsIds = [];
-  $scope.changeName = false;
-
+  $scope.changeName = false
+  $scope.FavoriteFieldIds = [];
   $scope.getPoolData = function(){
     $http.get($rootScope.apiUrl + "/Pool/Details?id=" +  $routeParams.poolId)
     .success(function(data)
     {
       $scope.pool = data;
+      for(var i = 0; i < $scope.pool.FavoriteFields.length; i++){
+        $scope.FavoriteFieldIds.push($scope.pool.FavoriteFields[i].Id);
+      }
       $scope.divisionFieldSize = data.FieldSize;
     }).error(function(err) 
     {
@@ -61,14 +63,24 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $location.url($location.url() + "/team/" + currTeam.Id);
   }
 
+  $scope.gotoTournament = function() {
+    $location.url("/tournament/" + $routeParams.tournamentId);
+  }
+
+  $scope.gotoDivision = function() {
+    $location.url("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+  }
+
+  $scope.favFieldsIds = [];
   $scope.setFavFieldFunc = function (favFieldsId) {
-    //$scope.favFieldsIds.push(favFieldsId);
-    //console.log($scope.favFieldsIds);
-    $http.post($rootScope + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldsIds: favFieldsId})
+    $scope.favFieldsIds.push(favFieldsId);
+    console.log($scope.favFieldsIds);
+    $http.post($rootScope.apiUrl + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
     .success(function(data){
 
     }).error(function(err){
       $scope.favFieldErr = err;
+      console.log(err);
     })
   }
 

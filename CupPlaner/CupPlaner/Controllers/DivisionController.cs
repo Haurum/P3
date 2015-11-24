@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Data.Entity;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
@@ -11,6 +11,7 @@ namespace CupPlaner.Controllers
     {
         // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
 
         // GET: Division/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Divison object.
         // Returns a Json object, which contains a copy of the corresponding Divisions variables.
@@ -21,6 +22,7 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
+                List<object> matches = new List<object>();
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
@@ -33,8 +35,23 @@ namespace CupPlaner.Controllers
                         pools.Add(new { Id = p.Id, Name = p.Name, Teams = teams });
                     }
                 }
+                if (d.DivisionTournament != null && d.DivisionTournament.TournamentStage.Count > 0)
+                {
+                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                    {
+                        if (ts.Matches.Count > 0)
+                        {
+                            foreach (Match m in ts.Matches)
+                            {
+                                Team team1 = m.Teams.First();
+                                Team team2 = m.Teams.Last();
+                                matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
+                            }
+                        }                      
+                    }
+                }
 
-                object obj = new { Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches};
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -102,16 +119,20 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(id);
-                PoolController pc = new PoolController();
+                sm.DeleteSchedule(d.Tournament.Id);
                 DivisionTournamentController dtc = new DivisionTournamentController();
                 foreach (Pool p in d.Pools)
                 {
-                    pc.Delete(p.Id);
+                    foreach (Team team in p.Teams.ToList())
+                    {
+                        db.MatchSet.RemoveRange(team.Matches);
+                        
+                    }
+                    db.TeamSet.RemoveRange(p.Teams);
+                    p.FavoriteFields.Clear();
                 }
-                if (d.DivisionTournament != null)
-                {
-                    dtc.Delete(d.DivisionTournament.Id);
-                }
+                db.PoolSet.RemoveRange(d.Pools);
+                db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
                 return Json(new { status = "success", message = "Division deleted" }, JsonRequestBehavior.AllowGet);

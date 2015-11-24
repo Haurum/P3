@@ -16,9 +16,9 @@ namespace CupPlaner.Helpers.Tests
         DivisionTournamentController dtc = new DivisionTournamentController();
 
         [TestMethod()]
-        public void GenerateTest()
+        public void sletTest()
         {
-            MatchGeneration mg = new MatchGeneration();
+            
             Tournament t = db.TournamentSet.Find(1);
             foreach (Division d in t.Divisions.ToList())
             {
@@ -40,6 +40,17 @@ namespace CupPlaner.Helpers.Tests
                     //dtc.Delete(d.DivisionTournament.Id);
                 }
 
+                foreach (Pool pool in d.Pools.ToList())
+                {
+                    if (pool.IsAuto)
+                    {
+                        db.TeamSet.RemoveRange(pool.Teams);
+                        db.PoolSet.Remove(pool);
+                    }
+                }
+
+                db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
+
                 int maxNumOfTeams = 0;
 
                 foreach (Pool p in d.Pools)
@@ -55,9 +66,14 @@ namespace CupPlaner.Helpers.Tests
                     db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
                 }
             }
-            db.SaveChanges();
-            
-           mg.Generate(1);
+            db.SaveChanges();                      
+        }
+
+        [TestMethod()]
+        public void generateTest()
+        {
+            MatchGeneration mg = new MatchGeneration();
+            mg.Generate(1);
         }
     }
 }

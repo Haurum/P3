@@ -1,11 +1,9 @@
 <div class="row">
   <div class="col-lg-12 text-center">
     <ul class="breadcrumb">
-      <li><a href="#/">Forside</a></li>
-      <li><a href="#/addTournament">Opret ny turnering</a></li>
-      <li><a href="#/tournament">Rækkesoversigt</a></li>
-      <li><a href="#/division">{{ division.Name }}</a></li>
-      <li><a href="#/pool">{{ pool.Name }}</a></li>
+      <li><a ng-click="gotoTournament()">Turneringsoversigt</a></li>
+      <li><a ng-click="gotoDivision()">Rækkeoversigt</a></li>
+      <li><a>{{ pool.Name }}</a></li>
     </ul>
     <div id="changePoolName">
       <div ng-if="!changeName">
@@ -58,23 +56,37 @@
           <h4>Puljes favorit bane</h4>
           <div ng-if="pool.FieldSize === 11">
             <label class="checkbox-inline" ng-repeat="Emfield in EmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc(Emfield.Id)" /> {{Emfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc(Emfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Emfield.Id) > -1" /> {{Emfield.Name}}
             </label> 
           </div>
           <div ng-if="divisionFieldSize === 8">
             <label class="checkbox-inline" ng-repeat="Omfield in OmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc()" /> {{Omfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc(Omfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Omfield.Id) > -1" /> {{Omfield.Name}}
             </label> 
           </div>
           <div ng-if="divisionFieldSize === 5">
             <label class="checkbox-inline" ng-repeat="Fmfield in FmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc()"d /> {{Fmfield.Name}}
+              <input type="checkbox" ng-click="setFavFieldFunc(Fmfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Fmfield.Id) > -1"/> {{Fmfield.Name}}
             </label> 
           </div>
         </div>
         <div class="col-md-2">
           <a class="btn btn-danger" ng-click="remove(pool)">Slet pulje</a>
         </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <table class="table table-hover" id="poolViewTable">
+          <tr>
+            <th>Hold 1</th>
+            <th>Hold 2</th>
+          </tr>
+          <tr ng-repeat="match in pool.Matches track by $index">
+            <td> {{match.Team1.name}} </td>
+            <td> {{match.Team2.name}} </td>
+          </tr>
+        </table>
       </div>
     </div>
   </div>

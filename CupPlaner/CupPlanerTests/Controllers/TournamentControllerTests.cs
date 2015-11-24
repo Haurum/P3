@@ -14,9 +14,14 @@ namespace CupPlaner.Controllers.Tests
     public class ID
     {
         public static int TournamentId = 3;
-        public static int DivisionId = 7;
-        public static int DivisionTournamentId = 1;
-        public static int PoolId = 34;
+        public static int DivisionId = 8;
+        public static int DivisionTournamentId = 7;
+        public static int PoolId = 32;
+        public static int TournamentStageId = 14;
+        public static int TeamId = 559;
+        public static int MatchId = 1472;
+        public static int FieldId = 6;
+        public static int FinalsLinkId = 220;
     }
     
     [TestClass()]
@@ -35,7 +40,6 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
             ID.TournamentId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New tournament added", jsonResult.message);
 
             //Create a new tournament with the same password
             jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
@@ -60,6 +64,7 @@ namespace CupPlaner.Controllers.Tests
         {
             //Find the created tournament
             dynamic jsonResult = ((JsonResult)controller.Details(ID.TournamentId)).Data;
+            Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual("TestName", jsonResult.Name);
             Assert.AreEqual("TestPassword", jsonResult.Password);
             Assert.AreEqual(DateTime.Parse("16-11-2015 08:00:00"), jsonResult.TimeIntervals[0].StartTime);
@@ -70,7 +75,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a tournament that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find tournament", jsonResult.message);
         }
 
         [TestMethod()]
@@ -79,7 +83,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created tournament
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.TournamentId, "TestName2", "TestPassword2", startDates2, endDates2)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.TournamentId)).Data;
@@ -93,7 +96,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit a tournament that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "TestName2", "TestPassword2", startDates2, endDates2)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -102,12 +104,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created tournament
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.TournamentId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Tournament deleted", jsonResult.message);
 
             //Delete a tournament that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Tournament not deleted", jsonResult.message);
         }
     }
 }
