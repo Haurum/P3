@@ -153,6 +153,7 @@
     <Property Name="StartTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Duration" Type="int" Nullable="false" />
     <Property Name="IsScheduled" Type="bool" Nullable="false" />
+    <Property Name="Number" Type="int" Nullable="false" />
     <Property Name="Field_Id" Type="int" Nullable="true" />
     <Property Name="TournamentStage_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -562,6 +563,7 @@
           <NavigationProperty Name="Field" Relationship="CupDB.MatchField" FromRole="Match" ToRole="Field" />
           <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageMatch" FromRole="Match" ToRole="TournamentStage" />
           <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="TournamentStage">
           <Key>
@@ -732,6 +734,7 @@
           <ScalarProperty Name="StartTime" ColumnName="StartTime" />
           <ScalarProperty Name="Duration" ColumnName="Duration" />
           <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

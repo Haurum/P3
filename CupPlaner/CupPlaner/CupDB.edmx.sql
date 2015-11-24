@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/24/2015 11:10:36
+-- Date Created: 11/24/2015 12:22:00
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -33,6 +33,7 @@
 --    ALTER TABLE `TournamentStageSet` DROP CONSTRAINT `FK_DivisionTournamentTournamentStage`;
 --    ALTER TABLE `FinalsLinkSet` DROP CONSTRAINT `FK_DivisionFinalsLink`;
 --    ALTER TABLE `FieldSet` DROP CONSTRAINT `FK_FieldTournament`;
+--    ALTER TABLE `TeamSet` DROP CONSTRAINT `FK_TeamPrevPool`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -131,6 +132,7 @@ CREATE TABLE `MatchSet`(
 	`StartTime` datetime( 3 )  NOT NULL, 
 	`Duration` int NOT NULL, 
 	`IsScheduled` bool NOT NULL, 
+	`Number` int NOT NULL, 
 	`Field_Id` int, 
 	`TournamentStage_Id` int NOT NULL);
 
