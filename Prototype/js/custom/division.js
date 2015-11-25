@@ -13,6 +13,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.let[1] = "B";
   $scope.let[2] = "C";
   $scope.let[3] = "D";
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
 
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
@@ -136,18 +138,5 @@ $scope.gotoTournament = function() {
     console.log(finalsLink);
     console.log(index);
   }
-
-  $scope.orderByField = 'Number';
-  $scope.reverseSort = false;
-
-  $scope.reverse = false;
-  $scope.searchFilter = "";
-  $scope.sortBy = "";
-  $scope.doSort = function(propName) {
-    $scope.sortBy = propName;
-    console.log($scope.sortBy);
-    $scope.reverse = !$scope.reverse;
-  }
-
 
 }]);

@@ -1,6 +1,9 @@
 app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeName = false
   $scope.FavoriteFieldIds = [];
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
+  
   $scope.getPoolData = function(){
     $http.get($rootScope.apiUrl + "/Pool/Details?id=" +  $routeParams.poolId)
     .success(function(data)

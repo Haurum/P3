@@ -134,13 +134,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="match in division.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+            <tr ng-repeat="match in pool.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
               <td> {{match.Number}} </td>
               <!--<td> {{}} </td> -->
               <!--<td> {{}} </td> -->
               <td> {{match.Field.Name}} </td>
-              <td><a ng-click="gotoTeam(match.Team1, division.Pools)"> {{match.Team1.name}} </a></td>
-              <td><a ng-click="gotoTeam(match.Team2, division.Pools)"> {{match.Team2.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team1, pool)"> {{match.Team1.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2, pool)"> {{match.Team2.name}} </a></td>
             </tr>
           </tbody>
         </table>

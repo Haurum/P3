@@ -1,5 +1,7 @@
 app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeName = false;
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
 
   $scope.getTeamData = function() {
     $http.get($rootScope.apiUrl + "/Team/Details?id=" +  $routeParams.teamId)
