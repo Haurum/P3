@@ -136,28 +136,79 @@
       <p>{{ selectedLetter }}</p>
       <p></p>
       <button ng-click="updateFL()" class="btn btn-default">Opdater</button>
+      <hr />
     </div>   
   </div>
   <div class="row">
     <div class="col-md-12 text-center">
+      <div class="col-md-3">
+        <form id="divisionSearch">
+          <div class="inner-addon left-addon">
+            <i class="glyphicon glyphicon-search"></i>
+            <input type="text" class="form-control" placeholder="Søg.." ng-model="searchResult" />
+          </div>
+        </form>
+      </div>
       <table class="table table-hover" id="poolViewTable">
         <tr>
-          <th>Pulje</th>
-          <!--<th>Dag</th>
-          <th>Tid</th>-->
-          <th>Kmap nr.</th>
-          <th>Bane</th>
-          <th>Hold 1</th>
-          <th>Hold 2</th>
+          <th>
+            <a href="" ng-click="sortType = 'name'; sortReverse = !sortReverse | filter:searchResult">
+              Pulje
+              <span ng-show="sortType == 'name' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'name' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <!--<th>
+            <a href="" ng-click="sortType = 'day'; sortReverse = !sortReverse">
+              Dag
+              <span ng-show="sortType == 'day' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'day' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th>
+            <a href="" ng-click="sortType = 'time'; sortReverse = !sortReverse">
+              Tid
+              <span ng-show="sortType == 'time' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'time' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>-->
+          <th>
+            <a href="" ng-click="sortType = 'matchNr'; sortReverse = !sortReverse">
+              Kamp nr.
+              <span ng-show="sortType == 'matchNr' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'matchNr' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th>
+            <a href="" ng-click="sortType = 'field'; sortReverse = !sortReverse">
+              Bane
+              <span ng-show="sortType == 'field' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'field' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th>
+            <a href="" ng-click="sortType = 'team1'; sortReverse = !sortReverse">
+              Hold1
+              <span ng-show="sortType == 'team1' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'team1' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
+          <th>
+            <a href="" ng-click="sortType = 'team2'; sortReverse = !sortReverse">
+              Hold2
+              <span ng-show="sortType == 'team2' && !sortReverse" class="fa fa-caret-down"></span>
+              <span ng-show="sortType == 'team2' && sortReverse" class="fa fa-caret-up"></span>
+            </a>
+          </th>
         </tr>
-        <tr ng-repeat="match in division.Matches track by $index">
-          <td> {{match.Team1.Pool.name}} </td>
+        <tr ng-repeat="match in division.Matches track by $inde x | orderBy:sortType:sortReverse">
+          <td><a ng-click="gotoPool(division.Pools.Id, $index)"> {{match.Team1.Pool.name}} </a></td>
           <!--<td> {{}} </td> -->
           <!--<td> {{}} </td> -->
           <td> {{match.Number}} </td>
           <td> {{match.Field.Name}} </td>
-          <td> {{match.Team1.name}} </td>
-          <td> {{match.Team2.name}} </td>
+          <td><a ng-click="gotoTeam(team, $indexT, division.Pools, $index)"> {{match.Team1.name}} </a></td>
+          <td><a ng-click="gotoTeam(match.Team2.id, $index, division.Pools, $index)"> {{match.Team2.name}} </a></td>
         </tr>
       </table>
     </div>

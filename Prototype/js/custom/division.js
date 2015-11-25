@@ -139,4 +139,10 @@ $scope.gotoTournament = function() {
     console.log(index);
   }
 
+  $scope.sortType     = 'name';
+  $scope.sortReverse  = false; 
+  $scope.searchResult   = '';
+
+
+
 }]);
