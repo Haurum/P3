@@ -103,6 +103,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
         $scope.getDivisions();
     }).error(function(err){
       $scope.createErr = err;
+    }).finally(function(hej){
+      $scope.getDivisions();
     })
     $scope.getDivisions();
   }
@@ -113,8 +115,11 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
     }).error(function(err){
       $scope.deleteErr = err;
+    }).finally(function(hej) {
+      console.log("Hello???");
+      $scope.getDivisions();
     })
-    $scope.getDivisions();
+    
   }
 
   /* 11man */
@@ -284,13 +289,12 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           }
           else
           {
-            
             $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
               if(Data.status === "error"){
                 $scope.error = Data.message;
               } else {
-                $location.path("tournament/" + Data.id);
+                $location.path("tournament/" + Data.Id);
               }
             }).error(function(err) 
             {
@@ -412,7 +416,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
                 if(Data.status === "error"){
                   $scope.error = Data.message;
                 }else{
-                  $location.path("tournament/" + Data.Id);
+                  $location.path("tournament/" + $routeParams.tournamentId);
                 }
               }).error(function(err) 
               {

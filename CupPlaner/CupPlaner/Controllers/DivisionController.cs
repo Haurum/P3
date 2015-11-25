@@ -43,8 +43,8 @@ namespace CupPlaner.Controllers
                         {
                             foreach (Match m in ts.Matches)
                             {
-                                Team team1 = m.Teams.First();
-                                Team team2 = m.Teams.Last();
+                                Team team1 = m.Teams.ToList()[0];
+                                Team team2 = m.Teams.ToList()[1];
                                 matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
                             }
                         }                      
@@ -96,7 +96,14 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
                 d.Name = name;
                 d.Tournament = db.TournamentSet.Find(tournamentId);
-                d.FieldSize = (FieldSize)fieldSizeInt;
+                if(d.FieldSize != (FieldSize)fieldSizeInt)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        p.FavoriteFields.Clear();
+                    }
+                    d.FieldSize = (FieldSize)fieldSizeInt;
+                }
                 d.MatchDuration = matchDuration;
 
                 db.Entry(d).State = EntityState.Modified;
