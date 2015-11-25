@@ -22,7 +22,7 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
-                object obj = new { status = "success", Id = m.Id, StartTime = m.StartTime, Duration = m.Duration };
+                object obj = new { status = "success", Id = m.Id, StartTime = m.StartTime, Duration = m.Duration, Number = m.Number };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
