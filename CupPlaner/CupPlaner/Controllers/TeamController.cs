@@ -103,6 +103,7 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
                     }
                 }
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 t.Name = name;
                 t.TimeIntervals.Clear();
                 t.TimeIntervals = tis;
