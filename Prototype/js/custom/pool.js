@@ -36,7 +36,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
           }
           else
           {
-            $scope.FmFields.push(data.Fields[i]);
+            $scope.FmField.push(data.Fields[i]);
           }
         }
     }).error(function(err){

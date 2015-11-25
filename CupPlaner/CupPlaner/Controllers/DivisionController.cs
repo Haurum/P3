@@ -96,7 +96,14 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
                 d.Name = name;
                 d.Tournament = db.TournamentSet.Find(tournamentId);
-                d.FieldSize = (FieldSize)fieldSizeInt;
+                if(d.FieldSize != (FieldSize)fieldSizeInt)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        p.FavoriteFields.Clear();
+                    }
+                    d.FieldSize = (FieldSize)fieldSizeInt;
+                }
                 d.MatchDuration = matchDuration;
 
                 db.Entry(d).State = EntityState.Modified;
