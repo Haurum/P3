@@ -151,15 +151,15 @@
       </div>
       <table class="table table-hover" id="poolViewTable">
         <tr>
-          <th ng-click="doSort('match.Number')"> Kamp nr. </th>
+          <th ng-click="doSort('Number')"> Kamp nr. </th>
           <th ng-click="doSort('division.Pools.Name')"> Pulje </th>
           <!--<th ng-click="doSort()"> Dag </th>
           <th ng-click="doSort()"> Tid </th>-->
-          <th ng-click="doSort()"> Bane </th>
-          <th ng-click="doSort('match.Team1.name')"> Hold1 </th>
-          <th ng-click="doSort('match.Team2.name')"> Hold2 </th>
+          <th ng-click="doSort('Field.Name')"> Bane </th>
+          <th ng-click="doSort('Team1.name')"> Hold1 </th>
+          <th ng-click="doSort('Team2.name')"> Hold2 </th>
         </tr>
-        <tr ng-repeat="match in division.Matches track by $index | filter:searchFilter | orderBy:sortBy:reverse">
+        <tr ng-repeat="match in division.Matches track by $index | orderBy:sortBy:reverse">
           <td><a ng-click="gotoPool(division.Pools.Id, $index)"> {{match.Team1.Pool.name}} </a></td>
           <!--<td> {{}} </td> -->
           <!--<td> {{}} </td> -->
