@@ -125,20 +125,17 @@ namespace CupPlaner.Helpers
                                     {
                                         if (extraTeams[i].PrevPool != extraTeams[j].PrevPool)
                                         {
-                                            
-                                            Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
-                                            Team winnerTeam = new Team() { Name = "vinder af kamp " + m.Number, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                            Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
                                             teams.Add(winnerTeam);
-                                            m.Teams.Add(winnerTeam);
+                                            Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                             break;
                                         }
                                     }
                                     if (extraTeams[i].Matches.Count == 0)
                                     {
-                                        Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[i + 1] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
-                                        Team winnerTeam = new Team() { Name = "vinder af kamp " + m.Number, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                        Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
                                         teams.Add(winnerTeam);
-                                        m.Teams.Add(winnerTeam);
+                                        Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[i + 1] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                     }
                                 }
                                 extraTeams[i].Pool = KOPool;
@@ -180,16 +177,21 @@ namespace CupPlaner.Helpers
 
                                     if (teamsToAdd[i].Matches.Count == 0)
                                     {
-                                        for (int j = i + 1; j < teamsToAdd.Count; j++)
+                                        for (int j = teamsToAdd.Count; j < i; j--)
                                         {
-                                            //if (teamsToAdd[i].Pool != teamsToAdd[j].Pool)
-                                            //{
-                                            Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
-                                            Team winnerTeam = new Team() { Name = "vinder af kamp " + m.Number, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                            if (teamsToAdd[i].PrevPool != teamsToAdd[j].PrevPool)
+                                            {
+                                                Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                                teams.Add(winnerTeam);
+                                                Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j]}, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
+                                                break;
+                                            }
+                                        }
+                                        if (teamsToAdd[i].Matches.Count == 0)
+                                        {
+                                            Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
                                             teams.Add(winnerTeam);
-                                            m.Teams.Add(winnerTeam);
-                                            break;
-                                            //}
+                                            Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[i+1] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                         }
                                     }
                                     teamsToAdd[i].Pool = KOPool;

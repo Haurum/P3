@@ -294,7 +294,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
               if(Data.status === "error"){
                 $scope.error = Data.message;
               } else {
-                $location.path("tournament/" + Data.Id);
+                $location.path("tournament/" + Data.id);
               }
             }).error(function(err) 
             {
