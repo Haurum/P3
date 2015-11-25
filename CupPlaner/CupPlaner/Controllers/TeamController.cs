@@ -105,7 +105,6 @@ namespace CupPlaner.Controllers
                 }
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 t.Name = name;
-                t.TimeIntervals.Clear();
                 t.TimeIntervals = tis;
 
                 db.Entry(t).State = EntityState.Modified;
