@@ -164,6 +164,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
             $scope.getTeamData();
           }).error(function(err)
           {
+            $scope.isSuccess = false;
             $scope.error = err;
             $scope.getTeamData();
           });
