@@ -13,8 +13,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.let[1] = "B";
   $scope.let[2] = "C";
   $scope.let[3] = "D";
-  $scope.reverse = false;
-  $scope.searchFilter = "";
 
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
@@ -33,8 +31,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.error = err;
     })
   }
-  $scope.getDivisionData();
-  $scope.sortBy = "Number"; 
+  $scope.getDivisionData(); 
 
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
@@ -99,10 +96,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   }
 
 
-  $scope.gotoTeam = function(currTeam, indexT, currPool, indexP) {
-    $rootScope.currTeamIndex = indexT;
-    $rootScope.currPoolIndex = indexP;
-    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id)
+  $scope.gotoTeam = function(currTeam, currPool) {
+    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id);
   }
 
 $scope.gotoTournament = function() {
@@ -142,9 +137,15 @@ $scope.gotoTournament = function() {
     console.log(index);
   }
 
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
 
+  $scope.reverse = false;
+  $scope.searchFilter = "";
+  $scope.sortBy = "";
   $scope.doSort = function(propName) {
     $scope.sortBy = propName;
+    console.log($scope.sortBy);
     $scope.reverse = !$scope.reverse;
   }
 
