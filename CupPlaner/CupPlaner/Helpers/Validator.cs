@@ -9,17 +9,19 @@ namespace CupPlaner.Helpers
     {
         CupDBContainer db = new CupDBContainer();
 
-        public bool IsScheduleReady()
+        public bool IsScheduleReady(int tournamentId)
         {
             bool isValid = true;
-            foreach (Tournament t in db.TournamentSet)
+            Tournament t = db.TournamentSet.Find(tournamentId);
+
+            if(t.Divisions.Count < 1)
             {
-                if (t.Divisions.Count < 1)
-                {
-                    isValid = false;
-                    return isValid;
-                }
-                foreach (Division d in db.DivisionSet)
+                isValid = false;
+                return isValid;
+            }
+            else
+            {
+                foreach (Division d in t.Divisions)
                 {
                     if (d.Pools.Count < 1)
                     {
