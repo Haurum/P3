@@ -23,6 +23,9 @@ namespace CupPlaner.Controllers
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
+                List<object> finalslinks = new List<object>();
+                string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
@@ -50,8 +53,15 @@ namespace CupPlaner.Controllers
                         }                      
                     }
                 }
+                if (d.FinalsLinks.Count > 0)
+                {
+                    foreach (FinalsLink fl in d.FinalsLinks)
+                    {
+                        finalslinks.Add(new { Id = fl.Id, PoolPlacement = fl.PoolPlacement, Finalsstage = letters[fl.Finalstage-1] });
+                    }
+                }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches};
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

@@ -122,9 +122,10 @@
       <hr />
       
       <div class="col-md-12">
-        <div class="col-md-3" ng-repeat="team in division.Pools[0].Teams track by $index">
+        <div class="col-md-3" ng-repeat="Finalslink in division.FinalsLinks track by $index">
           {{ $index+1 }}. plads går videre til
-          <select ng-options="letter as letter.ch for letter in division.letters" ng-model="selectedLetter" ng-change="finalsLinkChanged(selectedLetter, $index)"></select>
+          <select ng-options="letter as letter for letter in division.letters" ng-model="Finalslink.Finalsstage" ng-change="finalsLinkChanged(Finalslink, letter)"></select>
+          {{ Finalslink }}
         </div>
       </div>
       <select class="finals-select">
@@ -134,8 +135,6 @@
       </select>
       <p></p>
       <p>{{ selectedLetter }}</p>
-      <p></p>
-      <button ng-click="updateFL()" class="btn btn-default">Opdater</button>
     </div>   
   </div>
   <div class="row">

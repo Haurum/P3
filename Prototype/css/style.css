@@ -1,0 +1,32 @@
+#loading-bar-spinner {
+    position: absolute;
+    top: auto;
+    bottom: -50px;
+    z-index: 1049;
+}
+
+#loading-bar .bar{
+	display: block;
+    position: absolute;
+    left: auto;
+    top: auto;
+    z-index: 1049;
+    height: 10px;
+}
+
+#loading-bar-spinner .spinner-icon {
+  width: 25px;
+  height: 25px;
+	display: block;
+
+  border:  solid 2px transparent;
+  border-top-color:  #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+
+  -webkit-animation: loading-bar-spinner 400ms linear infinite;
+  -moz-animation:    loading-bar-spinner 400ms linear infinite;
+  -ms-animation:     loading-bar-spinner 400ms linear infinite;
+  -o-animation:      loading-bar-spinner 400ms linear infinite;
+  animation:         loading-bar-spinner 400ms linear infinite;
+}
