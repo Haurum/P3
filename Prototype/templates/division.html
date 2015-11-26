@@ -41,6 +41,7 @@
         <a ng-if="!new" class="btn btn-info col-md-12 " id="tilfojNyPulje" ng-click="newPoolFunc()">Tilføj ny pulje</a>
       </div>
     </div>
+  </div>
   <div class="row row-eq-height">
     <div class="btn-group-vertical col-md-12" role="group">
     <div >
@@ -51,7 +52,7 @@
              <span class="glyphicon glyphicon-info-sign pull-right"></span>
             </a>
             <div class="pools">
-              <a ng-click="gotoTeam(team, $indexT, pool, $indexP)" ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+              <a ng-click="gotoTeam(team, pool)" ng-repeat="team in pool.Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team.Name }}
               </a>
             </div>
@@ -62,7 +63,7 @@
              <span class="glyphicon glyphicon-info-sign pull-right"></span>
             </a>
             <div class="pools">
-              <a ng-click="gotoTeam(team, $indexT, division.Pools[index+1], $indexP)" ng-repeat="team in division.Pools[$index+1].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+              <a ng-click="gotoTeam(team, division.Pools[index+1])" ng-repeat="team in division.Pools[$index+1].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team.Name }}
               </a>
             </div>
@@ -73,7 +74,7 @@
              <span class="glyphicon glyphicon-info-sign pull-right"></span>
             </a>
             <div class="pools">
-              <a ng-click="gotoTeam(team, $indexT, division.Pools[index+2], $indexP)" ng-repeat="team in division.Pools[$index+2].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+              <a ng-click="gotoTeam(team, division.Pools[index+2])" ng-repeat="team in division.Pools[$index+2].Teams" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
               {{ team.Name }}
               </a>
             </div>
@@ -133,28 +134,78 @@
         <option value="">Round Robin</option>
         <option value="">Round Robin med finaler</option>
       </select>
-      <p></p>
-      <p>{{ selectedLetter }}</p>
     </div>   
   </div>
   <div class="row">
     <div class="col-md-12 text-center">
-      <table class="table table-hover" id="poolViewTable">
-        <tr>
-        <!--
-          <th>Pulje</th>
-          <th>Dag</th>
-          <th>Tid</th>
-          <th>Bane</th> -->
-          <th>Hold 1</th>
-          <th>Hold 2</th>
-        </tr>
-        <tr ng-repeat="match in division.Matches track by $index">
-          <td> {{match.Team1.name}} </td>
-          <td> {{match.Team2.name}} </td>
-        </tr>
-      </table>
+      <div ng-if="isScheduled" class="divisionSchedule">
+        <div class="col-md-3">
+          <form id="divisionSearch">
+            <div class="inner-addon left-addon">
+              <i class="glyphicon glyphicon-search"></i>
+              <input type="text" class="form-control" placeholder="Søg.." ng-model="searchFilter" />
+            </div>
+          </form>
+        </div>
+        <table class="table table-bordered table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>
+                <a href="" ng-click="orderByField='Number'; reverseSort = !reverseSort">
+                Kamp nr. <span ng-show="orderByField == 'Number'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='division.Pools.Name'; reverseSort = !reverseSort">
+                Pulje <span ng-show="orderByField == 'division.Pools.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <!--<th>
+                <a href="" ng-click="orderByField='date'; reverseSort = !reverseSort">
+                Dag <span ng-show="orderByField == 'date'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">
+                Tid <span ng-show="orderByField == 'time'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>-->
+              <th>
+                <a href="" ng-click="orderByField='Field.Name'; reverseSort = !reverseSort">
+                Bane <span ng-show="orderByField == 'Field.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team1.name'; reverseSort = !reverseSort">
+                  Hold 1 <span ng-show="orderByField == 'Team1.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team2.name'; reverseSort = !reverseSort">
+                Hold 2 <span ng-show="orderByField == 'Team2.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="match in division.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+              <td> {{match.Number}} </td>
+              <td><a ng-click="gotoPool(division.Pools, $index)"> {{ match.Pool.Name}} </a></td>
+              <!--<td> {{}} </td> -->
+              <!--<td> {{}} </td> -->
+              <td> {{match.Field.Name}} </td>
+              <td><a ng-click="gotoTeam(match.Team1, division.Pools)"> {{match.Team1.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2, division.Pools)"> {{match.Team2.name}} </a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div ng-if="!isScheduled" class="col-md-12 add-button">
+        <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
+          <span class="glyphicon glyphicon-list-alt"> </span>
+        </a>
+      </div>
     </div>
   </div>
 </div>
-</div>
+

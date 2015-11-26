@@ -43,20 +43,64 @@
     </div>
     <hr />
     <input type="submit" value="Gem" class="btn btn-primary" ng-click="uploadTeam()" />
-    <p ng-if="error">{{error}}</p>
+    <p ng-if="isSuccess">Info gemt</p>
     <hr />
     <a class="btn btn-danger" ng-click="remove()">Slet hold</a>
     <div class="row">
       <div class="col-md-12 text-center">
-        <table class="table table-hover" id="poolViewTable">
-          <tr>
-            <th>Hold 1</th>
-            <th>Hold 2</th>
-          </tr>
-          <tr ng-repeat="match in team.Matches track by $index">
-            <td> {{match.Team1.name}} </td>
-            <td> {{match.Team2.name}} </td>
-          </tr>
+        <div class="col-md-3">
+          <form id="divisionSearch">
+            <div class="inner-addon left-addon">
+              <i class="glyphicon glyphicon-search"></i>
+              <input type="text" class="form-control" placeholder="Søg.." ng-model="searchFilter" />
+            </div>
+          </form>
+        </div>
+        <table class="table table-bordered table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>
+                <a href="" ng-click="orderByField='Number'; reverseSort = !reverseSort">
+                Kamp nr. <span ng-show="orderByField == 'Number'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <!--<th>
+                <a href="" ng-click="orderByField='date'; reverseSort = !reverseSort">
+                Dag <span ng-show="orderByField == 'date'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">
+                Tid <span ng-show="orderByField == 'time'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>-->
+              <th>
+                <a href="" ng-click="orderByField='Field.Name'; reverseSort = !reverseSort">
+                Bane <span ng-show="orderByField == 'Field.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team1.name'; reverseSort = !reverseSort">
+                  Hold 1 <span ng-show="orderByField == 'Team1.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team2.name'; reverseSort = !reverseSort">
+                Hold 2 <span ng-show="orderByField == 'Team2.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="match in division.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+              <td> {{match.Number}} </td>
+              <!--<td> {{}} </td> -->
+              <!--<td> {{}} </td> -->
+              <td> {{match.Field.Name}} </td>
+              <td><a ng-click="gotoTeam(match.Team1, division.Pools)"> {{match.Team1.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2, division.Pools)"> {{match.Team2.name}} </a></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

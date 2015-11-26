@@ -204,13 +204,31 @@ namespace CupPlaner.Controllers
                 Tournament t = db.TournamentSet.Find(id);
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 List<TimeInterval> tis = new List<TimeInterval>();
+                TimeInterval timeinterval = new TimeInterval();
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                 }
+                t.TimeIntervals = tis;
+                foreach (Division d in t.Divisions)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        foreach (Team tm in p.Teams)
+                        {
+                            Team team = db.TeamSet.Find(tm.Id);
+                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            foreach (TimeInterval ti in t.TimeIntervals)
+                            {
+                                timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                                db.TimeIntervalSet.Add(timeinterval);
+                                team.TimeIntervals.Add(timeinterval);
+                            }
+                        }
+                    }
+                }
                 t.Name = name;
                 t.Password = password;
-                t.TimeIntervals = tis;
 
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();

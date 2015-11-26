@@ -34,9 +34,9 @@ namespace CupPlaner.Controllers
                 {
                     foreach (Match m in t.Matches)
                     {
-                        Team team1 = m.Teams.First();
-                        Team team2 = m.Teams.Last();
-                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id}, Team2 = new{name = team2.Name, id = team2.Id}});
+                        Team team1 = m.Teams.ToList()[0];
+                        Team team2 = m.Teams.ToList()[1];
+                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id}, Team2 = new{name = team2.Name, id = team2.Id,} });
                     }
                 }
 
@@ -60,9 +60,16 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                TimeInterval timeinterval = new TimeInterval();
                 Pool p = db.PoolSet.Find(poolId);
 
-                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p, TimeIntervals = p.Division.Tournament.TimeIntervals });
+                Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
+                foreach (TimeInterval ti in p.Division.Tournament.TimeIntervals)
+                {
+                    timeinterval = new TimeInterval() { Team = t, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                    db.TimeIntervalSet.Add(timeinterval);
+                    t.TimeIntervals.Add(timeinterval);
+                }
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
@@ -82,13 +89,22 @@ namespace CupPlaner.Controllers
             try
             {
                 List<TimeInterval> tis = new List<TimeInterval>();
+                Team t = db.TeamSet.Find(id);
+                List<TimeInterval> teamtis = new List<TimeInterval>();
+                teamtis = t.TimeIntervals.ToList();
                 for (int i = 0; i < startTimes.Count; i++)
                 {
-                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    if(startTimes[i] >= teamtis[i].StartTime && endTimes[i] <= teamtis[i].EndTime)
+                    {
+                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    }
+                    else
+                    {
+                        tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
+                    }
                 }
-                Team t = db.TeamSet.Find(id);
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 t.Name = name;
-                t.TimeIntervals.Clear();
                 t.TimeIntervals = tis;
 
                 db.Entry(t).State = EntityState.Modified;
@@ -111,7 +127,12 @@ namespace CupPlaner.Controllers
             try
             {
                 Team t = db.TeamSet.Find(id);
+                Pool p = db.PoolSet.Find(t.Pool.Id);
                 sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+                foreach (TimeInterval ti in t.TimeIntervals.ToList())
+                {
+                    t.TimeIntervals.Remove(ti);
+                }
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();

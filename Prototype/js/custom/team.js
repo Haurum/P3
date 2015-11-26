@@ -1,5 +1,7 @@
 app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeName = false;
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
 
   $scope.getTeamData = function() {
     $http.get($rootScope.apiUrl + "/Team/Details?id=" +  $routeParams.teamId)
@@ -129,9 +131,9 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       $scope.error = false;
       console.log($scope.dateRange);
       console.log($scope.startTimes);
-      for (var index = 0; index <= $scope.startTimes.length; index++) {
-        $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
-        $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
+      for (var index = 0; index < $scope.startTimes.length; index++) {
+        $scope.startDateTimes[index] = $scope.startTimes[index];
+        $scope.endDateTimes[index] = $scope.endTimes[index];        
         
       }
       
@@ -157,19 +159,20 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
             endTimes: $scope.endDateTimes
           }
       
-          $http.post("http://localhost:50229/Team/Edit/", teamData).success(function(Data)
+          $http.post("http://localhost:50229/Team/Edit/", teamData)
+          .success(function(Data)
           {
-            if(Data.status === "error"){
-              $scope.error = Data.message;
-            }
+            $scope.isSuccess = true;
+            $scope.getTeamData();
           }).error(function(err)
           {
+            $scope.isSuccess = false;
             $scope.error = err;
+            $scope.getTeamData();
           });
           }
         }  
       }   
-  
   }
 
 

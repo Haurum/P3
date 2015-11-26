@@ -46,9 +46,9 @@ namespace CupPlaner.Controllers
                         {
                             foreach (Match m in ts.Matches)
                             {
-                                Team team1 = m.Teams.First();
-                                Team team2 = m.Teams.Last();
-                                matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id }, Team2 = new { name = team2.Name, id = team2.Id } });
+                                Team team1 = m.Teams.ToList()[0];
+                                Team team2 = m.Teams.ToList()[1];
+                                matches.Add(new { Id = m.Id, Number = m.Number, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }                      
                     }
@@ -106,7 +106,14 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
                 d.Name = name;
                 d.Tournament = db.TournamentSet.Find(tournamentId);
-                d.FieldSize = (FieldSize)fieldSizeInt;
+                if(d.FieldSize != (FieldSize)fieldSizeInt)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        p.FavoriteFields.Clear();
+                    }
+                    d.FieldSize = (FieldSize)fieldSizeInt;
+                }
                 d.MatchDuration = matchDuration;
 
                 db.Entry(d).State = EntityState.Modified;
@@ -136,7 +143,7 @@ namespace CupPlaner.Controllers
                     foreach (Team team in p.Teams.ToList())
                     {
                         db.MatchSet.RemoveRange(team.Matches);
-                        
+                        team.TimeIntervals.Clear();
                     }
                     db.TeamSet.RemoveRange(p.Teams);
                     p.FavoriteFields.Clear();

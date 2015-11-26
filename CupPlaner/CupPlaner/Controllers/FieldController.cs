@@ -110,6 +110,20 @@ namespace CupPlaner.Controllers
             try
             {
                 Field f = db.FieldSet.Find(id);
+                Tournament t = db.TournamentSet.Find(f.Tournament.Id);
+                foreach (Division d in t.Divisions)
+                {
+                    foreach(Pool p in d.Pools)
+                    {
+                        foreach(Field favField in p.FavoriteFields.ToList())
+                        {
+                            if(favField.Id == f.Id)
+                            {
+                                p.FavoriteFields.Remove(favField);
+                            }
+                        }
+                    }
+                }
                 db.FieldSet.Remove(f);
                 db.SaveChanges();
 

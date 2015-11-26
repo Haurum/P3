@@ -16,7 +16,7 @@ namespace CupPlaner.Helpers
         public void Generate(int tournamentID)
         {
             Tournament t = db.TournamentSet.Find(tournamentID);
-            
+            int matchNumber = 1;
 
             foreach (Division d in t.Divisions)
             {
@@ -31,7 +31,7 @@ namespace CupPlaner.Helpers
                         for (int j = i + 1; j < teams.Count; j++)
                         {
                             
-                            db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[i], teams[j] }, TournamentStage = ts, Duration = d.MatchDuration });
+                            db.MatchSet.Add(new Match() { Teams = { teams[i], teams[j] }, TournamentStage = ts, Duration = d.MatchDuration, Number = matchNumber++ });
                         }
                     }
                 }
@@ -54,7 +54,12 @@ namespace CupPlaner.Helpers
                         {
                             if (pool.Teams.Count >= fl.PoolPlacement)
                             {
-                                db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + pool.Name, IsAuto = true, Pool = autoPool });
+                                Team team = db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + pool.Name, PoolPlacement = fl.PoolPlacement, PrevPool = pool, IsAuto = true, Pool = autoPool});
+                                foreach (TimeInterval ti in t.TimeIntervals)
+                                {
+                                    TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime });
+                                    team.TimeIntervals.Add(timeInterval);
+                                }
                             }                          
                         }
                     }                    
@@ -64,26 +69,29 @@ namespace CupPlaner.Helpers
                 List<Pool> finalsPools = d.Pools.Where(x => x.IsAuto).ToList();
                 foreach (Pool finalPool in finalsPools)
                 {
-                    List<Team> teams = finalPool.Teams.ToList();
+                    List<Team> teams = new List<Team>();
+                    teams.AddRange(finalPool.Teams);
+                    
 
                     //if finals are round robin
                     if (d.TournamentStructure == TournamentStructure.RoundRobin)
                     {
-                        TournamentStage tstage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                        TournamentStage tStage = new TournamentStage();
+                        tStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
 
                         for (int k = 0; k < teams.Count; k++)
                         {
                             for (int l = k + 1; l < teams.Count; l++)
                             {
-                                db.MatchSet.Add(new Match() { Teams = new List<Team>() { teams[k], teams[l] }, TournamentStage = tstage, Duration = d.MatchDuration });
+                                db.MatchSet.Add(new Match() { Teams = { teams[k], teams[l] }, TournamentStage = tStage, Duration = d.MatchDuration, Number = matchNumber++ });
                             }
                         }
                     }
                     //if finals are knockout
                     else
                     {
-                        db.TeamSet.RemoveRange(teams);
-                        db.PoolSet.Remove(finalPool);
+                        //db.TeamSet.RemoveRange(teams);
+                        //db.PoolSet.Remove(finalPool);
                         Pool KOPool = new Pool();
                         TournamentStage tournyStage = new TournamentStage();
                         int pow = 0;
@@ -95,28 +103,20 @@ namespace CupPlaner.Helpers
                         if (powOfTwo < teams.Count)
                         {
                             int numOfExtraTeams = (teams.Count - powOfTwo) * 2;
-                            teams = teams.OrderByDescending(x => x.Name).ToList();
-                            List<Team> extraTeams = teams.Take(numOfExtraTeams).ToList();
+                            teams = teams.OrderByDescending(x => x.PoolPlacement).ToList();
+                            List<Team> extraTeams = new List<Team>();
+                            extraTeams.AddRange(teams.Take(numOfExtraTeams));
                             teams = teams.Skip(numOfExtraTeams).ToList();
                             switch (powOfTwo)
                             {
                                 case 2:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " semi finaler", Division = d, IsAuto = true});
-                                    teams.Add(new Team() { Name = "Vinder af " + finalPool.Name + " semi finale 1", IsAuto = true, Pool= KOPool });
                                     break;
                                 case 4:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " kvart finaler", Division = d, IsAuto = true });
-                                    for (int i = 1; i <= numOfExtraTeams/2; i++)
-                                    {
-                                        teams.Add(new Team() { Name = "Vinder af " + finalPool.Name + " kvart finale " + i, IsAuto = true, Pool = KOPool });
-                                    }
                                     break;
                                 default:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " " + powOfTwo + ". dels finaler", Division = d, IsAuto = true });
-                                    for (int i = 0; i < numOfExtraTeams/2; i++)
-                                    {
-                                        teams.Add(new Team() { Name = "Vinder af " + finalPool.Name + " " + powOfTwo + ". dels finale " + i, IsAuto = true, Pool = KOPool });
-                                    }
                                     break;
                             }
                             tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
@@ -126,22 +126,41 @@ namespace CupPlaner.Helpers
                                 
                                 if (extraTeams[i].Matches.Count == 0)
                                 {
-                                    for (int j = i+1; j < extraTeams.Count; j++)
+                                    for (int j = extraTeams.Count-1; j > i; j--)
                                     {
-                                        //if (extraTeams[i].Pool != extraTeams[j].Pool)
-                                        //{
-                                            db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
+                                        if (extraTeams[i].PrevPool != extraTeams[j].PrevPool && extraTeams[j].Matches.Count == 0)
+                                        {
+                                            Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                            teams.Add(winnerTeam);
+                                            Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                             break;
-                                        //}
+                                        }
                                     }
-                                    //db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[i+1] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
+                                    if (extraTeams[i].Matches.Count == 0)
+                                    {
+                                        for (int j = extraTeams.Count-1; j > i; j--)
+                                        {
+                                            if (extraTeams[j].Matches.Count == 0)
+                                            {
+                                                Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool};
+                                                teams.Add(winnerTeam);
+                                                Match m = db.MatchSet.Add(new Match() { Teams = { extraTeams[i], extraTeams[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
+                                                break;
+                                            }
+                                        }
+                                    }
                                 }
                                 extraTeams[i].Pool = KOPool;
                                 db.TeamSet.Add(extraTeams[i]);
+                                foreach (TimeInterval ti in t.TimeIntervals)
+                                {
+                                    TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = extraTeams[i], StartTime = ti.StartTime, EndTime = ti.EndTime });
+                                    extraTeams[i].TimeIntervals.Add(timeInterval);
+                                }
                             }
                         }
                         List<Team> teamsToAdd = new List<Team>();
-                        while (teams.Count != 0)
+                        while (teams.Count > 1)
                         {
                             teamsToAdd.AddRange(teams);
                             teams.Clear();
@@ -152,50 +171,78 @@ namespace CupPlaner.Helpers
                                     break;
                                 case 4:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " semi finaler", Division = d, IsAuto = true });
-                                    teams.Add(new Team() { Name = "vinder af " + finalPool.Name + " semi finale 1", Pool = KOPool, IsAuto = true });
-                                    teams.Add(new Team() { Name = "vinder af " + finalPool.Name + " semi finale 2", Pool = KOPool, IsAuto = true });
                                     break;
                                 case 8:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " kvart finaler", Division = d, IsAuto = true });
-                                    for (int i = 1; i <= 4; i++)
-                                    {
-                                        teams.Add(new Team() { Name = "vinder af " + finalPool.Name + " kvart finale " + i });
-                                    }
                                     break;
                                 default:
-                                    KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " kvart finaler", Division = d, IsAuto = true });
-                                    for (int i = 1; i <= teams.Count; i++)
-                                    {
-                                        teams.Add(new Team() { Name = "vinder af " + finalPool.Name + teams.Count + ". dels finale " + i, Pool = KOPool, IsAuto = true });
-                                    }
+                                    KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " " + teamsToAdd.Count / 2 + ". dels finaler", Division = d, IsAuto = true });
                                     break;
                             }
                             tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
-                            for (int i = 0; i < teamsToAdd.Count; i++)
+                            if (teamsToAdd.Count == 2)
                             {
-
-                                if (teamsToAdd[i].Matches.Count == 0)
+                                Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[0], teamsToAdd[1] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
+                                teamsToAdd[0].Pool = KOPool;
+                                teamsToAdd[1].Pool = KOPool;
+                                db.TeamSet.AddRange(teamsToAdd);
+                                foreach (TimeInterval ti in t.TimeIntervals)
                                 {
-                                    for (int j = i + 1; j < teamsToAdd.Count; j++)
+                                    TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[0], StartTime = ti.StartTime, EndTime = ti.EndTime });
+                                    teamsToAdd[0].TimeIntervals.Add(timeInterval);
+                                    timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[1], StartTime = ti.StartTime, EndTime = ti.EndTime });
+                                    teamsToAdd[1].TimeIntervals.Add(timeInterval);
+                                }
+                            }
+                            else
+                            {
+                                for (int i = 0; i < teamsToAdd.Count; i++)
+                                {
+
+                                    if (teamsToAdd[i].Matches.Count == 0)
                                     {
-                                        //if (teamsToAdd[i].Pool != teamsToAdd[j].Pool)
-                                        //{
-                                            db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage });
-                                            break;
-                                        //}
+                                        for (int j = teamsToAdd.Count-1; j > i; j--)
+                                        {
+                                            if (teamsToAdd[i].PrevPool != teamsToAdd[j].PrevPool && teamsToAdd[j].Matches.Count == 0)
+                                            {
+                                                Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                                teams.Add(winnerTeam);
+                                                Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
+                                                break;
+                                            }
+                                        }
+                                        if (teamsToAdd[i].Matches.Count == 0)
+                                        {
+                                            for (int j = teamsToAdd.Count-1; j > i; j--)
+                                            {
+                                                if (teamsToAdd[j].Matches.Count == 0)
+                                                {
+                                                    Team winnerTeam = new Team() { Name = "vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                                    teams.Add(winnerTeam);
+                                                    Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
+                                                    break;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    teamsToAdd[i].Pool = KOPool;
+                                    db.TeamSet.Add(teamsToAdd[i]);
+                                    foreach (TimeInterval ti in t.TimeIntervals)
+                                    {
+                                        TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[i], StartTime = ti.StartTime, EndTime = ti.EndTime });
+                                        teamsToAdd[i].TimeIntervals.Add(timeInterval);
                                     }
                                 }
-                                teamsToAdd[i].Pool = KOPool;
-                                db.TeamSet.Add(teamsToAdd[i]);
-                            }
+                            }                            
                             teamsToAdd.Clear();
                         }
-
-                    }                
+                        db.PoolSet.Remove(finalPool);
+                        //db.SaveChanges();
+                    }
+                    
                 }               
             }
             db.SaveChanges();
         }
-
     }
 }

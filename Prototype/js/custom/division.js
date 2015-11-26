@@ -8,6 +8,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.allLetters = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
   $scope.division = "";
   $scope.division.letters = [];
+  $scope.orderByField = 'Number';
+  $scope.reverseSort = false;
 
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
@@ -26,7 +28,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.error = err;
     })
   }
-  $scope.getDivisionData();
+  $scope.getDivisionData(); 
 
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
@@ -91,10 +93,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   }
 
 
-  $scope.gotoTeam = function(currTeam, indexT, currPool, indexP) {
-    $rootScope.currTeamIndex = indexT;
-    $rootScope.currPoolIndex = indexP;
-    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id)
+  $scope.gotoTeam = function(currTeam, currPool) {
+    $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id);
   }
 
 $scope.gotoTournament = function() {
@@ -130,6 +130,11 @@ $scope.gotoTournament = function() {
     .error(function(err) {
       $scope.uflErr = err;
     })*/
+  }
+
+  $scope.isScheduled = false;
+  $scope.schedule = function () {
+    $scope.isScheduled = !$scope.isScheduled;
   }
 
 }]);
