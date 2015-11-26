@@ -52,15 +52,13 @@ namespace CupPlaner.Controllers
 
         // POST: FinalsLink/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, int finalStage, int poolPlacement, int divisionID)
+        public ActionResult Edit(int id, int finalStage, int poolPlacement)
         {
             try
             {
                 FinalsLink fl = db.FinalsLinkSet.Find(id);
-                Division d = db.DivisionSet.Find(divisionID);
                 fl.Finalstage = finalStage;
                 fl.PoolPlacement = poolPlacement;
-                fl.Division = d;
 
                 db.Entry(fl).State = EntityState.Modified;
                 db.SaveChanges();

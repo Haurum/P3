@@ -73,7 +73,7 @@ namespace CupPlaner.Controllers
 
         // POST: Tournament/Create
         [HttpPost]
-        public ActionResult Create(string name, string password, List<DateTime> startTimes, List<DateTime> endTimes)
+        public ActionResult Create(string name, string password, string startTimes, string  )
         {
             //try
             //{
@@ -83,21 +83,31 @@ namespace CupPlaner.Controllers
                     
                     HttpPostedFileBase file = null;
 
+                    List<Team> teams2 = new List<Team>();
                     int poolStart = 2;
 
                     List<TimeInterval> tis = new List<TimeInterval>();
-                    for (int i = 0; i < startTimes.Count; i++)
+                    
+                    List<DateTime> startTimesList = startTimes.Split(',').Select(DateTime.Parse).ToList();
+                    List<DateTime> endTimesList = endTimes.Split(',').Select(DateTime.Parse).ToList();
+                    for (int i = 0; i < startTimesList.Count; i++)
                     {
-                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                        tis.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
+                        db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
                     }
+                    /*for (int i = 0; i < startTimes.Count; i++)
+                    {
+                        tis.Add(db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] }));
+                    }*/
 
-                if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                    if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         file = Request.Files[0];
                         string charRange = "CDEFGHIJKLMNOPQRSTY";
                         List<string> divisions = new List<string>();
                         List<string> pools = new List<string>();
                         List<string> teams = new List<string>();
+                        
 
                         Division d = new Division();
                         Pool p = new Pool();
@@ -130,20 +140,25 @@ namespace CupPlaner.Controllers
                                     {
                                         poolsRange = sheet.get_Range("B" + j.ToString(), Missing.Value);
                                         p = new Pool() { Division = d, Name = poolsRange.Value, IsAuto = false };
-                                        db.PoolSet.Add(p);
+                                        
 
-                                        foreach (char c in charRange)
+                                        foreach (char c in charRange.ToList())
                                         {
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
                                             if (!string.IsNullOrEmpty(teamsRange.Value))
                                             {
-                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false };
-                                                newTeam.TimeIntervals = tis;
-                                                db.TeamSet.Add(newTeam);
+                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false,  };
+                                                foreach (TimeInterval ti in tis)
+                                                {
+                                                    newTeam.TimeIntervals.Add(db.TimeIntervalSet.Add(new TimeInterval { StartTime = ti.StartTime, EndTime = ti.EndTime }));
+                                                }
+                                                p.Teams.Add(newTeam);
+                                                newTeam = db.TeamSet.Add(newTeam);
                                             }
                                             else
                                                 break;
                                         }
+                                        p = db.PoolSet.Add(p);
                                     }
                                 }
 
@@ -151,7 +166,7 @@ namespace CupPlaner.Controllers
                                     break;
 
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
-                                db.DivisionSet.Add(d);
+                                d = db.DivisionSet.Add(d);
                                 poolStart = i;
                             }
                             
@@ -159,7 +174,10 @@ namespace CupPlaner.Controllers
                         //System.IO.File.Delete(path);
                     }
 
-
+                    foreach (Team teamitem in teams2)
+                    {
+                        db.TeamSet.Add(teamitem);
+                    }
                     t.Name = name;
                     t.Password = password;
                     t.TimeIntervals = tis;
