@@ -139,4 +139,9 @@ $scope.gotoTournament = function() {
     console.log(index);
   }
 
+  $scope.isScheduled = false;
+  $scope.schedule = function () {
+    $scope.isScheduled = !$scope.isScheduled;
+  }
+
 }]);
