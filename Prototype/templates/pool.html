@@ -88,6 +88,63 @@
           </tr>
         </table>
       </div>
+      </div><div class="row">
+      <div class="col-md-12 text-center">
+        <div class="col-md-3">
+          <form id="divisionSearch">
+            <div class="inner-addon left-addon">
+              <i class="glyphicon glyphicon-search"></i>
+              <input type="text" class="form-control" placeholder="Søg.." ng-model="searchFilter" />
+            </div>
+          </form>
+        </div>
+        <table class="table table-bordered table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>
+                <a href="" ng-click="orderByField='Number'; reverseSort = !reverseSort">
+                Kamp nr. <span ng-show="orderByField == 'Number'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <!--<th>
+                <a href="" ng-click="orderByField='date'; reverseSort = !reverseSort">
+                Dag <span ng-show="orderByField == 'date'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">
+                Tid <span ng-show="orderByField == 'time'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>-->
+              <th>
+                <a href="" ng-click="orderByField='Field.Name'; reverseSort = !reverseSort">
+                Bane <span ng-show="orderByField == 'Field.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team1.name'; reverseSort = !reverseSort">
+                  Hold 1 <span ng-show="orderByField == 'Team1.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team2.name'; reverseSort = !reverseSort">
+                Hold 2 <span ng-show="orderByField == 'Team2.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="match in pool.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+              <td> {{match.Number}} </td>
+              <!--<td> {{}} </td> -->
+              <!--<td> {{}} </td> -->
+              <td> {{match.Field.Name}} </td>
+              <td><a ng-click="gotoTeam(match.Team1, pool)"> {{match.Team1.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2, pool)"> {{match.Team2.name}} </a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

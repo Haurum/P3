@@ -1,4 +1,4 @@
-var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap', 'angularFileUpload']);
+var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap', 'angularFileUpload', 'angular-loading-bar']);
 
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
@@ -37,6 +37,11 @@ app.config(['$routeProvider', function($routeProvider) {
     otherwise({
       redirectTo: '/'
     });
+}]);
+
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+  cfpLoadingBarProvider.includeSpinner = true;
+  cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
 app.run(function($rootScope) {

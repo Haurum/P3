@@ -168,6 +168,12 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+  $scope.isScheduled = false;
+  $scope.schedule = function () {
+    $scope.isScheduled = !$scope.isScheduled;
+  }
+
 }]);
 
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader) {

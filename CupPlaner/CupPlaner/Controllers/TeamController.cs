@@ -36,7 +36,7 @@ namespace CupPlaner.Controllers
                     {
                         Team team1 = m.Teams.ToList()[0];
                         Team team2 = m.Teams.ToList()[1];
-                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id}, Team2 = new{name = team2.Name, id = team2.Id}});
+                        matches.Add(new { Id = m.Id, Team1 = new { name = team1.Name, id = team1.Id}, Team2 = new{name = team2.Name, id = team2.Id,} });
                     }
                 }
 
@@ -103,8 +103,8 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
                     }
                 }
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 t.Name = name;
-                t.TimeIntervals.Clear();
                 t.TimeIntervals = tis;
 
                 db.Entry(t).State = EntityState.Modified;

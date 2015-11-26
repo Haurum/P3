@@ -142,10 +142,10 @@
           </div>
         </div>
       </div>
-    <div class="col-md-12 add-button">
+    <div ng-if="!isScheduled" class="col-md-12 add-button">
       <hr />
-      <a href="#/FinalStage"  class="btn btn-default btn-lg" style="white-space: inherit ! important;">Fortsæt
-        <span class="glyphicon glyphicon-arrow-right"> </span>
+      <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schdule
+        <span class="glyphicon glyphicon-list-alt"> </span>
       </a>
     </div>
   </div>

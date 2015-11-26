@@ -153,13 +153,6 @@ body {
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
 
-.sortorder:after {
-  content: '\25b2';
-}
-.sortorder.reverse:after {
-  content: '\25bc';
-}
-
 @media handheld, only screen and (max-width: 400px){ 
    div#banner { display:none; 
 }
