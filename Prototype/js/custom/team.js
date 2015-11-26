@@ -80,6 +80,10 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
     $location.url("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
   }
 
+  $scope.gotoTeam = function(currTeam) {
+    $location.url("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId + "/team/" + currTeam.Id);
+  }
+
   /* Change time intervals start */
     
   

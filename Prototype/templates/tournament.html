@@ -25,13 +25,15 @@
           <form>
             <label class="pull-left">Tilføj banens navn</label>
             <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." required="true" />
+            <br />
             <label class="pull-left">Tid for kamp</label>
             <div class="panel panel-default">
-              <div class="panel-body">
+              <div class="panel-body alert alert-info" role="alert">
                 Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp
               </div>
             </div>
             <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" ng-model="newMatchDuration" />
+            <br />
             <label class="pull-left">Vælg banestørrelse</label>
             <select class="form-control" ng-model="chooseField">
               <option value="11">11-mands bane</option>

@@ -184,6 +184,7 @@
     </Compile>
     <Compile Include="Helpers\MatchGeneration.cs" />
     <Compile Include="Helpers\ScheduleManager.cs" />
+    <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Match.cs">
       <DependentUpon>CupDB.tt</DependentUpon>
     </Compile>
