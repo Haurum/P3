@@ -9,6 +9,63 @@ namespace CupPlaner.Helpers
     {
         CupDBContainer db = new CupDBContainer();
         MatchGeneration mg = new MatchGeneration();
+        Validator validator = new Validator();
+
+        public void scheduleAll(Tournament t)
+        {
+            List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament == t).ToList();
+
+            while (!t.isScheduled)
+            {
+                foreach (TournamentStage ts in TournamentStages)
+                {
+                    if (ts.Matches.First().Teams.First().PrevPool == null)
+                    {
+
+                    }
+                    else if (ts.Matches.First().Teams.First().PrevPool.TournamentStage.IsScheduled)
+                    {
+                        if (ts.startTime == t.TimeIntervals.First().StartTime)
+                        {
+                            ts.startTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.endTime;
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                }
+            }
+                
+        }
+
+        public Tuple<DateTime, Field> scheduleMatch(Match m)
+        {
+            Tuple<DateTime, Field> results;
+            List<Field> fields = m.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == m.TournamentStage.DivisionTournament.Division.FieldSize).ToList();
+            List<Field> fieldsNotChecked = new List<Field>();
+            fieldsNotChecked.AddRange(fields);
+            foreach (Field field in m.TournamentStage.Pool.FavoriteFields)
+            {
+                if (validator.areTeamsFree(m, field.nextFreeTime))
+                {
+                    results = new Tuple<DateTime, Field>(field.nextFreeTime, field);
+                    return results;
+                }
+                fieldsNotChecked.Remove(field);
+            }
+            foreach (Field field in fieldsNotChecked)
+            {
+                if (validator.areTeamsFree(m, field.nextFreeTime))
+                {
+                    results = new Tuple<DateTime, Field>(field.nextFreeTime, field);
+                    return results;
+                }
+            }
+            results = new Tuple<DateTime, Field>(DateTime.MinValue, null);
+            return results;
+        }
 
         public void DeleteSchedule(int tournamentID)
         {
