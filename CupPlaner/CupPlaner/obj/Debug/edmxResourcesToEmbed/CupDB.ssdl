@@ -11,6 +11,7 @@
     <EntitySet Name="TournamentStageSet" EntityType="CupDB.Store.TournamentStageSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DivisionTournamentSet" EntityType="CupDB.Store.DivisionTournamentSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="FinalsLinkSet" EntityType="CupDB.Store.FinalsLinkSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="NextFreeTimeSet" EntityType="CupDB.Store.NextFreeTimeSet" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="TeamMatch" EntityType="CupDB.Store.TeamMatch" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="PoolField" EntityType="CupDB.Store.PoolField" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="FK_TeamMatch_Team" Association="CupDB.Store.FK_TeamMatch_Team">
@@ -85,6 +86,10 @@
       <End Role="TournamentStage" EntitySet="TournamentStageSet" />
       <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
     </AssociationSet>
+    <AssociationSet Name="FieldNextFreeTime" Association="CupDB.Store.FieldNextFreeTime">
+      <End Role="Field" EntitySet="FieldSet" />
+      <End Role="NextFreeTime" EntitySet="NextFreeTimeSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -124,7 +129,6 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
-    <Property Name="NextFreeTime" Type="datetime" Nullable="false" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeIntervalSet">
@@ -186,6 +190,14 @@
     <Property Name="Finalstage" Type="int" Nullable="false" />
     <Property Name="PoolPlacement" Type="int" Nullable="false" />
     <Property Name="Division_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NextFreeTimeSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="FreeTime" Type="datetime" Nullable="false" />
+    <Property Name="FieldId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TeamMatch">
     <Key>
@@ -368,6 +380,18 @@
       </Principal>
       <Dependent Role="TimeInterval">
         <PropertyRef Name="TournamentStage_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FieldNextFreeTime">
+    <End Role="Field" Type="CupDB.Store.FieldSet" Multiplicity="1" />
+    <End Role="NextFreeTime" Type="CupDB.Store.NextFreeTimeSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Field">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="NextFreeTime">
+        <PropertyRef Name="FieldId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

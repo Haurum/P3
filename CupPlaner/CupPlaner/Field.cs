@@ -18,15 +18,16 @@ namespace CupPlaner
         {
             this.Matches = new HashSet<Match>();
             this.Pool = new HashSet<Pool>();
+            this.NextFreeTime = new HashSet<NextFreeTime>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public FieldSize Size { get; set; }
-        public System.DateTime NextFreeTime { get; set; }
     
         public virtual ICollection<Match> Matches { get; set; }
         public virtual ICollection<Pool> Pool { get; set; }
         public virtual Tournament Tournament { get; set; }
+        public virtual ICollection<NextFreeTime> NextFreeTime { get; set; }
     }
 }

@@ -188,6 +188,9 @@
     <Compile Include="Match.cs">
       <DependentUpon>CupDB.tt</DependentUpon>
     </Compile>
+    <Compile Include="NextFreeTime.cs">
+      <DependentUpon>CupDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Pool.cs">
       <DependentUpon>CupDB.tt</DependentUpon>
     </Compile>

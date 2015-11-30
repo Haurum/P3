@@ -35,5 +35,6 @@ namespace CupPlaner
         public virtual DbSet<TournamentStage> TournamentStageSet { get; set; }
         public virtual DbSet<DivisionTournament> DivisionTournamentSet { get; set; }
         public virtual DbSet<FinalsLink> FinalsLinkSet { get; set; }
+        public virtual DbSet<NextFreeTime> NextFreeTimeSet { get; set; }
     }
 }

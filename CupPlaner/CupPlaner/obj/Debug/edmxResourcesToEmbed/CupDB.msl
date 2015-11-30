@@ -37,7 +37,6 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Size" ColumnName="Size" />
-          <ScalarProperty Name="NextFreeTime" ColumnName="NextFreeTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -95,6 +94,15 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Finalstage" ColumnName="Finalstage" />
           <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NextFreeTimeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.NextFreeTime)">
+        <MappingFragment StoreEntitySet="NextFreeTimeSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FreeTime" ColumnName="FreeTime" />
+          <ScalarProperty Name="FieldId" ColumnName="FieldId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

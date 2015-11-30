@@ -176,7 +176,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
 
 }]);
 
-app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader) {
+app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', 'cfpLoadingBar', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader, cfpLoadingBar) {
   
   $scope.tournamentData =  {};
 
@@ -188,10 +188,12 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
     item.formData.push($scope.tournamentData);
   };
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
+    cfpLoadingBar.complete()
     console.info('onSuccessItem', fileItem, response, status, headers);
     $location.path("tournament/" + response.id);
   };
   uploader.onErrorItem = function(fileItem, response, status, headers) {
+    cfpLoadingBar.complete()
     console.info('onErrorItem', fileItem, response, status, headers);
   };
 
@@ -257,6 +259,8 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 
   $scope.uploadTournament = function () 
   {
+    $scope.startTimesString = "";
+    $scope.endTimesString = ""; 
     if (!$scope.tournamentName || !$scope.tournamentPassword){
       $scope.error = "Navn eller kode ikke sat";
     }else{
@@ -280,17 +284,20 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
             $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
           }
+          $scope.startTimesString += $scope.startDateTimes[i] + (i == $scope.dateRange ? '': ',');
+          $scope.endTimesString += $scope.endDateTimes[i] + (i == $scope.dateRange ? '': ',');
         }
         if(!$scope.error){
           $scope.tournamentData = {
             name: $scope.tournamentName,
             password: $scope.tournamentPassword,
-            startTimes: $scope.startDateTimes,
-            endTimes: $scope.endDateTimes
+            startTimes: $scope.startTimesString,
+            endTimes: $scope.endTimesString
           }
 
           if (uploader.queue.length > 0)
           {
+            cfpLoadingBar.start();
             uploader.queue[0].upload();
           }
           else
