@@ -32,7 +32,7 @@
         <AssociationConnector Association="CupDB.TeamPrevPool" />
         <AssociationConnector Association="CupDB.TournamentStageTimeInterval" />
         <EntityTypeShape EntityType="CupDB.NextFreeTime" Width="1.5" PointX="7.75" PointY="2.375" />
-        <AssociationConnector Association="CupDB.FieldNextFreeTime" />
+        <AssociationConnector Association="CupDB.NextFreeTimeField" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

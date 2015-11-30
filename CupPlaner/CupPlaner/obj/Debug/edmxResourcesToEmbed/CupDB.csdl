@@ -76,9 +76,9 @@
       <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
     </AssociationSet>
     <EntitySet Name="NextFreeTimeSet" EntityType="CupDB.NextFreeTime" />
-    <AssociationSet Name="FieldNextFreeTime" Association="CupDB.FieldNextFreeTime">
-      <End Role="Field" EntitySet="FieldSet" />
+    <AssociationSet Name="NextFreeTimeField" Association="CupDB.NextFreeTimeField">
       <End Role="NextFreeTime" EntitySet="NextFreeTimeSet" />
+      <End Role="Field" EntitySet="FieldSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Team">
@@ -130,7 +130,7 @@
     <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
     <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
     <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
-    <NavigationProperty Name="NextFreeTime" Relationship="CupDB.FieldNextFreeTime" FromRole="Field" ToRole="NextFreeTime" />
+    <NavigationProperty Name="NextFreeTime" Relationship="CupDB.NextFreeTimeField" FromRole="Field" ToRole="NextFreeTime" />
   </EntityType>
   <EntityType Name="TimeInterval">
     <Key>
@@ -278,19 +278,9 @@
     </Key>
     <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="FreeTime" Type="DateTime" Nullable="false" />
-    <NavigationProperty Name="Field" Relationship="CupDB.FieldNextFreeTime" FromRole="NextFreeTime" ToRole="Field" />
-    <Property Name="FieldId" Type="Int32" Nullable="false" />
   </EntityType>
-  <Association Name="FieldNextFreeTime">
-    <End Type="CupDB.Field" Role="Field" Multiplicity="1" />
+  <Association Name="NextFreeTimeField">
     <End Type="CupDB.NextFreeTime" Role="NextFreeTime" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Field">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="NextFreeTime">
-        <PropertyRef Name="FieldId" />
-      </Dependent>
-    </ReferentialConstraint>
+    <End Type="CupDB.Field" Role="Field" Multiplicity="1" />
   </Association>
 </Schema>

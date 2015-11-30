@@ -16,8 +16,5 @@ namespace CupPlaner
     {
         public int Id { get; set; }
         public System.DateTime FreeTime { get; set; }
-        public int FieldId { get; set; }
-    
-        public virtual Field Field { get; set; }
     }
 }
