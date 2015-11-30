@@ -19,7 +19,7 @@ namespace CupPlaner.Helpers.Tests
         public void sletTest()
         {
             
-            Tournament t = db.TournamentSet.Find(2);
+            Tournament t = db.TournamentSet.Find(1);
             foreach (Division d in t.Divisions.ToList())
             {
                 if (d.DivisionTournament != null)
@@ -77,7 +77,7 @@ namespace CupPlaner.Helpers.Tests
         public void generateTest()
         {
             MatchGeneration mg = new MatchGeneration();
-            mg.Generate(2);
+            mg.Generate(1);
         }
     }
 }

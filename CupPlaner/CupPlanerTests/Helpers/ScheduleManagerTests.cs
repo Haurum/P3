@@ -27,7 +27,7 @@ namespace CupPlaner.Helpers.Tests
         [TestMethod()]
         public void scheduleAllTest()
         {
-            Tournament t = db.TournamentSet.Find(2);
+            Tournament t = db.TournamentSet.Find(1);
             sm.scheduleAll(t);
         }
     }

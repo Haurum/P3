@@ -60,11 +60,49 @@ namespace CupPlaner.Helpers
                         matchToSchedule = unscheduledMatches.Last();
                     }
 
-                    result = scheduleMatch(matchToSchedule);
-                    matchToSchedule.StartTime = result.Item1;
-                    matchToSchedule.Field = result.Item2;
-                    matchToSchedule.IsScheduled = true;
-                    matchToSchedule.Field.NextFreeTime = matchToSchedule.Field.NextFreeTime.AddMinutes(matchToSchedule.Duration);
+                    List<Field> fields = matchToSchedule.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == matchToSchedule.TournamentStage.DivisionTournament.Division.FieldSize).ToList();
+                    List<Field> fieldsNotChecked = new List<Field>();
+                    for (int i = 0; i < fields.First().NextFreeTime.Count; i++)
+                    {
+                        fieldsNotChecked.AddRange(fields);
+                        foreach (Field field in matchToSchedule.TournamentStage.Pool.FavoriteFields)
+                        {
+                            if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
+                            {
+                                matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
+                                matchToSchedule.Field = field;
+                                field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
+                                matchToSchedule.IsScheduled = true;
+                                break;
+                            }
+                            fieldsNotChecked.Remove(field);
+                        }
+                        if (matchToSchedule.IsScheduled)
+                        {
+                            break;
+                        }
+                        foreach (Field field in fieldsNotChecked)
+                        {
+                            if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
+                            {
+                                matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
+                                matchToSchedule.Field = field;
+                                field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
+                                matchToSchedule.IsScheduled = true;
+                                break;
+                            }
+                        }
+                        if (matchToSchedule.IsScheduled)
+                        {
+                            break;
+                        }
+                    }
+                    if (!matchToSchedule.IsScheduled)
+                    {
+                        throw new Exception();
+                    }
+
+
                     db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
                     db.Entry(result.Item2).State = System.Data.Entity.EntityState.Modified;
                 }
@@ -80,24 +118,30 @@ namespace CupPlaner.Helpers
             Tuple<DateTime, Field> results;
             List<Field> fields = m.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == m.TournamentStage.DivisionTournament.Division.FieldSize).ToList();
             List<Field> fieldsNotChecked = new List<Field>();
-            fieldsNotChecked.AddRange(fields);
-            foreach (Field field in m.TournamentStage.Pool.FavoriteFields)
+            for (int i = 0; i < fields.First().NextFreeTime.Count ; i++)
             {
-                if (validator.areTeamsFree(m, field.NextFreeTime))
+                fieldsNotChecked.AddRange(fields);
+                foreach (Field field in m.TournamentStage.Pool.FavoriteFields)
                 {
-                    results = new Tuple<DateTime, Field>(field.NextFreeTime, field);
-                    return results;
+                    List<NextFreeTime> nextFreeTimes = field.NextFreeTime.ToList();
+                    if (validator.areTeamsFree(m, nextFreeTimes[i].FreeTime))
+                    {
+                        results = new Tuple<DateTime, Field>(nextFreeTimes[i].FreeTime, field);
+                        return results;
+                    }
+                    fieldsNotChecked.Remove(field);
                 }
-                fieldsNotChecked.Remove(field);
-            }
-            foreach (Field field in fieldsNotChecked)
-            {
-                if (validator.areTeamsFree(m, field.NextFreeTime))
+                foreach (Field field in fieldsNotChecked)
                 {
-                    results = new Tuple<DateTime, Field>(field.NextFreeTime, field);
-                    return results;
+                    List<NextFreeTime> nextFreeTimes = field.NextFreeTime.ToList();
+                    if (validator.areTeamsFree(m, nextFreeTimes[i].FreeTime))
+                    {
+                        results = new Tuple<DateTime, Field>(nextFreeTimes[i].FreeTime, field);
+                        return results;
+                    }
                 }
             }
+            
             results = new Tuple<DateTime, Field>(DateTime.MinValue, null);
             return results;
         }
