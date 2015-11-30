@@ -73,7 +73,7 @@ namespace CupPlaner.Controllers
 
         // POST: Tournament/Create
         [HttpPost]
-        public ActionResult Create(string name, string password, string startTimes, string  )
+        public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
             //try
             //{
