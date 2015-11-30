@@ -24,7 +24,7 @@ namespace CupPlaner.Helpers
                 DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = d.TournamentStructure, Division = d });
                 foreach (Pool p in d.Pools)
                 {
-                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = TournamentStructure.RoundRobin });
+                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = TournamentStructure.RoundRobin, TimeInterval = new TimeInterval() { StartTime = t.TimeIntervals.First().StartTime, EndTime = t.TimeIntervals.Last().EndTime } });
                     List<Team> teams = p.Teams.ToList();
                     for (int i = 0; i < teams.Count; i++)
                     {
@@ -77,7 +77,7 @@ namespace CupPlaner.Helpers
                     if (d.TournamentStructure == TournamentStructure.RoundRobin)
                     {
                         TournamentStage tStage = new TournamentStage();
-                        tStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                        tStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = finalPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure, TimeInterval = new TimeInterval() { StartTime = t.TimeIntervals.First().StartTime, EndTime = t.TimeIntervals.Last().EndTime } });
 
                         for (int k = 0; k < teams.Count; k++)
                         {
@@ -119,7 +119,7 @@ namespace CupPlaner.Helpers
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " " + powOfTwo + ". dels finaler", Division = d, IsAuto = true });
                                     break;
                             }
-                            tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                            tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure, TimeInterval = new TimeInterval() { StartTime = t.TimeIntervals.First().StartTime, EndTime = t.TimeIntervals.Last().EndTime } });
                             
                             for (int i = 0; i< extraTeams.Count; i++)
                             {
@@ -179,7 +179,7 @@ namespace CupPlaner.Helpers
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " " + teamsToAdd.Count / 2 + ". dels finaler", Division = d, IsAuto = true });
                                     break;
                             }
-                            tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure });
+                            tournyStage = db.TournamentStageSet.Add(new TournamentStage() { Pool = KOPool, DivisionTournament = dt, TournamentStructure = dt.TournamentStructure, TimeInterval = new TimeInterval() { StartTime = t.TimeIntervals.First().StartTime, EndTime = t.TimeIntervals.Last().EndTime } });
                             if (teamsToAdd.Count == 2)
                             {
                                 Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[0], teamsToAdd[1] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
