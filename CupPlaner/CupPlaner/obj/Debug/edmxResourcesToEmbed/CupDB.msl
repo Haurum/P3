@@ -102,7 +102,6 @@
         <MappingFragment StoreEntitySet="NextFreeTimeSet">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="FreeTime" ColumnName="FreeTime" />
-          <ScalarProperty Name="FieldId" ColumnName="FieldId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -238,6 +237,14 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="TournamentStage_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="NextFreeTimeField" TypeName="CupDB.NextFreeTimeField" StoreEntitySet="NextFreeTimeSet">
+      <EndProperty Name="Field">
+        <ScalarProperty Name="Id" ColumnName="NextFreeTimeField_NextFreeTime_Id" />
+      </EndProperty>
+      <EndProperty Name="NextFreeTime">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

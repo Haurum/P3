@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/30/2015 13:35:44
+-- Date Created: 11/30/2015 14:25:40
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -35,7 +35,7 @@
 --    ALTER TABLE `FieldSet` DROP CONSTRAINT `FK_FieldTournament`;
 --    ALTER TABLE `TeamSet` DROP CONSTRAINT `FK_TeamPrevPool`;
 --    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TournamentStageTimeInterval`;
---    ALTER TABLE `NextFreeTimeSet` DROP CONSTRAINT `FK_FieldNextFreeTime`;
+--    ALTER TABLE `NextFreeTimeSet` DROP CONSTRAINT `FK_NextFreeTimeField`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -183,7 +183,7 @@ ALTER TABLE `FinalsLinkSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `NextFreeTimeSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`FreeTime` datetime NOT NULL, 
-	`FieldId` int NOT NULL);
+	`NextFreeTimeField_NextFreeTime_Id` int NOT NULL);
 
 ALTER TABLE `NextFreeTimeSet` ADD PRIMARY KEY (Id);
 
@@ -472,20 +472,20 @@ CREATE INDEX `IX_FK_TournamentStageTimeInterval`
     ON `TimeIntervalSet`
     (`TournamentStage_Id`);
 
--- Creating foreign key on `FieldId` in table 'NextFreeTimeSet'
+-- Creating foreign key on `NextFreeTimeField_NextFreeTime_Id` in table 'NextFreeTimeSet'
 
 ALTER TABLE `NextFreeTimeSet`
-ADD CONSTRAINT `FK_FieldNextFreeTime`
-    FOREIGN KEY (`FieldId`)
+ADD CONSTRAINT `FK_NextFreeTimeField`
+    FOREIGN KEY (`NextFreeTimeField_NextFreeTime_Id`)
     REFERENCES `FieldSet`
         (`Id`)
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 
--- Creating non-clustered index for FOREIGN KEY 'FK_FieldNextFreeTime'
+-- Creating non-clustered index for FOREIGN KEY 'FK_NextFreeTimeField'
 
-CREATE INDEX `IX_FK_FieldNextFreeTime` 
+CREATE INDEX `IX_FK_NextFreeTimeField` 
     ON `NextFreeTimeSet`
-    (`FieldId`);
+    (`NextFreeTimeField_NextFreeTime_Id`);
 
 -- --------------------------------------------------
 -- Script has ended

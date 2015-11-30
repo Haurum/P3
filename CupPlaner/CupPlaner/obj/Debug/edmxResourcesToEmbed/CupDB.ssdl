@@ -86,9 +86,9 @@
       <End Role="TournamentStage" EntitySet="TournamentStageSet" />
       <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
     </AssociationSet>
-    <AssociationSet Name="FieldNextFreeTime" Association="CupDB.Store.FieldNextFreeTime">
-      <End Role="Field" EntitySet="FieldSet" />
+    <AssociationSet Name="NextFreeTimeField" Association="CupDB.Store.NextFreeTimeField">
       <End Role="NextFreeTime" EntitySet="NextFreeTimeSet" />
+      <End Role="Field" EntitySet="FieldSet" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
@@ -197,7 +197,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="FreeTime" Type="datetime" Nullable="false" />
-    <Property Name="FieldId" Type="int" Nullable="false" />
+    <Property Name="NextFreeTimeField_NextFreeTime_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TeamMatch">
     <Key>
@@ -383,15 +383,15 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FieldNextFreeTime">
-    <End Role="Field" Type="CupDB.Store.FieldSet" Multiplicity="1" />
+  <Association Name="NextFreeTimeField">
     <End Role="NextFreeTime" Type="CupDB.Store.NextFreeTimeSet" Multiplicity="*" />
+    <End Role="Field" Type="CupDB.Store.FieldSet" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="Field">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="NextFreeTime">
-        <PropertyRef Name="FieldId" />
+        <PropertyRef Name="NextFreeTimeField_NextFreeTime_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
