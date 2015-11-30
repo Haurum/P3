@@ -13,30 +13,65 @@ namespace CupPlaner.Helpers
 
         public void scheduleAll(Tournament t)
         {
-            List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament == t).ToList();
+            List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
 
+            int indicator = 1;
             while (!t.IsScheduled)
             {
+                List<TournamentStage> unscheduledTournamentstages = TournamentStages.Where(x => !x.IsScheduled).ToList();
+                if (unscheduledTournamentstages.Count == 0)
+                {
+                    t.IsScheduled = true;
+                    continue;
+                }
                 foreach (TournamentStage ts in TournamentStages)
                 {
-                    if (ts.Matches.First().Teams.First().PrevPool == null)
+                    if (ts.IsScheduled)
                     {
-
+                        continue;
                     }
-                    else if (ts.Matches.First().Teams.First().PrevPool.TournamentStage.IsScheduled)
+                    else if (ts.Matches.First().Teams.First().PrevPool == null) { }
+                    else if (ts.Matches.First().Teams.First().PrevPool.TournamentStage.IsScheduled && ts.TimeInterval.StartTime == t.TimeIntervals.First().StartTime)
                     {
-                        if (ts.TimeInterval.StartTime == t.TimeIntervals.First().StartTime)
-                        {
-                            ts.TimeInterval.StartTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.TimeInterval.EndTime;
-                        }
+                        ts.TimeInterval.StartTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.TimeInterval.EndTime;
                     }
                     else
                     {
                         continue;
                     }
 
+                    List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
+                    Tuple<DateTime, Field> result = new Tuple<DateTime, Field>(DateTime.MinValue, null);
+                    Match matchToSchedule;
+                    if (unscheduledMatches.Count == 0)
+                    {
+                        DateTime lastMatchStart = ts.Matches.Max(x => x.StartTime);
+                        ts.TimeInterval.EndTime = lastMatchStart.AddMinutes(ts.DivisionTournament.Division.MatchDuration);
+                        ts.IsScheduled = true;
+                        continue;
+                    }
+                    else if (indicator > 0)
+                    {
+                        matchToSchedule = unscheduledMatches.First();
+                        
+                    }
+                    else
+                    {
+                        matchToSchedule = unscheduledMatches.Last();
+                    }
+
+                    result = scheduleMatch(matchToSchedule);
+                    matchToSchedule.StartTime = result.Item1;
+                    matchToSchedule.Field = result.Item2;
+                    matchToSchedule.IsScheduled = true;
+                    matchToSchedule.Field.NextFreeTime = matchToSchedule.Field.NextFreeTime.AddMinutes(matchToSchedule.Duration);
+                    db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
+                    db.Entry(result.Item2).State = System.Data.Entity.EntityState.Modified;
                 }
+
+                indicator *= -1;
             }
+            db.SaveChanges();
                 
         }
 

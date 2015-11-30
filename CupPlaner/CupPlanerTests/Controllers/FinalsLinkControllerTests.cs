@@ -46,7 +46,7 @@ namespace CupPlaner.Controllers.Tests
         public void EditTest()
         {
             //Edit the created finals link
-            dynamic jsonResult = ((JsonResult)controller.Edit(ID.FinalsLinkId, 2,2,ID.DivisionId)).Data;
+            dynamic jsonResult = ((JsonResult)controller.Edit(ID.FinalsLinkId, 2,2)).Data;
             Assert.AreEqual("success", jsonResult.status);
 
             //Check to see if edits have been saved
@@ -56,12 +56,9 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(ID.DivisionId, jsonResult.Division_Id.Id);
 
             //Edit a finals link that does not exist
-            jsonResult = ((JsonResult)controller.Edit(999999, 2, 2, ID.DivisionId)).Data;
+            jsonResult = ((JsonResult)controller.Edit(999999, 2, 2)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
-            //Edit a finals link but assigned to a non-existing division
-            jsonResult = ((JsonResult)controller.Edit(ID.FinalsLinkId, 2, 2, 999999)).Data;
-            Assert.AreEqual("error", jsonResult.status);
         }
 
         [TestMethod()]
