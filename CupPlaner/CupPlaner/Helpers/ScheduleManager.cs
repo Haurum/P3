@@ -8,6 +8,7 @@ namespace CupPlaner.Helpers
     public class ScheduleManager
     {
         CupDBContainer db = new CupDBContainer();
+        MatchGeneration mg = new MatchGeneration();
 
         public void DeleteSchedule(int tournamentID)
         {
@@ -17,24 +18,28 @@ namespace CupPlaner.Helpers
             {
                 if (d.DivisionTournament != null)
                 {
-                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage.ToList())
+                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
                     {
-                        foreach (Match m in ts.Matches.ToList())
+                        foreach (Match m in ts.Matches)
                         {
-                            foreach (Team team in m.Teams.ToList())
+                            foreach (Team team in m.Teams)
                             {
                                 team.Matches.Remove(m);
-                            }
-                            db.MatchSet.Remove(m);
+                            }                           
                         }
-                        db.TournamentStageSet.Remove(ts);
+                        db.MatchSet.RemoveRange(ts.Matches);
                     }
+                    db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
                 }
                 foreach (Pool pool in d.Pools.ToList())
                 {
                     if (pool.IsAuto)
                     {
+                        foreach (Team team in pool.Teams)
+                        {
+                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                        }
                         db.TeamSet.RemoveRange(pool.Teams);
                         pool.FavoriteFields.Clear();
                         db.PoolSet.Remove(pool);
@@ -44,8 +49,5 @@ namespace CupPlaner.Helpers
             db.SaveChanges();
         }
 
-        //Generate matches
-
-        //Schedule matches
     }
 }

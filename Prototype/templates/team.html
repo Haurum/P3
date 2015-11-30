@@ -41,8 +41,7 @@
         </div>
       </div>
     </div>
-    <hr />
-    <input type="submit" value="Gem" class="btn btn-primary" ng-click="uploadTeam()" />
+    <input type="submit" value="Gem" id="tisButton" class="btn btn-primary" ng-click="uploadTeam()" />
     <p ng-if="isSuccess">Info gemt</p>
     <hr />
     <a class="btn btn-danger" ng-click="remove()">Slet hold</a>
@@ -92,13 +91,13 @@
             </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="match in division.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+            <tr ng-repeat="match in team.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
               <td> {{match.Number}} </td>
               <!--<td> {{}} </td> -->
               <!--<td> {{}} </td> -->
               <td> {{match.Field.Name}} </td>
-              <td><a ng-click="gotoTeam(match.Team1, division.Pools)"> {{match.Team1.name}} </a></td>
-              <td><a ng-click="gotoTeam(match.Team2, division.Pools)"> {{match.Team2.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team1)"> {{match.Team1.name}} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2)"> {{match.Team2.name}} </a></td>
             </tr>
           </tbody>
         </table>

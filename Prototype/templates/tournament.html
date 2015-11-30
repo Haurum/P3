@@ -4,7 +4,7 @@
       <li class="active"><a>{{ tournament.Name }}</a></li>
     </ul>
       <h1>
-        <span>Turneringsoversigt</span>
+        <span>{{ tournament.Name }}</span>
         <a href="#/tournament/{{tournamentId}}/edit" class="btn btn-xs btn-primary tournamentEditBtn">Rediger
         <span class="glyphicon glyphicon-pencil"></span>
         </a>
@@ -25,13 +25,15 @@
           <form>
             <label class="pull-left">Tilføj banens navn</label>
             <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." required="true" />
+            <br />
             <label class="pull-left">Tid for kamp</label>
             <div class="panel panel-default">
-              <div class="panel-body">
+              <div class="panel-body alert alert-info" role="alert">
                 Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp
               </div>
             </div>
             <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" ng-model="newMatchDuration" />
+            <br />
             <label class="pull-left">Vælg banestørrelse</label>
             <select class="form-control" ng-model="chooseField">
               <option value="11">11-mands bane</option>
@@ -144,7 +146,7 @@
       </div>
     <div ng-if="!isScheduled" class="col-md-12 add-button">
       <hr />
-      <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schdule
+      <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
         <span class="glyphicon glyphicon-list-alt"> </span>
       </a>
     </div>

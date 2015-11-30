@@ -17,12 +17,12 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void CreateTest()
         {
-            //Create a new pool
+            //Create a new team
             dynamic jsonResult = ((JsonResult)controller.Create("Test Team", ID.PoolId)).Data;
             ID.TeamId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
 
-            //Create a new pool, but to a non-existing division
+            //Create a new team, but to a non-existing pool
             jsonResult = ((JsonResult)controller.Create("Test Team", 999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
@@ -30,13 +30,13 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DetailsTest()
         {
-            //Find the created division
+            //Find the created team
             dynamic jsonResult = ((JsonResult)controller.Details(ID.TeamId)).Data;
             Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.TeamId, jsonResult.Id);
             Assert.AreEqual("Test Team", jsonResult.Name);
 
-            //Find a pool that does not exist
+            //Find a team that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
@@ -44,7 +44,7 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void EditTest()
         {
-            //Edit the created pool
+            //Edit the created team
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.TeamId, "Test Team2", ID.PoolId, new List<DateTime>(), new List<DateTime>())).Data;
             Assert.AreEqual("success", jsonResult.status);
 
@@ -61,11 +61,11 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DeleteTest()
         {
-            //Delete the created pool
+            //Delete the created team
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.TeamId)).Data;
             Assert.AreEqual("success", jsonResult.status);
 
-            //Delete a pool that does not exist
+            //Delete a team that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
