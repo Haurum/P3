@@ -15,7 +15,7 @@ namespace CupPlaner.Helpers
         {
             List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament == t).ToList();
 
-            while (!t.isScheduled)
+            while (!t.IsScheduled)
             {
                 foreach (TournamentStage ts in TournamentStages)
                 {
@@ -25,9 +25,9 @@ namespace CupPlaner.Helpers
                     }
                     else if (ts.Matches.First().Teams.First().PrevPool.TournamentStage.IsScheduled)
                     {
-                        if (ts.startTime == t.TimeIntervals.First().StartTime)
+                        if (ts.TimeInterval.StartTime == t.TimeIntervals.First().StartTime)
                         {
-                            ts.startTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.endTime;
+                            ts.TimeInterval.StartTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.TimeInterval.EndTime;
                         }
                     }
                     else
@@ -48,18 +48,18 @@ namespace CupPlaner.Helpers
             fieldsNotChecked.AddRange(fields);
             foreach (Field field in m.TournamentStage.Pool.FavoriteFields)
             {
-                if (validator.areTeamsFree(m, field.nextFreeTime))
+                if (validator.areTeamsFree(m, field.NextFreeTime))
                 {
-                    results = new Tuple<DateTime, Field>(field.nextFreeTime, field);
+                    results = new Tuple<DateTime, Field>(field.NextFreeTime, field);
                     return results;
                 }
                 fieldsNotChecked.Remove(field);
             }
             foreach (Field field in fieldsNotChecked)
             {
-                if (validator.areTeamsFree(m, field.nextFreeTime))
+                if (validator.areTeamsFree(m, field.NextFreeTime))
                 {
-                    results = new Tuple<DateTime, Field>(field.nextFreeTime, field);
+                    results = new Tuple<DateTime, Field>(field.NextFreeTime, field);
                     return results;
                 }
             }
