@@ -128,7 +128,6 @@
         <div class="col-md-3" ng-repeat="Finalslink in division.FinalsLinks track by $index">
           {{ $index+1 }}. plads går videre til
           <select ng-options="letter as letter for letter in division.letters" ng-model="Finalslink.Finalsstage" ng-change="finalsLinkChanged(Finalslink, letter)"></select>
-          {{ Finalslink }}
         </div>
       </div>
       <select class="finals-select">
