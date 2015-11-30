@@ -30,6 +30,7 @@
         <AssociationConnector Association="CupDB.DivisionFinalsLink" />
         <AssociationConnector Association="CupDB.FieldTournament" />
         <AssociationConnector Association="CupDB.TeamPrevPool" />
+        <AssociationConnector Association="CupDB.TournamentStageTimeInterval" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

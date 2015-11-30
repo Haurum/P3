@@ -37,6 +37,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="NextFreeTime" ColumnName="NextFreeTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -55,6 +56,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -219,6 +221,15 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="PrevPool_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TournamentStageTimeInterval" TypeName="CupDB.TournamentStageTimeInterval" StoreEntitySet="TimeIntervalSet">
+      <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="TournamentStage_Id" />
+      </EndProperty>
+      <EndProperty Name="TimeInterval">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="TournamentStage_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

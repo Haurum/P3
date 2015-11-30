@@ -26,5 +26,6 @@ namespace CupPlaner
         public virtual ICollection<Match> Matches { get; set; }
         public virtual Pool Pool { get; set; }
         public virtual DivisionTournament DivisionTournament { get; set; }
+        public virtual TimeInterval TimeInterval { get; set; }
     }
 }

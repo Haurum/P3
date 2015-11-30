@@ -86,6 +86,10 @@
       <End Role="Team" EntitySet="TeamSet" />
       <End Role="Pool" EntitySet="PoolSet" />
     </AssociationSet>
+    <AssociationSet Name="TournamentStageTimeInterval" Association="CupDB.Store.TournamentStageTimeInterval">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -125,6 +129,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
+    <Property Name="NextFreeTime" Type="datetime" Nullable="false" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeIntervalSet">
@@ -136,6 +141,7 @@
     <Property Name="EndTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Team_Id" Type="int" Nullable="true" />
     <Property Name="Tournament_Id" Type="int" Nullable="true" />
+    <Property Name="TournamentStage_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="TournamentSet">
     <Key>
@@ -144,6 +150,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Password" Type="longtext" Nullable="false" />
+    <Property Name="IsScheduled" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="MatchSet">
     <Key>
@@ -357,6 +364,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="TournamentStageTimeInterval">
+    <End Role="TournamentStage" Type="CupDB.Store.TournamentStageSet" Multiplicity="0..1" />
+    <End Role="TimeInterval" Type="CupDB.Store.TimeIntervalSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TournamentStage">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeInterval">
+        <PropertyRef Name="TournamentStage_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_TeamMatch_Team">
     <End Role="Team" Type="CupDB.Store.TeamSet" Multiplicity="1" />
     <End Role="TeamMatch" Type="CupDB.Store.TeamMatch" Multiplicity="*" />
@@ -480,6 +499,10 @@
             <End Role="Team" EntitySet="TeamSet" />
             <End Role="Pool" EntitySet="PoolSet" />
           </AssociationSet>
+          <AssociationSet Name="TournamentStageTimeInterval" Association="CupDB.TournamentStageTimeInterval">
+            <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+            <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Team">
           <Key>
@@ -530,6 +553,7 @@
           <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
           <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
           <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
+          <Property Name="NextFreeTime" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="TimeInterval">
           <Key>
@@ -540,6 +564,7 @@
           <Property Name="EndTime" Nullable="false" Precision="3" Type="DateTime" />
           <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
           <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
+          <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TimeInterval" ToRole="TournamentStage" />
         </EntityType>
         <EntityType Name="Tournament">
           <Key>
@@ -551,6 +576,7 @@
           <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
           <Property Name="Password" Type="String" Nullable="false" />
           <NavigationProperty Name="Fields" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
+          <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Match">
           <Key>
@@ -575,6 +601,7 @@
           <NavigationProperty Name="Pool" Relationship="CupDB.TournamentStagePool" FromRole="TournamentStage" ToRole="Pool" />
           <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
           <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="TimeInterval" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TournamentStage" ToRole="TimeInterval" />
         </EntityType>
         <Association Name="TeamMatch">
           <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
@@ -664,6 +691,10 @@
           <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
           <End Type="CupDB.Pool" Role="Pool" Multiplicity="0..1" />
         </Association>
+        <Association Name="TournamentStageTimeInterval">
+          <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="0..1" />
+          <End Type="CupDB.TimeInterval" Role="TimeInterval" Multiplicity="0..1" />
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -706,6 +737,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Size" ColumnName="Size" />
+          <ScalarProperty Name="NextFreeTime" ColumnName="NextFreeTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -724,6 +756,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -888,6 +921,15 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="PrevPool_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TournamentStageTimeInterval" TypeName="CupDB.TournamentStageTimeInterval" StoreEntitySet="TimeIntervalSet">
+      <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="TournamentStage_Id" />
+      </EndProperty>
+      <EndProperty Name="TimeInterval">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="TournamentStage_Id" IsNull="false" />
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>

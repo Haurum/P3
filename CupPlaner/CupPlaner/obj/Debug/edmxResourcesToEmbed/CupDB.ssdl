@@ -81,6 +81,10 @@
       <End Role="Team" EntitySet="TeamSet" />
       <End Role="Pool" EntitySet="PoolSet" />
     </AssociationSet>
+    <AssociationSet Name="TournamentStageTimeInterval" Association="CupDB.Store.TournamentStageTimeInterval">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="TeamSet">
     <Key>
@@ -120,6 +124,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Size" Type="int" Nullable="false" />
+    <Property Name="NextFreeTime" Type="datetime" Nullable="false" />
     <Property Name="Tournament_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="TimeIntervalSet">
@@ -131,6 +136,7 @@
     <Property Name="EndTime" Type="datetime" Nullable="false" Precision="3" />
     <Property Name="Team_Id" Type="int" Nullable="true" />
     <Property Name="Tournament_Id" Type="int" Nullable="true" />
+    <Property Name="TournamentStage_Id" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="TournamentSet">
     <Key>
@@ -139,6 +145,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="longtext" Nullable="false" />
     <Property Name="Password" Type="longtext" Nullable="false" />
+    <Property Name="IsScheduled" Type="bool" Nullable="false" />
   </EntityType>
   <EntityType Name="MatchSet">
     <Key>
@@ -349,6 +356,18 @@
       </Principal>
       <Dependent Role="Team">
         <PropertyRef Name="PrevPool_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="TournamentStageTimeInterval">
+    <End Role="TournamentStage" Type="CupDB.Store.TournamentStageSet" Multiplicity="0..1" />
+    <End Role="TimeInterval" Type="CupDB.Store.TimeIntervalSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TournamentStage">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="TimeInterval">
+        <PropertyRef Name="TournamentStage_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
