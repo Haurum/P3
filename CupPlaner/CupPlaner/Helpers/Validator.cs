@@ -11,6 +11,10 @@ namespace CupPlaner.Helpers
 
         public bool areTeamsFree(Match m, DateTime startTime)
         {
+            if (m.TournamentStage.TimeInterval.StartTime > startTime)
+            {
+                return false;
+            }
             foreach (Team team in m.Teams)
             {
                 TimeInterval timesForDate = team.TimeIntervals.First(x => x.StartTime.Date == startTime.Date);

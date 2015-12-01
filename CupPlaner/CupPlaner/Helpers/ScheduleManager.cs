@@ -24,24 +24,35 @@ namespace CupPlaner.Helpers
                     t.IsScheduled = true;
                     continue;
                 }
-                foreach (TournamentStage ts in TournamentStages)
+                foreach (TournamentStage ts in unscheduledTournamentstages)
                 {
-                    if (ts.IsScheduled)
+                    bool isReady = true;
+                    foreach (Team team in ts.Pool.Teams)
+                    {
+                        if (team.PrevPool == null)
+                        {
+                            continue;
+                        }
+                        else if (team.PrevPool.TournamentStage.IsScheduled)
+                        {
+                            if (ts.TimeInterval.StartTime == t.TimeIntervals.First().StartTime)
+                            {
+                                ts.TimeInterval.StartTime = team.PrevPool.TournamentStage.TimeInterval.EndTime;
+                            }
+                        }
+                        else
+                        {
+                            isReady = false;
+                            break;
+                        }
+                    }
+                    if (!isReady)
                     {
                         continue;
                     }
-                    else if (ts.Matches.First().Teams.First().PrevPool == null) { }
-                    else if (ts.Matches.First().Teams.First().PrevPool.TournamentStage.IsScheduled && ts.TimeInterval.StartTime == t.TimeIntervals.First().StartTime)
-                    {
-                        ts.TimeInterval.StartTime = ts.Matches.First().Teams.First().PrevPool.TournamentStage.TimeInterval.EndTime;
-                    }
-                    else
-                    {
-                        continue;
-                    }
+                                            
 
                     List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
-                    Tuple<DateTime, Field> result = new Tuple<DateTime, Field>(DateTime.MinValue, null);
                     Match matchToSchedule;
                     if (unscheduledMatches.Count == 0)
                     {
@@ -73,6 +84,7 @@ namespace CupPlaner.Helpers
                                 matchToSchedule.Field = field;
                                 field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
                                 matchToSchedule.IsScheduled = true;
+                                db.Entry(field).State = System.Data.Entity.EntityState.Modified;
                                 break;
                             }
                             fieldsNotChecked.Remove(field);
@@ -89,6 +101,7 @@ namespace CupPlaner.Helpers
                                 matchToSchedule.Field = field;
                                 field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
                                 matchToSchedule.IsScheduled = true;
+                                db.Entry(field).State = System.Data.Entity.EntityState.Modified;
                                 break;
                             }
                         }
@@ -97,14 +110,10 @@ namespace CupPlaner.Helpers
                             break;
                         }
                     }
-                    if (!matchToSchedule.IsScheduled)
-                    {
-                        throw new Exception();
-                    }
 
 
                     db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
-                    db.Entry(result.Item2).State = System.Data.Entity.EntityState.Modified;
+                    
                 }
 
                 indicator *= -1;
