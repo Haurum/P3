@@ -18,22 +18,11 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void Initialize()
         {
+            //Create 
             Division d = db.DivisionSet.Find(ID.DivisionId);
             DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { Division = d, TournamentStructure = TournamentStructure.RoundRobin });
             db.SaveChanges();
             ID.DivisionTournamentId = dt.Id;
-
-            //Create a new division tournament
-            /*dynamic jsonResult = ((JsonResult)controller.Create(ID.DivisionId)).Data;
-
-            Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New division tournament added", jsonResult.message);
-            ID.DivisionTournamentId = jsonResult.id;
-
-            //Create a new division tournament, but to a non-existing division
-            jsonResult = ((JsonResult)controller.Create(999999)).Data;
-            Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("New division tournament not added", jsonResult.message);*/
         }
 
         [TestMethod()]
