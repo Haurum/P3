@@ -71,6 +71,15 @@
       <End Role="Team" EntitySet="TeamSet" />
       <End Role="Pool" EntitySet="PoolSet" />
     </AssociationSet>
+    <AssociationSet Name="TournamentStageTimeInterval" Association="CupDB.TournamentStageTimeInterval">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+    </AssociationSet>
+    <EntitySet Name="NextFreeTimeSet" EntityType="CupDB.NextFreeTime" />
+    <AssociationSet Name="NextFreeTimeField" Association="CupDB.NextFreeTimeField">
+      <End Role="NextFreeTime" EntitySet="NextFreeTimeSet" />
+      <End Role="Field" EntitySet="FieldSet" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Team">
     <Key>
@@ -121,6 +130,7 @@
     <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
     <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
     <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
+    <NavigationProperty Name="NextFreeTime" Relationship="CupDB.NextFreeTimeField" FromRole="Field" ToRole="NextFreeTime" />
   </EntityType>
   <EntityType Name="TimeInterval">
     <Key>
@@ -131,6 +141,7 @@
     <Property Name="EndTime" Nullable="false" Precision="3" Type="DateTime" />
     <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
     <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
+    <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TimeInterval" ToRole="TournamentStage" />
   </EntityType>
   <EntityType Name="Tournament">
     <Key>
@@ -142,6 +153,7 @@
     <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
     <Property Name="Password" Type="String" Nullable="false" />
     <NavigationProperty Name="Fields" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
   </EntityType>
   <EntityType Name="Match">
     <Key>
@@ -166,6 +178,7 @@
     <NavigationProperty Name="Pool" Relationship="CupDB.TournamentStagePool" FromRole="TournamentStage" ToRole="Pool" />
     <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
     <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="TimeInterval" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TournamentStage" ToRole="TimeInterval" />
   </EntityType>
   <Association Name="TeamMatch">
     <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
@@ -254,5 +267,20 @@
   <Association Name="TeamPrevPool">
     <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
     <End Type="CupDB.Pool" Role="Pool" Multiplicity="0..1" />
+  </Association>
+  <Association Name="TournamentStageTimeInterval">
+    <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="0..1" />
+    <End Type="CupDB.TimeInterval" Role="TimeInterval" Multiplicity="0..1" />
+  </Association>
+  <EntityType Name="NextFreeTime">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FreeTime" Type="DateTime" Nullable="false" />
+  </EntityType>
+  <Association Name="NextFreeTimeField">
+    <End Type="CupDB.NextFreeTime" Role="NextFreeTime" Multiplicity="*" />
+    <End Type="CupDB.Field" Role="Field" Multiplicity="1" />
   </Association>
 </Schema>

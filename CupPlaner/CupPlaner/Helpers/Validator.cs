@@ -9,6 +9,34 @@ namespace CupPlaner.Helpers
     {
         CupDBContainer db = new CupDBContainer();
 
+        public bool areTeamsFree(Match m, DateTime startTime)
+        {
+            if (m.TournamentStage.TimeInterval.StartTime > startTime)
+            {
+                return false;
+            }
+            foreach (Team team in m.Teams)
+            {
+                TimeInterval timesForDate = team.TimeIntervals.First(x => x.StartTime.Date == startTime.Date);
+                if (startTime < timesForDate.StartTime || startTime.AddMinutes(m.Duration) > timesForDate.EndTime)
+                {
+                    return false;
+                }
+                foreach (Match match in team.Matches)
+                {
+                    if (match.IsScheduled && startTime.AddMinutes(m.Duration) > match.StartTime)
+                    {
+                        DateTime teamBreakDone = match.StartTime.AddMinutes(match.Duration * 2);
+                        if (startTime < teamBreakDone)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+
         public bool IsScheduleReady(int tournamentId)
         {
             bool isValid = true;

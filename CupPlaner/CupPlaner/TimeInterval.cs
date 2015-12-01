@@ -20,5 +20,6 @@ namespace CupPlaner
     
         public virtual Team Team { get; set; }
         public virtual Tournament Tournament { get; set; }
+        public virtual TournamentStage TournamentStage { get; set; }
     }
 }

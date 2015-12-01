@@ -12,20 +12,9 @@ namespace CupPlaner
     using System;
     using System.Collections.Generic;
     
-    public partial class TournamentStage
+    public partial class NextFreeTime
     {
-        public TournamentStage()
-        {
-            this.Matches = new HashSet<Match>();
-        }
-    
         public int Id { get; set; }
-        public TournamentStructure TournamentStructure { get; set; }
-        public bool IsScheduled { get; set; }
-    
-        public virtual ICollection<Match> Matches { get; set; }
-        public virtual Pool Pool { get; set; }
-        public virtual DivisionTournament DivisionTournament { get; set; }
-        public virtual TimeInterval TimeInterval { get; set; }
+        public System.DateTime FreeTime { get; set; }
     }
 }

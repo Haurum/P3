@@ -55,6 +55,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="IsScheduled" ColumnName="IsScheduled" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -93,6 +94,14 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Finalstage" ColumnName="Finalstage" />
           <ScalarProperty Name="PoolPlacement" ColumnName="PoolPlacement" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NextFreeTimeSet">
+      <EntityTypeMapping TypeName="IsTypeOf(CupDB.NextFreeTime)">
+        <MappingFragment StoreEntitySet="NextFreeTimeSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FreeTime" ColumnName="FreeTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -219,6 +228,23 @@
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
       <Condition ColumnName="PrevPool_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="TournamentStageTimeInterval" TypeName="CupDB.TournamentStageTimeInterval" StoreEntitySet="TimeIntervalSet">
+      <EndProperty Name="TournamentStage">
+        <ScalarProperty Name="Id" ColumnName="TournamentStage_Id" />
+      </EndProperty>
+      <EndProperty Name="TimeInterval">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+      <Condition ColumnName="TournamentStage_Id" IsNull="false" />
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="NextFreeTimeField" TypeName="CupDB.NextFreeTimeField" StoreEntitySet="NextFreeTimeSet">
+      <EndProperty Name="Field">
+        <ScalarProperty Name="Id" ColumnName="NextFreeTimeField_NextFreeTime_Id" />
+      </EndProperty>
+      <EndProperty Name="NextFreeTime">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
     </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping>

@@ -28,8 +28,8 @@ namespace CupPlaner.Controllers.Tests
     public class TournamentControllerTests
     {
         TournamentController controller = new TournamentController();
-        List<DateTime> startDates = new List<DateTime>() { DateTime.Parse("16-11-2015 08:00:00"), DateTime.Parse("17-11-2015 10:00:00") };
-        List<DateTime> endDates = new List<DateTime>() { DateTime.Parse("16-11-2015 20:00:00"), DateTime.Parse("17-11-2015 22:00:00") };
+        String startDates =  "16-11-2015 08:00:00,17-11-2015 10:00:00";
+        String endDates = "16-11-2015 20:00:00,17-11-2015 22:00:00";
         List<DateTime> startDates2 = new List<DateTime>() { DateTime.Parse("16-11-2015 09:00:00"), DateTime.Parse("17-11-2015 11:00:00") };
         List<DateTime> endDates2 = new List<DateTime>() { DateTime.Parse("16-11-2015 21:00:00"), DateTime.Parse("17-11-2015 22:30:00") };
 

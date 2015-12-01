@@ -63,6 +63,10 @@ namespace CupPlaner.Controllers
                 // TODO: Add insert logic here
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size, Tournament = t });
+                foreach (TimeInterval ti in t.TimeIntervals)
+                {
+                    f.NextFreeTime.Add(new NextFreeTime() { FreeTime = ti.StartTime });
+                }
                 db.SaveChanges();
                 return Json(new { status = "success", message = "New field added", id = f.Id, fieldName = f.Name }, JsonRequestBehavior.AllowGet);
             }

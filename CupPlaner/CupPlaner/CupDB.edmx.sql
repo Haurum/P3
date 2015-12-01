@@ -6,7 +6,7 @@
 -- -----------------------------------------------------------
 -- Entity Designer DDL Script for MySQL Server 4.1 and higher
 -- -----------------------------------------------------------
--- Date Created: 11/24/2015 12:22:00
+-- Date Created: 11/30/2015 14:25:40
 -- Generated from EDMX file: C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\CupDB.edmx
 -- Target version: 3.0.0.0
 -- --------------------------------------------------
@@ -34,6 +34,8 @@
 --    ALTER TABLE `FinalsLinkSet` DROP CONSTRAINT `FK_DivisionFinalsLink`;
 --    ALTER TABLE `FieldSet` DROP CONSTRAINT `FK_FieldTournament`;
 --    ALTER TABLE `TeamSet` DROP CONSTRAINT `FK_TeamPrevPool`;
+--    ALTER TABLE `TimeIntervalSet` DROP CONSTRAINT `FK_TournamentStageTimeInterval`;
+--    ALTER TABLE `NextFreeTimeSet` DROP CONSTRAINT `FK_NextFreeTimeField`;
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -49,6 +51,7 @@ SET foreign_key_checks = 0;
     DROP TABLE IF EXISTS `TournamentStageSet`;
     DROP TABLE IF EXISTS `DivisionTournamentSet`;
     DROP TABLE IF EXISTS `FinalsLinkSet`;
+    DROP TABLE IF EXISTS `NextFreeTimeSet`;
     DROP TABLE IF EXISTS `TeamMatch`;
     DROP TABLE IF EXISTS `PoolField`;
 SET foreign_key_checks = 1;
@@ -110,7 +113,8 @@ CREATE TABLE `TimeIntervalSet`(
 	`StartTime` datetime( 3 )  NOT NULL, 
 	`EndTime` datetime( 3 )  NOT NULL, 
 	`Team_Id` int, 
-	`Tournament_Id` int);
+	`Tournament_Id` int, 
+	`TournamentStage_Id` int);
 
 ALTER TABLE `TimeIntervalSet` ADD PRIMARY KEY (Id);
 
@@ -120,7 +124,8 @@ ALTER TABLE `TimeIntervalSet` ADD PRIMARY KEY (Id);
 CREATE TABLE `TournamentSet`(
 	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
 	`Name` longtext NOT NULL, 
-	`Password` longtext NOT NULL);
+	`Password` longtext NOT NULL, 
+	`IsScheduled` bool NOT NULL);
 
 ALTER TABLE `TournamentSet` ADD PRIMARY KEY (Id);
 
@@ -171,6 +176,16 @@ CREATE TABLE `FinalsLinkSet`(
 	`Division_Id` int NOT NULL);
 
 ALTER TABLE `FinalsLinkSet` ADD PRIMARY KEY (Id);
+
+
+
+
+CREATE TABLE `NextFreeTimeSet`(
+	`Id` int NOT NULL AUTO_INCREMENT UNIQUE, 
+	`FreeTime` datetime NOT NULL, 
+	`NextFreeTimeField_NextFreeTime_Id` int NOT NULL);
+
+ALTER TABLE `NextFreeTimeSet` ADD PRIMARY KEY (Id);
 
 
 
@@ -441,6 +456,36 @@ ADD CONSTRAINT `FK_TeamPrevPool`
 CREATE INDEX `IX_FK_TeamPrevPool` 
     ON `TeamSet`
     (`PrevPool_Id`);
+
+-- Creating foreign key on `TournamentStage_Id` in table 'TimeIntervalSet'
+
+ALTER TABLE `TimeIntervalSet`
+ADD CONSTRAINT `FK_TournamentStageTimeInterval`
+    FOREIGN KEY (`TournamentStage_Id`)
+    REFERENCES `TournamentStageSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_TournamentStageTimeInterval'
+
+CREATE INDEX `IX_FK_TournamentStageTimeInterval` 
+    ON `TimeIntervalSet`
+    (`TournamentStage_Id`);
+
+-- Creating foreign key on `NextFreeTimeField_NextFreeTime_Id` in table 'NextFreeTimeSet'
+
+ALTER TABLE `NextFreeTimeSet`
+ADD CONSTRAINT `FK_NextFreeTimeField`
+    FOREIGN KEY (`NextFreeTimeField_NextFreeTime_Id`)
+    REFERENCES `FieldSet`
+        (`Id`)
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_NextFreeTimeField'
+
+CREATE INDEX `IX_FK_NextFreeTimeField` 
+    ON `NextFreeTimeSet`
+    (`NextFreeTimeField_NextFreeTime_Id`);
 
 -- --------------------------------------------------
 -- Script has ended
