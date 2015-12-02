@@ -182,6 +182,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ExcelExport.cs" />
     <Compile Include="Helpers\MatchGeneration.cs" />
     <Compile Include="Helpers\ScheduleManager.cs" />
     <Compile Include="Helpers\Validator.cs" />
