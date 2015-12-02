@@ -33,6 +33,10 @@ app.config(['$routeProvider', function($routeProvider) {
     when('/tournament/:tournamentId/division/:divisionId/pool/:poolId/team/:teamId', {
       templateUrl: 'templates/team.html',
       controller: 'TeamDetailController'
+    }).
+     when('/schedule', {
+      templateUrl: 'templates/schedule.html',
+      controller: 'ScheduleController'
     }).   
     otherwise({
       redirectTo: '/'
@@ -74,4 +78,11 @@ app.controller('HomeController', ['$scope', '$http', '$location', function ($sco
       $scope.error = err;
     });
   }
+}]);
+
+
+app.filter('jsonDate', ['$filter', function ($filter) {
+    return function (input) {
+        return (input) ? $filter('date')(parseInt(input.substr(6)), "yyyy-MM-dd HH:mm") : '';
+    };
 }]);

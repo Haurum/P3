@@ -102,10 +102,13 @@ namespace CupPlaner.Helpers.Tests
             List<Team> teams = new List<Team>() { t1, t2, t3 };
             MatchGeneration mg = new MatchGeneration();
             List<TimeInterval> ret = mg.SameTimeInterval(new Pool() { Teams = teams, Division = new Division() { Tournament = new Tournament() { TimeIntervals = tis1 } } });
-            foreach (var ti in ret)
-            {
-                Console.WriteLine(ti.StartTime + " " + ti.EndTime);
-            }
+
+            Assert.AreEqual(DateTime.Parse("16-11-2015 09:00:00"), ret[0].StartTime);
+            Assert.AreEqual(DateTime.Parse("16-11-2015 18:00:00"), ret[0].EndTime);
+            Assert.AreEqual(DateTime.Parse("17-11-2015 12:00:00"), ret[1].StartTime);
+            Assert.AreEqual(DateTime.Parse("17-11-2015 21:30:00"), ret[1].EndTime);
+            Assert.AreEqual(DateTime.Parse("18-11-2015 11:30:00"), ret[2].StartTime);
+            Assert.AreEqual(DateTime.Parse("18-11-2015 16:00:00"), ret[2].EndTime);
         }
     }
 }

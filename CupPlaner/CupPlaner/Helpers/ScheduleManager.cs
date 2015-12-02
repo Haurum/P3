@@ -110,7 +110,26 @@ namespace CupPlaner.Helpers
                             break;
                         }
                     }
-
+                    if (!matchToSchedule.IsScheduled && unscheduledTournamentstages.Count == 1)
+                    {
+                        bool done = false;
+                        foreach (Field field in fields)
+                        {
+                            foreach (NextFreeTime nft in field.NextFreeTime)
+                            {
+                                if (nft.FreeTime.AddMinutes(matchToSchedule.Duration) < t.TimeIntervals.First(x => x.EndTime.Date == nft.FreeTime.Date).EndTime)
+                                {
+                                    nft.FreeTime = nft.FreeTime.AddMinutes(matchToSchedule.Duration);
+                                    done = true;
+                                    break;
+                                }
+                            }
+                            if (done)
+                            {
+                                break;
+                            }
+                        }
+                    }
 
                     db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
                     
