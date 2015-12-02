@@ -244,5 +244,25 @@ namespace CupPlaner.Helpers
             }
             db.SaveChanges();
         }
+
+        public List<TimeInterval> SameTimeInterval(Pool p)
+        {
+            List<TimeInterval> intervals = new List<TimeInterval>();
+            for (int i = 0; i < p.Division.Tournament.TimeIntervals.Count; i++)
+            {
+                DateTime dtStart = p.Teams.Select(x => x.TimeIntervals.ToArray()[i].StartTime).OrderByDescending(x => x.TimeOfDay).First();
+                DateTime dtEnd = p.Teams.Select(x => x.TimeIntervals.ToArray()[i].EndTime).OrderBy(x => x.TimeOfDay).First();
+                intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
+            }
+            return intervals;
+        }
+        private List<TimeInterval> AddTeamToTimeIntervals(Team t, ref List<TimeInterval> tis)
+        {
+            foreach (TimeInterval ti in tis)
+            {
+                ti.Team = t;
+            }
+            return tis;
+        }
     }
 }

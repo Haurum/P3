@@ -34,12 +34,18 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 List<object> fields = new List<object>();
+                List<object> matches = new List<object>();
 
                 if(t.Fields != null)
                 {
                     foreach(Field f in t.Fields)
                     {
-                        fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
+                        matches = new List<object>();
+                        foreach (Match m in f.Matches)
+                        {
+                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                        }
+                        fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size, matches = matches });
                     }
                 }
                 object obj = new { status = "success", Fields = fields };
@@ -114,7 +120,6 @@ namespace CupPlaner.Controllers
             try
             {
                 Field f = db.FieldSet.Find(id);
-                NextFreeTime n = db.NextFreeTimeSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
                 foreach (Division d in t.Divisions)
                 {
@@ -127,16 +132,10 @@ namespace CupPlaner.Controllers
                                 p.FavoriteFields.Remove(favField);                        
                             }
                         }
-                        foreach (NextFreeTime nextFreeTime in f.NextFreeTime)
-                        {
-                            if (nextFreeTime.Id == n.Id)
-                            {
-                                f.NextFreeTime.Remove(nextFreeTime);
-                            }
-                        }
+                        
                     }
                 }
-                db.NextFreeTimeSet.Remove(n);
+                db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
                 db.FieldSet.Remove(f);
                 db.SaveChanges();
 
