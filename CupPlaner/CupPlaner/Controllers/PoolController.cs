@@ -21,9 +21,11 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
+                
                 List<object> teams = new List<object>();
                 List<object> ffs = new List<object>();
                 List<object> matches = new List<object>();
+
                 if (p.Teams != null)
                 {
                     foreach (Team t in p.Teams)
@@ -48,8 +50,6 @@ namespace CupPlaner.Controllers
                     }
                 }
                 object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs, Matches = matches };
-                
-
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -57,7 +57,6 @@ namespace CupPlaner.Controllers
             {
                 return Json(new { status = "error", message = "Could not find pool", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-      
         }
 
         // POST: Pool/Create - The Create function will create a new object of a pool with the name and an id of the division it is about to be created in.
@@ -69,7 +68,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(divisionId);
+
                 Pool p = db.PoolSet.Add(new Pool() { Name = name, Division = d });
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New pool added", id = p.Id }, JsonRequestBehavior.AllowGet);
@@ -100,7 +101,6 @@ namespace CupPlaner.Controllers
                         p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
                     }
                 }
-                
 
                 db.Entry(p).State = EntityState.Modified;
                 db.SaveChanges();
@@ -129,6 +129,7 @@ namespace CupPlaner.Controllers
                     db.MatchSet.RemoveRange(team.Matches);
                     team.TimeIntervals.Clear();
                 }
+
                 db.TeamSet.RemoveRange(p.Teams);
                 p.FavoriteFields.Clear();
                 db.PoolSet.Remove(p);

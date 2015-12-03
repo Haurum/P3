@@ -18,7 +18,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
+
                 object obj = new { status = "success", Id = m.Id, StartTime = m.StartTime, Duration = m.Duration, Number = m.Number };
+
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -38,10 +40,15 @@ namespace CupPlaner.Controllers
             {
                 Team team1 = db.TeamSet.Find(team1Id);
                 Team team2 = db.TeamSet.Find(team2Id);
+
                 List<Team> teams = new List<Team>() { team1, team2 };
+
                 TournamentStage ts = db.TournamentStageSet.Find(tournamentStageId);
+
                 Match m = db.MatchSet.Add(new Match() { Teams = teams, Duration = team1.Pool.Division.MatchDuration, TournamentStage = ts });
+
                 db.SaveChanges();
+
                 return m;
             }
             catch (Exception ex)
@@ -62,11 +69,14 @@ namespace CupPlaner.Controllers
             {
                 Match m = db.MatchSet.Find(matchId);
                 DateTime st = Convert.ToDateTime(startTime);
-                m.StartTime = st;
                 Field f = db.FieldSet.Find(fieldId);
+
+                m.StartTime = st;
                 m.Field = f;
+
                 db.Entry(m).State = EntityState.Modified;
                 db.SaveChanges();
+
                 return Json(new { status = "success", message = "New match added" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -85,8 +95,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
+
                 if (startTime != null) m.StartTime = Convert.ToDateTime(startTime);
                 if (duration > 0) m.Duration = duration;
+
                 db.Entry(m).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -113,6 +125,7 @@ namespace CupPlaner.Controllers
                 {
                     t.Matches.Remove(m);
                 }
+
                 db.MatchSet.Remove(m);
                 db.SaveChanges();
 
