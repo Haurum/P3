@@ -15,6 +15,10 @@ namespace CupPlaner.Controllers
         CupDBContainer db = new CupDBContainer();
 
         // GET: Tournament/Details/5
+        // Define a list with divisions, fields and times.
+        // Going through all the divisiosns, add some divisions with name and id.
+        // Return a JSON object if there is a tournamet with a password, id, name, fields and divisions.
+        // If there doesnt exist a tournament it will return a JSON object and get a error.
         public ActionResult Details(int id)
         {
             try
@@ -55,7 +59,8 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "Could not find tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        // This function will create a password as a string.
+        // Find a password to the tournament in the databse. 
         [HttpPost]
         public ActionResult IdFromPass(string password)
         {
@@ -68,6 +73,9 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Tournament/Create
+        // This function will have name, password starttime and endtime.
+        // 
+
         [HttpPost]
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
@@ -181,6 +189,12 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Tournament/Edit/5
+        // Find a id to the tournament in the database.
+        // Generate a list of all Timeinterval.
+        // Going through all the divisions, pools and teams
+        // Find a id to team in the database
+        // Try try remove the first and the last element in timeinterval in the database, and going through all timeintervals.
+
         [HttpPost]
         public ActionResult Edit(int id, string name, string password, List<DateTime> startTimes, List<DateTime> endTimes)
         {
@@ -229,6 +243,9 @@ namespace CupPlaner.Controllers
 
 
         // POST: Tournament/Delete/5
+        // Find a id to a tournament via the database
+        // Going through all the division. 
+        // Return a JSON object if the tournament is deleted with succes, and error when is not deleted.
         [HttpPost]
         public ActionResult Delete(int id)
         {

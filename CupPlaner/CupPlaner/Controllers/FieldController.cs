@@ -29,7 +29,12 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "Could not find field", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        //The function (GetAllTournament) tries to find tournamentId via the database, make a list of tghe fields and matches.
+        //Check and get all the fields and matches.
+        // Add some matches and make a start time and duration.
+        // Add fields with matches
+        // Return a JSON object if it succes or error.
+        
         public ActionResult GetAllTournamentFields(int tournamentId)
         {
             try
