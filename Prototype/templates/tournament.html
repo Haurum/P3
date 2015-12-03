@@ -71,7 +71,7 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" class="form-control" ng-model="EmField" required="true" />
+                  <input type="text" ng-model="EmField" class="form-control" placeholder="Indtast banens navn.."/>
                   <input type="submit" ng-if="EmField!=''" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewEmField()" class="btn btn-danger">Annuller</a>
                 </form> 
@@ -97,7 +97,7 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="OmField" required="true" />
+                  <input type="text" ng-model="OmField" class="form-control" placeholder="Indtast banens navn.."/>
                   <input type="submit" ng-if="OmField!=''" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewOmField()" class="btn btn-danger">Annuller</a>
                 </form> 
@@ -123,7 +123,7 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="FmField" required="true"/>
+                  <input type="text" ng-model="FmField" class="form-control" placeholder="Indtast banens navn.."/>
                   <input type="submit" ng-if="FmField!=''" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewFmField()" class="btn btn-danger">Annuller</a>
                 </form> 
