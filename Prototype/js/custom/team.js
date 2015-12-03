@@ -38,6 +38,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       $scope.error = err;
     })
   }
+
   $scope.getTeamData();
 
   $scope.changeTeamNameFunc = function() {
@@ -87,8 +88,11 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   $scope.toggleMin = function () {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
+
   $scope.toggleMin();
+
   $scope.maxDate = new Date(2020, 5, 22);
+
   $scope.openEndDate = function ($event) {
     $scope.statusEndDate.opened = true;
   };
@@ -133,14 +137,9 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       for (var index = 0; index < $scope.startTimes.length; index++) {
         $scope.startDateTimes[index] = $scope.startTimes[index];
         $scope.endDateTimes[index] = $scope.endTimes[index];        
-        
       }
-      
-      console.log($scope.startDateTimes);
-
       if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
         $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
-          
       }else{
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
@@ -155,7 +154,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
             startTimes: $scope.startDateTimes,
             endTimes: $scope.endDateTimes
           }
-      
           $http.post("http://localhost:50229/Team/Edit/", teamData)
           .success(function(Data)
           {
@@ -167,9 +165,9 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
             $scope.error = err;
             $scope.getTeamData();
           });
-          }
-        }  
-      }   
+        }
+      }  
+    }   
   }
   /* Change time intervals end */ 
 }]);

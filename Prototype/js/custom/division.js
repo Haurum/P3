@@ -18,7 +18,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     {
       $scope.division = data;
       $scope.division.letters = [];
-      
       for (var i = 0; i < $scope.division.FinalsLinks.length; i++)
       {
         $scope.division.letters.push($scope.allLetters[i]);
@@ -29,6 +28,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.error = err;
     })
   }
+
   $scope.getDivisionData(); 
 
   $scope.newPoolFunc = function() {
@@ -141,8 +141,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   }
 
   $scope.isScheduled = false;
+
   $scope.schedule = function () {
     $scope.isScheduled = !$scope.isScheduled;
   }
-
 }]);

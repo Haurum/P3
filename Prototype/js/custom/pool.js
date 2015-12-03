@@ -22,6 +22,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.error = err;
     })
   }
+
   $scope.getPoolData();
   
   $scope.EmField = [];
@@ -55,7 +56,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   }
 
   $scope.getFields();
-
   $scope.getPoolData();
 
   // addTeamToPool is a post-request which sends
@@ -102,7 +102,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     console.log($scope.favFieldsIds);
     $http.post($rootScope.apiUrl + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
     .success(function(data){
-
     }).error(function(err){
       $scope.favFieldErr = err;
       console.log(err);
@@ -130,7 +129,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.removeTeam = function(team) {
     $http.post($rootScope.apiUrl + "/Team/Delete", { id: team.Id })
     .success(function(data){
-
     }).error(function(data){
       $scope.deleteErr = data;
     })
@@ -159,5 +157,4 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.editErr = err;
     })
   }
-
 }]);

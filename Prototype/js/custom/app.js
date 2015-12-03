@@ -62,6 +62,7 @@ app.run(function($rootScope) {
 // HomeController is the controller for the home.html page,
 // where the "log-in" or "create new tournament" options are available.
 app.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+  
   $scope.password = "";
 
   // getId is the "log-in" to a tournament, which needs the password parameter,
