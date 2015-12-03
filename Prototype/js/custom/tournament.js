@@ -28,7 +28,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
           $scope.divisions = data.Divisions;
           $scope.tournament = data;
         } else  {
-            $scope.ErrorMessage = data.message;
+            $scope.ErrorMessage = "Række kunne ikke læses";
         }
       }).error(function (err) {
         $scope.error = err;
@@ -105,8 +105,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
           }
             $scope.getDivisions();
           } else {
-            $scope.ErrorMessage = data.message;
+            $scope.ErrorMessage = "Bane ikke oprettet";
           }
+          console.log($scope.ErrorMessage);
     }).error(function(err){
       $scope.createErr = err;
     }).finally(function(hej){
@@ -120,7 +121,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     .success(function(data){
       if(data.status === "success"){
       } else{
-        $scope.ErrorMessage = data.message;
+        $scope.ErrorMessage = "Bane ikke fjernet";
       }
     }).error(function(err){
       $scope.deleteErr = err;
@@ -163,7 +164,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
           $scope.chooseField = "";
           $scope.getDivisions();
         } else {
-          $scope.ErrorMessage = data.message;
+          $scope.ErrorMessage = "Række ikke tilføjet";
         }
         
       }).error(function(data){
@@ -429,7 +430,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
               {
                 if(Data.status === "error"){
-                  $scope.error = Data.message;
+                  $scope.error = "Turnering kunne ikke læses";
                 }else{
                   $location.path("tournament/" + $routeParams.tournamentId);
                 }

@@ -12,11 +12,16 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $http.get($rootScope.apiUrl + "/Pool/Details?id=" +  $routeParams.poolId)
     .success(function(data)
     {
-      $scope.pool = data;
-      for(var i = 0; i < $scope.pool.FavoriteFields.length; i++){
-        $scope.FavoriteFieldIds.push($scope.pool.FavoriteFields[i].Id);
+      if(data.status === "success"){
+        $scope.pool = data;
+        for(var i = 0; i < $scope.pool.FavoriteFields.length; i++){
+          $scope.FavoriteFieldIds.push($scope.pool.FavoriteFields[i].Id);
+        }
+        $scope.divisionFieldSize = data.FieldSize;
+      } else {
+        $scope.ErrorMessage = "Pulje kunne ikke læses";
       }
-      $scope.divisionFieldSize = data.FieldSize;
+      
     }).error(function(err) 
     {
       $scope.error = err;
@@ -35,7 +40,8 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.getFields = function() {
     $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId)
     .success(function(data){
-      for (var i=0; i < data.Fields.length; i++)
+      if(data.status === "success"){
+        for (var i=0; i < data.Fields.length; i++)
         {
           if(data.Fields[i].fieldSize === 11)
           {
@@ -50,6 +56,9 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
             $scope.FmField.push(data.Fields[i]);
           }
         }
+      } else {
+        $scope.ErrorMessage = "Baner kunne ikke læses";
+      } 
     }).error(function(err){
       $scope.error = err;
     })
@@ -65,7 +74,11 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.addTeamToPool = function(name, index) {
     $http.post($rootScope.apiUrl + "/Team/Create", { name: name, poolId: $routeParams.poolId })
     .success(function(data) {
-      $scope.getPoolData();
+      if(data.status === "success"){
+        $scope.getPoolData();
+      } else {
+        $scope.ErrorMessage = "Kunne ikke oprette hold";
+      }
     }).error(function(err){
      $scope.deleteErr = err;
     })   
@@ -102,6 +115,10 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     console.log($scope.favFieldsIds);
     $http.post($rootScope.apiUrl + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
     .success(function(data){
+      if(data.status === "success"){
+      } else {
+        $scope.ErrorMessage = "Kunne ikke sætte foretrukne bane";
+      }
     }).error(function(err){
       $scope.favFieldErr = err;
       console.log(err);
@@ -115,7 +132,11 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.remove = function() {
     $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })
     .success(function(data) {
-      $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+      if(data.status === "success"){
+        $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+      } else {
+        $scope.ErrorMessage = "Kunne ikke slætte pulje";
+      }
     }).error(function(data) {
       $scope.deleteErr = data;
     })   
@@ -129,6 +150,10 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.removeTeam = function(team) {
     $http.post($rootScope.apiUrl + "/Team/Delete", { id: team.Id })
     .success(function(data){
+      if(data.status === "success"){
+      } else {
+        $scope.ErrorMessage = "Kunne ikke slætte hold";
+      }
     }).error(function(data){
       $scope.deleteErr = data;
     })
@@ -149,10 +174,14 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   $scope.changeNewPoolNameFunc = function(newName) {
     $http.post($rootScope.apiUrl + "/Pool/Edit", { name: newName, id: $routeParams.poolId, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
     .success(function(data){
-      console.log(data);
-      $scope.pool.Name = data.newName;
-      $scope.changePoolNameFunc();
-      $scope.getPoolData();
+      if(data.status === "success"){
+        console.log(data);
+        $scope.pool.Name = data.newName;
+        $scope.changePoolNameFunc();
+        $scope.getPoolData();
+      } else {
+        $scope.ErrorMessage = "Kunne ikke skifte pulje-navn";
+      }
     }).error(function(err){
       $scope.editErr = err;
     })
