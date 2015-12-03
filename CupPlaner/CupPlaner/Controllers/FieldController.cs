@@ -123,11 +123,8 @@ namespace CupPlaner.Controllers
             {
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
-<<<<<<< HEAD
                 sm.DeleteSchedule(t.Id);
-=======
                 NextFreeTime n = db.NextFreeTimeSet.Find(id);
->>>>>>> origin/master
                 foreach (Division d in t.Divisions)
                 {
                     foreach(Pool p in d.Pools)
