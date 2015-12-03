@@ -87,7 +87,6 @@ app.controller('HomeController', ['$scope', '$http', '$location', function ($sco
   }
 }]);
 
-
 app.filter('jsonDate', ['$filter', function ($filter) {
     return function (input) {
         return (input) ? $filter('date')(parseInt(input.substr(6)), "yyyy-MM-dd HH:mm") : '';

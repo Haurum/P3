@@ -1,4 +1,4 @@
-app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $window) {
   $scope.changeName = false;
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
@@ -61,15 +61,15 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   //The remove function is used to delete a specific team with its id as a parameter. The function is making a post request to the backend
   //calling the Delete function 
   $scope.remove = function() {
-    var deleteTeam = $window.confirm('Er du sikker på at du vil slette holdet?')
+    var deleteTeam = $window.confirm('Er du sikker på at du vil slette holdet?');
 
-    if(delteTeam) {
+    if(deleteTeam) {
       $http.post($rootScope.apiUrl + "/Team/Delete", { id: $routeParams.teamId })
       .success(function(data) {
         $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
       }).error(function(data) {
         $scope.deleteErr = data;
-    })   
+      })   
     }
     
   }

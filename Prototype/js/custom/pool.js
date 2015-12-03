@@ -1,5 +1,5 @@
 // PoolController is the controller for the pool.html page,
-app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $window) {
   $scope.changeName = false
   $scope.FavoriteFieldIds = [];
   $scope.orderByField = 'Number';
@@ -113,25 +113,16 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   // a JSON object containing a message: "success" or "error",
   // indicating wether the pool was deleted or not.
   $scope.remove = function() {
-    $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })
-    .success(function(data) {
-      $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
-    }).error(function(data) {
-      $scope.deleteErr = data;
-    })   
-  }
+    var deletePool = $window.confirm('Er du sikker på du vil slette puljen?');
 
-  // removeTeam is the post-request to delete a team,
-  // through the pools html page, with the parameter teamId.
-  // This function returns a JSON object containing a message:
-  // "success" or "error", indicating wether the team
-  // was deleted or not.
-  $scope.removeTeam = function(team) {
-    $http.post($rootScope.apiUrl + "/Team/Delete", { id: team.Id })
-    .success(function(data){
-    }).error(function(data){
-      $scope.deleteErr = data;
-    })
+    if(deletePool){
+      $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })
+      .success(function(data) {
+        $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
+      }).error(function(data) {
+        $scope.deleteErr = data;
+      })
+    }   
   }
 
   // changePoolNameFunc is a function called by the

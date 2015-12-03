@@ -1,4 +1,4 @@
-app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
+app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $window) {
   $scope.changeField = false;
   $scope.changeDuration = false;
   $scope.changeFavField = false;
@@ -22,7 +22,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       {
         $scope.division.letters.push($scope.allLetters[i]);
       }
-      console.log($scope.division.tournamentId);
     }).error(function(err) 
     {
       $scope.error = err;
@@ -49,12 +48,17 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   
   //Deleting the specific division. Making a post request to the backend to call the Delete function DivisionController.
   $scope.remove = function() {
-    $http.post($rootScope.apiUrl + "/Division/Delete", { id: $routeParams.divisionId })
-    .success(function(data) {
-      $location.path("/tournament/" + $routeParams.tournamentId);
-    }).error(function(data) {
-      $scope.deleteErr = data;
-    })   
+    var deleteDivision = $window.confirm('Er du sikker på du vil slette rækken?');
+
+    if(deleteDivision){
+      $http.post($rootScope.apiUrl + "/Division/Delete", { id: $routeParams.divisionId })
+      .success(function(data) {
+        $location.path("/tournament/" + $routeParams.tournamentId);
+      }).error(function(data) {
+        $scope.deleteErr = data;
+      })
+    }
+   
   }
   
   $scope.changeFieldFunc = function() {

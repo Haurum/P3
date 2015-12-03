@@ -1,4 +1,4 @@
-app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
+app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window) {
   
   $scope.new = false;
 
@@ -108,15 +108,19 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   }
   
   $scope.removeField = function(Field) {
-    $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
-    .success(function(data){
+    var deleteField = $window.confirm('Er du sikker på du vil slette banen?');
 
-    }).error(function(err){
-      $scope.deleteErr = err;
-    }).finally(function(hej) {
-      console.log("Hello???");
-      $scope.getDivisions();
-    })
+    if(deleteField){
+      $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
+      .success(function(data){
+
+      }).error(function(err){
+        $scope.deleteErr = err;
+      }).finally(function(hej) {
+        console.log("Hello???");
+        $scope.getDivisions();
+      })
+    }
   }
 
   /* 11man */
