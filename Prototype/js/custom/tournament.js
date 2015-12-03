@@ -6,26 +6,30 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
-        $scope.EmFields = [];
-        $scope.OmFields = [];
-        $scope.FmFields = [];
-        for (var i=0; i < data.Fields.length; i++)
-        {
-          if(data.Fields[i].fieldSize === 11)
+        if(data.status === "success"){
+          $scope.EmFields = [];
+          $scope.OmFields = [];
+          $scope.FmFields = [];
+          for (var i=0; i < data.Fields.length; i++)
           {
-            $scope.EmFields.push(data.Fields[i]);
+            if(data.Fields[i].fieldSize === 11)
+            {
+              $scope.EmFields.push(data.Fields[i]);
+            }
+            else if(data.Fields[i].fieldSize === 8)
+            {
+              $scope.OmFields.push(data.Fields[i]);
+            }
+            else
+            {
+              $scope.FmFields.push(data.Fields[i]);
+            }
           }
-          else if(data.Fields[i].fieldSize === 8)
-          {
-            $scope.OmFields.push(data.Fields[i]);
-          }
-          else
-          {
-            $scope.FmFields.push(data.Fields[i]);
-          }
+          $scope.divisions = data.Divisions;
+          $scope.tournament = data;
+        } else  {
+            $scope.ErrorMessage = data.message;
         }
-        $scope.divisions = data.Divisions;
-        $scope.tournament = data;
       }).error(function (err) {
         $scope.error = err;
       })
@@ -89,16 +93,20 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.submitField = function(fieldName, fieldSize) {
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
-        if(fieldSize === 11){
-          $scope.createNewEmField();
-        }
-        else if(fieldSize === 8){
-          $scope.createNewOmField();
-        }
-        else {
-          $scope.createNewFmField();
-        }
-        $scope.getDivisions();
+        if(data.status === "success"){
+          if(fieldSize === 11){
+            $scope.createNewEmField();
+          }
+          else if(fieldSize === 8){
+            $scope.createNewOmField();
+          }
+          else {
+            $scope.createNewFmField();
+          }
+            $scope.getDivisions();
+          } else {
+            $scope.ErrorMessage = data.message;
+          }
     }).error(function(err){
       $scope.createErr = err;
     }).finally(function(hej){
@@ -110,7 +118,10 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.removeField = function(Field) {
     $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
     .success(function(data){
-
+      if(data.status === "success"){
+      } else{
+        $scope.ErrorMessage = data.message;
+      }
     }).error(function(err){
       $scope.deleteErr = err;
     }).finally(function(hej) {
@@ -145,11 +156,16 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
     $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
-        $uibModalInstance.close();
-        $scope.newDivName = "";
-        $scope.newMatchDuration = "";
-        $scope.chooseField = "";
-        $scope.getDivisions();
+        if(data.status === "success"){
+          $uibModalInstance.close();
+          $scope.newDivName = "";
+          $scope.newMatchDuration = "";
+          $scope.chooseField = "";
+          $scope.getDivisions();
+        } else {
+          $scope.ErrorMessage = data.message;
+        }
+        
       }).error(function(data){
         $scope.newDivError = data;
       })
