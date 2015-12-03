@@ -20,6 +20,7 @@ namespace CupPlaner.Controllers
             try
             {
                 FinalsLink fl = db.FinalsLinkSet.Find(id);
+
                 object obj = new { status = "success", id = fl.Id, Finalstage = fl.Finalstage, PoolPlacement = fl.PoolPlacement, Division_Id = fl.Division };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
@@ -39,6 +40,7 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(divisionID);
+
                 db.FinalsLinkSet.Add(new FinalsLink { Finalstage = finalStage, PoolPlacement = poolPlacement, Division = d });
                 db.SaveChanges();
 
@@ -83,6 +85,7 @@ namespace CupPlaner.Controllers
             try
             {
                 FinalsLink fl = db.FinalsLinkSet.Find(id);
+
                 db.FinalsLinkSet.Remove(fl);
                 db.SaveChanges();
 

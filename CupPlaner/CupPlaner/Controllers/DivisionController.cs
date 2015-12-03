@@ -24,6 +24,7 @@ namespace CupPlaner.Controllers
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
+
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
                 if (d.Pools != null)
@@ -31,6 +32,7 @@ namespace CupPlaner.Controllers
                     foreach (Pool p in d.Pools)
                     {
                         teams = new List<object>();
+
                         foreach (Team t in p.Teams)
                         {
                             teams.Add(new { Name = t.Name, Id = t.Id });
@@ -38,6 +40,7 @@ namespace CupPlaner.Controllers
                         pools.Add(new { Id = p.Id, Name = p.Name, Teams = teams });
                     }
                 }
+
                 if (d.DivisionTournament != null && d.DivisionTournament.TournamentStage.Count > 0)
                 {
                     foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
@@ -48,11 +51,13 @@ namespace CupPlaner.Controllers
                             {
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
+
                                 matches.Add(new { Id = m.Id, Number = m.Number, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }                      
                     }
                 }
+
                 if (d.FinalsLinks.Count > 0)
                 {
                     foreach (FinalsLink fl in d.FinalsLinks)
@@ -83,7 +88,7 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
-                //db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New division added", id = d.Id}, JsonRequestBehavior.AllowGet);
@@ -104,8 +109,10 @@ namespace CupPlaner.Controllers
             {
 
                 Division d = db.DivisionSet.Find(id);
-                d.Name = name;
                 d.Tournament = db.TournamentSet.Find(tournamentId);
+
+                d.Name = name;
+                
                 if(d.FieldSize != (FieldSize)fieldSizeInt)
                 {
                     foreach (Pool p in d.Pools)
@@ -114,6 +121,7 @@ namespace CupPlaner.Controllers
                     }
                     d.FieldSize = (FieldSize)fieldSizeInt;
                 }
+
                 d.MatchDuration = matchDuration;
 
                 db.Entry(d).State = EntityState.Modified;
@@ -136,7 +144,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(id);
+
                 sm.DeleteSchedule(d.Tournament.Id);
+
                 foreach (Pool p in d.Pools)
                 {
                     foreach (Team team in p.Teams.ToList())
@@ -147,6 +157,7 @@ namespace CupPlaner.Controllers
                     db.TeamSet.RemoveRange(p.Teams);
                     p.FavoriteFields.Clear();
                 }
+
                 db.PoolSet.RemoveRange(d.Pools);
                 db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
                 db.DivisionSet.Remove(d);

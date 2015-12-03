@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using System.Data.Entity;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Web;
+using System.Web.Mvc;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CupPlaner.Controllers
@@ -13,11 +13,6 @@ namespace CupPlaner.Controllers
     public class TournamentController : Controller
     {
         CupDBContainer db = new CupDBContainer();
-        // GET: Tournament
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         // GET: Tournament/Details/5
         public ActionResult Details(int id)
@@ -28,6 +23,7 @@ namespace CupPlaner.Controllers
                 List<object> divs = new List<object>();
                 List<object> fields = new List<object>();
                 List<object> times = new List<object>();
+
                 if (t.Divisions != null)
                 {
                     foreach (Division d in t.Divisions)
@@ -75,18 +71,16 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
-            //try
-            //{
+            try
+            {
                 if (!db.TournamentSet.Any(x => x.Password == password))
                 {
                     Tournament t = new Tournament();
-                    
-                    HttpPostedFileBase file = null;
-
                     List<Team> teams2 = new List<Team>();
-                    int poolStart = 2;
-
                     List<TimeInterval> tis = new List<TimeInterval>();
+
+                    HttpPostedFileBase file = null;
+                    int poolStart = 2;
                     
                     List<DateTime> startTimesList = startTimes.Split(',').Select(DateTime.Parse).ToList();
                     List<DateTime> endTimesList = endTimes.Split(',').Select(DateTime.Parse).ToList();
@@ -95,10 +89,6 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
                         db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
                     }
-                    /*for (int i = 0; i < startTimes.Count; i++)
-                    {
-                        tis.Add(db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] }));
-                    }*/
 
                     if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
@@ -107,7 +97,6 @@ namespace CupPlaner.Controllers
                         List<string> divisions = new List<string>();
                         List<string> pools = new List<string>();
                         List<string> teams = new List<string>();
-                        
 
                         Division d = new Division();
                         Pool p = new Pool();
@@ -141,7 +130,6 @@ namespace CupPlaner.Controllers
                                         poolsRange = sheet.get_Range("B" + j.ToString(), Missing.Value);
                                         p = new Pool() { Division = d, Name = poolsRange.Value, IsAuto = false };
                                         
-
                                         foreach (char c in charRange.ToList())
                                         {
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
@@ -168,10 +156,8 @@ namespace CupPlaner.Controllers
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
                                 d = db.DivisionSet.Add(d);
                                 poolStart = i;
-                            }
-                            
+                            }  
                         }
-                        //System.IO.File.Delete(path);
                     }
 
                     foreach (Team teamitem in teams2)
@@ -183,15 +169,15 @@ namespace CupPlaner.Controllers
                     t.TimeIntervals = tis;
                     t = db.TournamentSet.Add(t);
                     db.SaveChanges();
-
+ 
                     return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                 }
                 return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
-            /*}
+            }
             catch (Exception ex)
             {
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }*/
+            }
         }
 
         // POST: Tournament/Edit/5
@@ -200,7 +186,6 @@ namespace CupPlaner.Controllers
         {
             try
             {
-
                 Tournament t = db.TournamentSet.Find(id);
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 List<TimeInterval> tis = new List<TimeInterval>();

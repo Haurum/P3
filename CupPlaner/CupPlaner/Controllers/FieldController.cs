@@ -21,7 +21,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Field f = db.FieldSet.Find(id);
+
                 object obj = new { status = "success", Id = f.Id, name = f.Name, size = f.Size };
+
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -43,6 +45,7 @@ namespace CupPlaner.Controllers
                     foreach(Field f in t.Fields)
                     {
                         matches = new List<object>();
+
                         foreach (Match m in f.Matches)
                         {
                             matches.Add(new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
@@ -50,7 +53,9 @@ namespace CupPlaner.Controllers
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size, matches = matches });
                     }
                 }
+
                 object obj = new { status = "success", Fields = fields };
+
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)
@@ -68,14 +73,16 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size, Tournament = t });
+
                 foreach (TimeInterval ti in t.TimeIntervals)
                 {
                     f.NextFreeTime.Add(new NextFreeTime() { FreeTime = ti.StartTime });
                 }
+
                 db.SaveChanges();
+
                 return Json(new { status = "success", message = "New field added", id = f.Id, fieldName = f.Name }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -93,10 +100,12 @@ namespace CupPlaner.Controllers
             try
             {
                 Field f = db.FieldSet.Find(id);
+
                 if (name != null)
                 {
                     f.Name = name;
                 }
+
                 if ((FieldSize)size != f.Size)
                 {
                     f.Size = (FieldSize)size;
@@ -123,11 +132,10 @@ namespace CupPlaner.Controllers
             {
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
-<<<<<<< HEAD
-                sm.DeleteSchedule(t.Id);
-=======
                 NextFreeTime n = db.NextFreeTimeSet.Find(id);
->>>>>>> origin/master
+
+                sm.DeleteSchedule(t.Id);
+                
                 foreach (Division d in t.Divisions)
                 {
                     foreach(Pool p in d.Pools)
@@ -149,6 +157,7 @@ namespace CupPlaner.Controllers
                         
                     }
                 }
+
                 db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
                 db.FieldSet.Remove(f);
                 db.SaveChanges();

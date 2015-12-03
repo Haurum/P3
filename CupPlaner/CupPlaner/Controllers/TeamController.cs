@@ -69,6 +69,7 @@ namespace CupPlaner.Controllers
                     db.TimeIntervalSet.Add(timeinterval);
                     t.TimeIntervals.Add(timeinterval);
                 }
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
@@ -88,8 +89,8 @@ namespace CupPlaner.Controllers
             try
             {
                 List<TimeInterval> tis = new List<TimeInterval>();
-                Team t = db.TeamSet.Find(id);
                 List<TimeInterval> teamtis = new List<TimeInterval>();
+                Team t = db.TeamSet.Find(id);
                 teamtis = t.TimeIntervals.ToList();
                 for (int i = 0; i < startTimes.Count; i++)
                 {
@@ -102,7 +103,9 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
                     }
                 }
+
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
+
                 t.Name = name;
                 t.TimeIntervals = tis;
 
@@ -132,9 +135,11 @@ namespace CupPlaner.Controllers
                 {
                     t.TimeIntervals.Remove(ti);
                 }
+
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);
                 db.SaveChanges();
+
                 return Json(new { status = "success", message = "Team Deleted" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
