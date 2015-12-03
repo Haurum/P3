@@ -13,7 +13,7 @@ namespace CupPlaner.Controllers.Tests
 {
     public class ID
     {
-        public static int TournamentId = 4;
+        public static int TournamentId = 9;
         public static int DivisionId = 8;
         public static int DivisionTournamentId = 7;
         public static int PoolId = 32;
@@ -102,6 +102,7 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(DateTime.Parse("16-11-2015 21:00:00"), jsonResult.TimeIntervals[0].EndTime);
             Assert.AreEqual(DateTime.Parse("17-11-2015 11:00:00"), jsonResult.TimeIntervals[1].StartTime);
             Assert.AreEqual(DateTime.Parse("17-11-2015 22:30:00"), jsonResult.TimeIntervals[1].EndTime);
+
 
             //Edit a tournament using null values
             jsonResult = ((JsonResult)controller.Edit(ID.TournamentId, "TestName2", null, startDates2, endDates2)).Data;

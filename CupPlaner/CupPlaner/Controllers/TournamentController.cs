@@ -43,7 +43,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                if(t.Fields != null)
+                if (t.Fields != null)
                 {
                     foreach (Field f in t.Fields)
                     {
@@ -54,7 +54,7 @@ namespace CupPlaner.Controllers
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new { status = "error", message = "Could not find tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
@@ -89,7 +89,7 @@ namespace CupPlaner.Controllers
 
                     HttpPostedFileBase file = null;
                     int poolStart = 2;
-                    
+
                     List<DateTime> startTimesList = startTimes.Split(',').Select(DateTime.Parse).ToList();
                     List<DateTime> endTimesList = endTimes.Split(',').Select(DateTime.Parse).ToList();
                     for (int i = 0; i < startTimesList.Count; i++)
@@ -137,13 +137,13 @@ namespace CupPlaner.Controllers
                                     {
                                         poolsRange = sheet.get_Range("B" + j.ToString(), Missing.Value);
                                         p = new Pool() { Division = d, Name = poolsRange.Value, IsAuto = false };
-                                        
+
                                         foreach (char c in charRange.ToList())
                                         {
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
                                             if (!string.IsNullOrEmpty(teamsRange.Value))
                                             {
-                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false,  };
+                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false, };
                                                 foreach (TimeInterval ti in tis)
                                                 {
                                                     newTeam.TimeIntervals.Add(db.TimeIntervalSet.Add(new TimeInterval { StartTime = ti.StartTime, EndTime = ti.EndTime }));
@@ -164,7 +164,7 @@ namespace CupPlaner.Controllers
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
                                 d = db.DivisionSet.Add(d);
                                 poolStart = i;
-                            }  
+                            }
                         }
                     }
 
@@ -177,10 +177,10 @@ namespace CupPlaner.Controllers
                     t.TimeIntervals = tis;
                     t = db.TournamentSet.Add(t);
                     db.SaveChanges();
- 
+
                     return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                 }
-                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
+                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -200,43 +200,44 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                if (!db.TournamentSet.Any(x => x.Password == password))
+                if (db.TournamentSet.Any(x => x.Password == password))
                 {
-                    Tournament t = db.TournamentSet.Find(id);
-                    db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
-                    List<TimeInterval> tis = new List<TimeInterval>();
-                    TimeInterval timeinterval = new TimeInterval();
-                    for (int i = 0; i < startTimes.Count; i++)
+                    string oldPass = db.TournamentSet.Find(id).Password;
+                    if (oldPass != password) return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
+                }
+                Tournament t = db.TournamentSet.Find(id);
+                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
+                List<TimeInterval> tis = new List<TimeInterval>();
+                TimeInterval timeinterval = new TimeInterval();
+                for (int i = 0; i < startTimes.Count; i++)
+                {
+                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                }
+                t.TimeIntervals = tis;
+                foreach (Division d in t.Divisions)
+                {
+                    foreach (Pool p in d.Pools)
                     {
-                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
-                    }
-                    t.TimeIntervals = tis;
-                    foreach (Division d in t.Divisions)
-                    {
-                        foreach (Pool p in d.Pools)
+                        foreach (Team tm in p.Teams)
                         {
-                            foreach (Team tm in p.Teams)
+                            Team team = db.TeamSet.Find(tm.Id);
+                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            foreach (TimeInterval ti in t.TimeIntervals)
                             {
-                                Team team = db.TeamSet.Find(tm.Id);
-                                db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
-                                foreach (TimeInterval ti in t.TimeIntervals)
-                                {
-                                    timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
-                                    db.TimeIntervalSet.Add(timeinterval);
-                                    team.TimeIntervals.Add(timeinterval);
-                                }
+                                timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                                db.TimeIntervalSet.Add(timeinterval);
+                                team.TimeIntervals.Add(timeinterval);
                             }
                         }
                     }
-                    t.Name = name;
-                    t.Password = password;
-
-                    db.Entry(t).State = EntityState.Modified;
-                    db.SaveChanges();
-
-                    return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
                 }
-                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
+                t.Name = name;
+                t.Password = password;
+
+                db.Entry(t).State = EntityState.Modified;
+                db.SaveChanges();
+
+                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
