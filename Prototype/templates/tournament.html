@@ -44,7 +44,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Luk</button>
-            <input type="submit" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" />
+            <input type="submit" ng-if="newDivName!=''" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" />
         </div>
     </script>
 
@@ -71,8 +71,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="EmField" />
-                  <input type="submit" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="EmField" required="true" />
+                  <input type="submit" ng-if="EmField!=''" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Submit" />
                   <a ng-click="createNewEmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -97,8 +97,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="OmField" />
-                  <input type="submit" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="OmField" required="true" />
+                  <input type="submit" ng-if="OmField!=''" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Submit" />
                   <a ng-click="createNewOmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -123,8 +123,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="FmField" />
-                  <input type="submit" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="FmField" required="true"/>
+                  <input type="submit" ng-if="FmField!=''" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Submit" />
                   <a ng-click="createNewFmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
