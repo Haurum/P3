@@ -310,7 +310,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           {
             $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
-              if(Data.message === "Password already exists"){
+              if(Data.message == "Password already exists"){
                 $scope.error = "Adgangskoden eksisterer allerede";
               } else {
                 $location.path("tournament/" + Data.id);
@@ -428,8 +428,9 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               }
               $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
               {
-                if(Data.status === "error"){
-                  $scope.error = Data.message;
+                console.log(Data.message);
+              if(Data.message == "Password already exists"){
+                $scope.error = "Adgangskoden eksisterer allerede";
                 }else{
                   $location.path("tournament/" + $routeParams.tournamentId);
                 }
