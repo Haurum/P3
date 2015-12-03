@@ -310,8 +310,8 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           {
             $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
-              if(Data.status === "error"){
-                $scope.error = Data.message;
+              if(Data.message === "Password already exists"){
+                $scope.error = "Adgangskoden eksisterer allerede";
               } else {
                 $location.path("tournament/" + Data.id);
               }
@@ -415,7 +415,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           }else{
             for(var i = 0; i <= $scope.dateRange; i++){
               if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-                $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+                $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
               }
             }
             if(!$scope.error){
