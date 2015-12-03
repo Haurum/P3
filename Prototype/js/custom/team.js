@@ -8,30 +8,34 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
     $http.get($rootScope.apiUrl + "/Team/Details?id=" +  $routeParams.teamId)
     .success(function(data)
     {
-      $scope.team = data;
-      //Rest is used for timeintervals.
-      $scope.dateArray = [];
-      $scope.startTimes = [];
-      $scope.endTimes = [];
-      
-      $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
-      $scope.startDate.setHours(0);
-      $scope.startDate.setSeconds(0);
-      $scope.startDate.setMinutes(0);
-      $scope.startDate.setMilliseconds(0);
-      $scope.endDate = new Date(parseInt(data.TimeIntervals[data.TimeIntervals.length-1].EndTime.substr(6)));
-      $scope.endDate.setHours(0);
-      $scope.endDate.setSeconds(0);
-      $scope.endDate.setMinutes(0);
-      $scope.endDate.setMilliseconds(0);
-      $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
+      if(data.status === "success"){
+        $scope.team = data;
+        //Rest is used for timeintervals.
+        $scope.dateArray = [];
+        $scope.startTimes = [];
+        $scope.endTimes = [];
+        
+        $scope.startDate = new Date(parseInt(data.TimeIntervals[0].StartTime.substr(6)));
+        $scope.startDate.setHours(0);
+        $scope.startDate.setSeconds(0);
+        $scope.startDate.setMinutes(0);
+        $scope.startDate.setMilliseconds(0);
+        $scope.endDate = new Date(parseInt(data.TimeIntervals[data.TimeIntervals.length-1].EndTime.substr(6)));
+        $scope.endDate.setHours(0);
+        $scope.endDate.setSeconds(0);
+        $scope.endDate.setMinutes(0);
+        $scope.endDate.setMilliseconds(0);
+        $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
 
-      for (var index = 0; index < data.TimeIntervals.length; index++) {
-        var date = new Date($scope.startDate.getTime());
-        date.setDate(date.getDate() + index);
-        $scope.dateArray.push(date);
-        $scope.startTimes.push(new Date(parseInt(data.TimeIntervals[index].StartTime.substr(6))));
-        $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
+        for (var index = 0; index < data.TimeIntervals.length; index++) {
+          var date = new Date($scope.startDate.getTime());
+          date.setDate(date.getDate() + index);
+          $scope.dateArray.push(date);
+          $scope.startTimes.push(new Date(parseInt(data.TimeIntervals[index].StartTime.substr(6))));
+          $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
+        }
+      } else {
+        $scope.ErrorMessage = "Kunne ikke læse hold";
       }
     }).error(function(err) 
     {
@@ -47,12 +51,16 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
 
   //This function is used the change the name of the team. Done by making a post request ot the backend which calls the Edit function
   //in TeamController, and sends the required parameters with it.
-  $scope.changeNewPoolNameFunc = function(newName) {
+  $scope.changeNewTeamNameFunc = function(newName) {
     $http.post($rootScope.apiUrl + "/Team/Edit", { name: newName, id: $routeParams.teamId, poolId: $routeParams.poolId, startTimes: $scope.team.StartTime, endTimes: $scope.team.EndTime})
     .success(function(data){
-      $scope.pool.Name = data.newName;
-      $scope.changeTeamNameFunc();
-      $scope.getTeamData();
+      if(data.status === "success"){
+        $scope.pool.Name = data.newName;
+        $scope.changeTeamNameFunc();
+        $scope.getTeamData();
+      } else {
+        $scope.ErrorMessage = "Kunne ikke ændre hold-navn";
+      }
     }).error(function(err){
       $scope.editErr = err;
     })
@@ -66,7 +74,11 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
     if(deleteTeam) {
       $http.post($rootScope.apiUrl + "/Team/Delete", { id: $routeParams.teamId })
       .success(function(data) {
-        $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
+        if(data.status === "success"){
+          $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
+        } else {
+          $scope.ErrorMessage = "Kunne ikke slætte hold";
+        }
       }).error(function(data) {
         $scope.deleteErr = data;
       })   
@@ -150,7 +162,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       }else{
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-            $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+            $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
           }
         }
         if(!$scope.error){
@@ -164,8 +176,12 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
           $http.post("http://localhost:50229/Team/Edit/", teamData)
           .success(function(Data)
           {
+            if(data.status === "success"){
             $scope.isSuccess = true;
             $scope.getTeamData();
+            } else {
+              $scope.ErrorMessage = "Kunne ikke oprette hold";
+            }
           }).error(function(err)
           {
             $scope.isSuccess = false;

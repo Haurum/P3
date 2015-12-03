@@ -43,7 +43,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                if(t.Fields != null)
+                if (t.Fields != null)
                 {
                     foreach (Field f in t.Fields)
                     {
@@ -54,7 +54,7 @@ namespace CupPlaner.Controllers
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(new { status = "error", message = "Could not find tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
@@ -89,7 +89,7 @@ namespace CupPlaner.Controllers
 
                     HttpPostedFileBase file = null;
                     int poolStart = 2;
-                    
+
                     List<DateTime> startTimesList = startTimes.Split(',').Select(DateTime.Parse).ToList();
                     List<DateTime> endTimesList = endTimes.Split(',').Select(DateTime.Parse).ToList();
                     for (int i = 0; i < startTimesList.Count; i++)
@@ -137,13 +137,13 @@ namespace CupPlaner.Controllers
                                     {
                                         poolsRange = sheet.get_Range("B" + j.ToString(), Missing.Value);
                                         p = new Pool() { Division = d, Name = poolsRange.Value, IsAuto = false };
-                                        
+
                                         foreach (char c in charRange.ToList())
                                         {
                                             var teamsRange = sheet.get_Range(c + j.ToString(), Missing.Value);
                                             if (!string.IsNullOrEmpty(teamsRange.Value))
                                             {
-                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false,  };
+                                                Team newTeam = new Team() { Name = teamsRange.Value, Pool = p, IsAuto = false, };
                                                 foreach (TimeInterval ti in tis)
                                                 {
                                                     newTeam.TimeIntervals.Add(db.TimeIntervalSet.Add(new TimeInterval { StartTime = ti.StartTime, EndTime = ti.EndTime }));
@@ -164,7 +164,7 @@ namespace CupPlaner.Controllers
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
                                 d = db.DivisionSet.Add(d);
                                 poolStart = i;
-                            }  
+                            }
                         }
                     }
 
@@ -177,10 +177,10 @@ namespace CupPlaner.Controllers
                     t.TimeIntervals = tis;
                     t = db.TournamentSet.Add(t);
                     db.SaveChanges();
- 
+
                     return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                 }
-                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);          
+                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -200,6 +200,11 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                if (db.TournamentSet.Any(x => x.Password == password))
+                {
+                    string oldPass = db.TournamentSet.Find(id).Password;
+                    if (oldPass != password) return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
+                }
                 Tournament t = db.TournamentSet.Find(id);
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 List<TimeInterval> tis = new List<TimeInterval>();
