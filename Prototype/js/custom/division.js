@@ -11,6 +11,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
 
+  //Getting all the data for the divisions, by using a get request to the backend, which will send back the data from the database.
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
     .success(function(data)
@@ -32,8 +33,9 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
 
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;
-  }  
+  }
 
+  //Adding a new pool to the division. Making a post request to the backend to call the Create function in PoolController.
   $scope.addPool = function(name) {
     $http.post($rootScope.apiUrl + "/Pool/Create", { name: name, divisionId: $routeParams.divisionId })
     .success(function(data) {
@@ -45,6 +47,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.getDivisionData();
   }
   
+  //Deleting the specific division. Making a post request to the backend to call the Delete function DivisionController.
   $scope.remove = function() {
     $http.post($rootScope.apiUrl + "/Division/Delete", { id: $routeParams.divisionId })
     .success(function(data) {
@@ -58,6 +61,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.changeField = !$scope.changeField;
   }
 
+  //This function is used the change the fieldsize of the divsion. Done by making a post request ot the backend which calls the Edit function
+  //in DivisionController, and sends the required parameters with it.
   $scope.changeNewFieldFunc = function(editField) {
     $http.post($rootScope.apiUrl + "/Division/Edit", { name: $scope.division.Name, fieldSizeInt: editField, tournamentId: $routeParams.tournamentId, id: $routeParams.divisionId, matchDuration: $scope.division.MatchDuration  })
     .success(function(data){
@@ -74,7 +79,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     $scope.changeDuration = !$scope.changeDuration;
   }
 
-
+  //This function is used the change the matchduration of the divsion. Done by making a post request ot the backend which calls the Edit function
+  //in DivisionController, and sends the required parameters with it.
   $scope.changeNewDurationFunc = function(editMatchDuration) {
     $http.post($rootScope.apiUrl + "/Division/Edit", { name: $scope.division.Name, fieldSizeInt: $scope.division.FieldSize, tournamentId: $routeParams.tournamentId, id: $routeParams.divisionId, matchDuration: editMatchDuration  })
     .success(function(data){
@@ -87,24 +93,28 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     })
   }
 
+  //Function used to to go a specific pool
   $scope.gotoPool = function(currPool, index) {
     $rootScope.currPoolIndex = index;
     $location.url($location.url() + "/pool/" + currPool.Id);
   }
 
-
+  //Function used to to go a specific team
   $scope.gotoTeam = function(currTeam, currPool) {
     $location.url($location.url() + "/pool/" + currPool.Id + "/team/" + currTeam.Id);
   }
 
-$scope.gotoTournament = function() {
-  $location.url("/tournament/" + $routeParams.tournamentId);
-}
+  //Function used to to go the tournament overview page
+  $scope.gotoTournament = function() {
+    $location.url("/tournament/" + $routeParams.tournamentId);
+  }
 
   $scope.changeDivNameFunc = function() {
     $scope.changeName = !$scope.changeName;
   }
 
+  //This function is used the change the name of the divsion. Done by making a post request ot the backend which calls the Edit function
+  //in DivisionController, and sends the required parameters with it.
   $scope.changeNewDivNameFunc = function(newName) {
     $http.post($rootScope.apiUrl + "/Division/Edit", { name: newName, fieldSizeInt: $scope.division.FieldSize, tournamentId: $routeParams.tournamentId, id: $routeParams.divisionId, matchDuration: $scope.division.MatchDuration  })
     .success(function(data){
@@ -115,8 +125,6 @@ $scope.gotoTournament = function() {
       $scope.editErr = err;
     })
   }
-
-
 
   $scope.finalsLinkChanged = function(finalsLink)
   {

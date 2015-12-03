@@ -10,14 +10,9 @@ namespace CupPlaner.Controllers
     public class FinalsLinkController : Controller
     {
         CupDBContainer db = new CupDBContainer();
-        // GET: FinalsLink
-        public ActionResult Index()
-        {
-            return View();
-        }
 
         // GET: FinalsLink/Details/5 - Gets the details of the FinalsLink class with its id as a parameter. The id are used to get to the specific FinalsLink object.
-        // The Details function returns a JSON formatted string, containing a copy of the FinalsLinks varibles.
+        // The Details function returns a JSON object, containing a copy of the FinalsLinks varibles.
         // If the function runs successfully, the object are returned with a "success" status.
         // If the function do not run successfully, an "error" status is returned instead.
         public ActionResult Details(int id)

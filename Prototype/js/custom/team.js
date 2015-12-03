@@ -3,13 +3,13 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
 
+  //Getting all the data for teams from the backend. 
   $scope.getTeamData = function() {
     $http.get($rootScope.apiUrl + "/Team/Details?id=" +  $routeParams.teamId)
     .success(function(data)
     {
       $scope.team = data;
-      console.log(data);
-      console.log($scope.team.TimeIntervals);
+      //Rest is used for timeintervals.
       $scope.dateArray = [];
       $scope.startTimes = [];
       $scope.endTimes = [];
@@ -25,8 +25,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       $scope.endDate.setMinutes(0);
       $scope.endDate.setMilliseconds(0);
       $scope.dateRange = ($scope.endDate - $scope.startDate) / (1000 * 60 * 60 * 24);
-      console.log($scope.startDate);
-      console.log($scope.endDate);
 
       for (var index = 0; index < data.TimeIntervals.length; index++) {
         var date = new Date($scope.startDate.getTime());
@@ -46,10 +44,11 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
     $scope.changeName = !$scope.changeName;
   }
 
+  //This function is used the change the name of the team. Done by making a post request ot the backend which calls the Edit function
+  //in TeamController, and sends the required parameters with it.
   $scope.changeNewPoolNameFunc = function(newName) {
     $http.post($rootScope.apiUrl + "/Team/Edit", { name: newName, id: $routeParams.teamId, poolId: $routeParams.poolId, startTimes: $scope.team.StartTime, endTimes: $scope.team.EndTime})
     .success(function(data){
-      console.log(data);
       $scope.pool.Name = data.newName;
       $scope.changeTeamNameFunc();
       $scope.getTeamData();
@@ -61,7 +60,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   $scope.remove = function() {
     $http.post($rootScope.apiUrl + "/Team/Delete", { id: $routeParams.teamId })
     .success(function(data) {
-      console.log(data);
       $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
     }).error(function(data) {
       $scope.deleteErr = data;
@@ -85,8 +83,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   }
 
   /* Change time intervals start */
-    
-  
+  //All of the following are used to set the TimeIntervals for the team.
   $scope.toggleMin = function () {
     $scope.minDate = $scope.minDate ? null : new Date();
   };
@@ -133,8 +130,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       $scope.startDateTimes = [];
       $scope.endDateTimes = [];
       $scope.error = false;
-      console.log($scope.dateRange);
-      console.log($scope.startTimes);
       for (var index = 0; index < $scope.startTimes.length; index++) {
         $scope.startDateTimes[index] = $scope.startTimes[index];
         $scope.endDateTimes[index] = $scope.endTimes[index];        
@@ -144,8 +139,6 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       console.log($scope.startDateTimes);
 
       if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
-        console.log($scope.startDateTimes.length);
-        console.log($scope.dateRange);
         $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
           
       }else{
@@ -178,8 +171,5 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
         }  
       }   
   }
-
-
   /* Change time intervals end */ 
-
 }]);
