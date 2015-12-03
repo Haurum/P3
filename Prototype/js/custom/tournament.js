@@ -429,16 +429,10 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
               }
               $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
               {
-<<<<<<< HEAD
-                console.log(Data.message);
-              if(Data.message == "Password already exists"){
-                $scope.error = "Adgangskoden eksisterer allerede";
-=======
-                if(Data.status === "error"){
-                  $scope.error = "Turnering kunne ikke læses";
->>>>>>> origin/master
-                }else{
+                if(Data.status === "success"){
                   $location.path("tournament/" + $routeParams.tournamentId);
+                } else {
+                  $scope.ErrorMessage = "Kunne ikke redigere turnering";
                 }
               }).error(function(err) 
               {
