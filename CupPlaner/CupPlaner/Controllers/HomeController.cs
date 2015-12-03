@@ -13,6 +13,25 @@ namespace CupPlaner.Controllers
     {
         CupDBContainer db = new CupDBContainer();
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
+
         public ActionResult Hejhej(string name)
         {
             db.TournamentSet.Add(new Tournament() { Name = name });
