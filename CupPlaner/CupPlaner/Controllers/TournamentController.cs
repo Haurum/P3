@@ -200,39 +200,43 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                Tournament t = db.TournamentSet.Find(id);
-                db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
-                List<TimeInterval> tis = new List<TimeInterval>();
-                TimeInterval timeinterval = new TimeInterval();
-                for (int i = 0; i < startTimes.Count; i++)
+                if (!db.TournamentSet.Any(x => x.Password == password))
                 {
-                    tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
-                }
-                t.TimeIntervals = tis;
-                foreach (Division d in t.Divisions)
-                {
-                    foreach (Pool p in d.Pools)
+                    Tournament t = db.TournamentSet.Find(id);
+                    db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
+                    List<TimeInterval> tis = new List<TimeInterval>();
+                    TimeInterval timeinterval = new TimeInterval();
+                    for (int i = 0; i < startTimes.Count; i++)
                     {
-                        foreach (Team tm in p.Teams)
+                        tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
+                    }
+                    t.TimeIntervals = tis;
+                    foreach (Division d in t.Divisions)
+                    {
+                        foreach (Pool p in d.Pools)
                         {
-                            Team team = db.TeamSet.Find(tm.Id);
-                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
-                            foreach (TimeInterval ti in t.TimeIntervals)
+                            foreach (Team tm in p.Teams)
                             {
-                                timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
-                                db.TimeIntervalSet.Add(timeinterval);
-                                team.TimeIntervals.Add(timeinterval);
+                                Team team = db.TeamSet.Find(tm.Id);
+                                db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                                foreach (TimeInterval ti in t.TimeIntervals)
+                                {
+                                    timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                                    db.TimeIntervalSet.Add(timeinterval);
+                                    team.TimeIntervals.Add(timeinterval);
+                                }
                             }
                         }
                     }
+                    t.Name = name;
+                    t.Password = password;
+
+                    db.Entry(t).State = EntityState.Modified;
+                    db.SaveChanges();
+
+                    return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
                 }
-                t.Name = name;
-                t.Password = password;
-
-                db.Entry(t).State = EntityState.Modified;
-                db.SaveChanges();
-
-                return Json(new { status = "success", message = "Tournament edited" }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
