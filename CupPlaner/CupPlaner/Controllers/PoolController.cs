@@ -18,7 +18,7 @@ namespace CupPlaner.Controllers
             return View();
         }
 
-        // GET: Pool/Details/5
+        // GET: Pool/Details/5 - The Details
         public ActionResult Details(int id)
         {
             try
