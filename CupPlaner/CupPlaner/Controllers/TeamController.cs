@@ -62,7 +62,6 @@ namespace CupPlaner.Controllers
             {
                 TimeInterval timeinterval = new TimeInterval();
                 Pool p = db.PoolSet.Find(poolId);
-
                 Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
                 foreach (TimeInterval ti in p.Division.Tournament.TimeIntervals)
                 {

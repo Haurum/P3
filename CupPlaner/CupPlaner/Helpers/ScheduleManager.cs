@@ -7,10 +7,12 @@ namespace CupPlaner.Helpers
 {
     public class ScheduleManager
     {
+        // Database container, has functionalities to connect to the database classes. References to other neccessary helper classes
         CupDBContainer db = new CupDBContainer();
         MatchGeneration mg = new MatchGeneration();
         Validator validator = new Validator();
 
+        // Schedules all the generated matches in a tournament and saves the changes directly to the database.
         public void scheduleAll(Tournament t)
         {
             List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
@@ -141,6 +143,7 @@ namespace CupPlaner.Helpers
                 
         }
 
+        // Schedules a match and returns the time and field a match should be played
         public Tuple<DateTime, Field> scheduleMatch(Match m)
         {
             Tuple<DateTime, Field> results;
@@ -174,6 +177,7 @@ namespace CupPlaner.Helpers
             return results;
         }
 
+        // Deletes the whole schedule in a tournament
         public void DeleteSchedule(int tournamentID)
         {
             MatchGeneration mg = new MatchGeneration();

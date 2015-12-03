@@ -11,8 +11,11 @@ namespace CupPlaner.Helpers
 {
     public class MatchGeneration
     {
+        // Database container, has functionalities to connect to the database classes.
         CupDBContainer db = new CupDBContainer();
 
+        // Generates all the matches for the tournament
+        // Saves the changes directlty to the database
         public void Generate(int tournamentID)
         {
             Tournament t = db.TournamentSet.Find(tournamentID);
@@ -245,6 +248,8 @@ namespace CupPlaner.Helpers
             db.SaveChanges();
         }
 
+        // Returns a list of TimeInterval, where each DateTime in a TimeInterval is equal to the highest time of the day (for the start of a day)
+        // or lowest time of the day (for the end of the day) in the teams in a pool.
         public List<TimeInterval> SameTimeInterval(Pool p)
         {
             List<TimeInterval> intervals = new List<TimeInterval>();
@@ -255,14 +260,6 @@ namespace CupPlaner.Helpers
                 intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
             }
             return intervals;
-        }
-        private List<TimeInterval> AddTeamToTimeIntervals(Team t, ref List<TimeInterval> tis)
-        {
-            foreach (TimeInterval ti in tis)
-            {
-                ti.Team = t;
-            }
-            return tis;
         }
     }
 }
