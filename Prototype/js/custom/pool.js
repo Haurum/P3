@@ -57,7 +57,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
 
   $scope.getFields();
   $scope.getPoolData();
-
+  $scope.newTeamName="";
   // addTeamToPool is a post-request which sends
   // the poolId and a team name to the c# TeamController.Create
   // method, returning a JSON object containing a message: "success" or "error",
