@@ -290,7 +290,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
       }else{
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-            $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+            $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
           }
           $scope.startTimesString += $scope.startDateTimes[i] + (i == $scope.dateRange ? '': ',');
           $scope.endTimesString += $scope.endDateTimes[i] + (i == $scope.dateRange ? '': ',');
@@ -434,7 +434,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
                 } else {
                   $scope.ErrorMessage = "Kunne ikke redigere turnering";
                 }
-              }).error(function(err) 
+              }).error(function(err)
               {
                 $scope.error = "Kunne ikke uploade til serveren";
               });

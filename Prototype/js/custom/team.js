@@ -163,7 +163,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       }else{
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-            $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+            $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
           }
         }
         if(!$scope.error){
