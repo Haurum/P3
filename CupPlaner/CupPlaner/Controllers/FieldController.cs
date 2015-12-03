@@ -123,13 +123,24 @@ namespace CupPlaner.Controllers
             {
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
+<<<<<<< HEAD
                 sm.DeleteSchedule(t.Id);
+=======
+                NextFreeTime n = db.NextFreeTimeSet.Find(id);
+>>>>>>> origin/master
                 foreach (Division d in t.Divisions)
                 {
                     foreach(Pool p in d.Pools)
                     {
                         foreach(Field favField in p.FavoriteFields.ToList())
                         {
+                            foreach (NextFreeTime nextFreeTime in f.NextFreeTime)
+                            {
+                                if (nextFreeTime.Id == n.Id)
+                                {
+                                    f.NextFreeTime.Remove(nextFreeTime);
+                                }
+                            }
                             if(favField.Id == f.Id)
                             {
                                 p.FavoriteFields.Remove(favField);                        

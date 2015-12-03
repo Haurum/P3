@@ -13,7 +13,6 @@ namespace CupPlaner.Helpers.Tests
     public class MatchGenerationTests
     {
         CupDBContainer db = new CupDBContainer();
-        DivisionTournamentController dtc = new DivisionTournamentController();
 
         [TestMethod()]
         public void sletTest()

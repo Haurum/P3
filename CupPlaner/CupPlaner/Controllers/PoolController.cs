@@ -12,13 +12,10 @@ namespace CupPlaner.Controllers
     {
         CupDBContainer db = new CupDBContainer();
         ScheduleManager sm = new ScheduleManager();
-        // GET: Pool
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Pool/Details/5
+        // GET: Pool/Details/5 - The Details function will get the details of the Pool class, with the pools id as a parameter. 
+        // The function will get the details of the Teams, FavoriteFields and Matches for the pool. 
+        // A JSON object will be returned with the data and send an status message with it if it either have succeeded or failed. 
         public ActionResult Details(int id)
         {
             try
@@ -63,7 +60,9 @@ namespace CupPlaner.Controllers
       
         }
 
-        // POST: Pool/
+        // POST: Pool/Create - The Create function will create a new object of a pool with the name and an id of the division it is about to be created in.
+        // The function will add the pool object to the PoolSet in the database and save it.
+        // If the function runs successfully, it will send back an "success" status, and an "error" status if failed.
         [HttpPost]
         public ActionResult Create(string name, int divisionId)
         {
@@ -82,7 +81,9 @@ namespace CupPlaner.Controllers
         }
 
 
-        // POST: Pool/Edit/5
+        // POST: Pool/Edit/5 - The Edit function can edit the values of a specific pool obejct. 
+        // The function can change the pools name or the list of fieldIds which will be the fieldId's for the favoriteFields.
+        // The function will either send back an "succes" or an "error" message if the functions eitehr succeeds or fails.
         [HttpPost]
         public ActionResult Edit(int id, string name, int divisionId, List<int> fieldIds)
         {
@@ -112,7 +113,10 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // POST: Pool/Delete/5
+        // POST: Pool/Delete/5 - The delete function will delete a pool with the corresponding id. 
+        // It will delete all of the matches if any were generated, will remove the teams TimeIntervals and FavoriteFields, it will also remove all the teams in the pool
+        // and ofcourse delte the pool itself. 
+        // If the function runs successfully, it will send back an "success" status, and an "error" status if failed.
         [HttpPost]
         public ActionResult Delete(int id)
         {

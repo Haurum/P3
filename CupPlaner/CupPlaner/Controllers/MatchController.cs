@@ -10,13 +10,9 @@ namespace CupPlaner.Controllers
     public class MatchController : Controller
     {
         CupDBContainer db = new CupDBContainer();
-        // GET: Match
-        public ActionResult Index()
-        {
-            return View();
-        }
 
-        // GET: Match/Details/5
+        // GET: Match/Details/5 - Fetches the details of the class, takes the "id" parameter to determine the corresponding Match object.
+        // Returns a Json object, which contains a copy of the corresponding Field variables.
         public ActionResult Details(int id)
         {
             try
@@ -31,6 +27,10 @@ namespace CupPlaner.Controllers
             }
         }
 
+        // POST: Match/Create - Tries to create a Match object, with the parameters "team1Id", "team2Id" and "tournamentStageId".
+        // Sets the teams and tournament stage to the objects found through "team1Id", "team2Id" and "tournamentStageId".
+        // Adds the Match object to the database MatchSet, and saves the changes in the database.
+        // Returns a Json object with the match, or an exception if it failed creating the match.
         [HttpPost]
         public Match Create(int team1Id, int team2Id, int tournamentStageId )
         {
@@ -50,7 +50,11 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // GET: Match/Create
+        // GET: Match/Schedule - Finds the corresponding match for the MatchId parameter,
+        // converts the startTime to a DateTime, finds the corresponding field for the fieldId
+        // and schedules the match with the field object, and startTime parameter.
+        // Saves this to the database, and returns a JSON object, indicating
+        // wether the scheduling succeeded or not.
         [HttpPost]
         public ActionResult Schedule(int matchId, string startTime, int fieldId)
         {
@@ -72,7 +76,9 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // GET: Match/Edit/5
+        // GET: Match/Edit/5 - Tries to edit a match, found by the id parameter.
+        // Tries to edit the startTime and/or duration of the match, and saves to the database.
+        // Returns a JSON object indicating, wether the edit was successful or not.
         [HttpPost]
         public ActionResult Edit(int id, string startTime, int duration)
         {
@@ -92,7 +98,11 @@ namespace CupPlaner.Controllers
             }
         }
 
-        // GET: Match/Delete/5
+        // GET: Match/Delete/5 - Tries to delete a match, determined by it's id.
+        // Removes the match from all teams containing the specific match,
+        // and removes it from the database MatchSet. Saves the changes,
+        // and returns a JSON object containing a status, indicating
+        // wether the delete was successful or not.
         [HttpPost]
         public ActionResult Delete(int id)
         {

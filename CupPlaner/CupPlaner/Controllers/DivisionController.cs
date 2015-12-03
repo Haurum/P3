@@ -128,7 +128,7 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Division/Delete/5 - Tries to delete a Division object, determined by the "id".
-        // Deletes both the Division object, and all Pool objects contained in the Division, and saves to the database, if succeeded.
+        // Deletes the Division object, all Pool objects contained in the Division, all the FinalsLink's made, and saves to the database, if succeeded.
         // Returns a Json object, indicating whether it succeeded deleting the Division object and pools, or not.
         [HttpPost]
         public ActionResult Delete(int id)
@@ -137,7 +137,6 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(id);
                 sm.DeleteSchedule(d.Tournament.Id);
-                DivisionTournamentController dtc = new DivisionTournamentController();
                 foreach (Pool p in d.Pools)
                 {
                     foreach (Team team in p.Teams.ToList())

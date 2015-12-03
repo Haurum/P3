@@ -1,5 +1,7 @@
 var app = angular.module('tournyplanner', ['ngRoute', 'ui.bootstrap', 'angularFileUpload', 'angular-loading-bar']);
 
+// routeProvider routes the user to the right html page and provides the controller
+// for that specific page, given the input from the user (buttons etc).
 app.config(['$routeProvider', function($routeProvider) {
   $routeProvider.
     when('/', {
@@ -57,9 +59,13 @@ app.run(function($rootScope) {
   $rootScope.apiUrl = "http://localhost:50229";
 });
 
+// HomeController is the controller for the home.html page,
+// where the "log-in" or "create new tournament" options are available.
 app.controller('HomeController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
   $scope.password = "";
 
+  // getId is the "log-in" to a tournament, which needs the password parameter,
+  // to redirect the user to the specific tournament.
   $scope.getId = function(password)
   {
     $http.post("http://localhost:50229/Tournament/IdFromPass", { password: password })

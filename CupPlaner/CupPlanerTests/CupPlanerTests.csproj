@@ -100,14 +100,13 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\DivisionControllerTests.cs" />
-    <Compile Include="Controllers\DivisionTournamentControllerTests.cs" />
     <Compile Include="Controllers\FieldControllerTests.cs" />
     <Compile Include="Controllers\FinalsLinkControllerTests.cs" />
     <Compile Include="Controllers\MatchControllerTests.cs" />
     <Compile Include="Controllers\PoolControllerTests.cs" />
     <Compile Include="Controllers\TeamControllerTests.cs" />
     <Compile Include="Controllers\TournamentControllerTests.cs" />
-    <Compile Include="Controllers\TournamentStageControllerTests.cs" />
+    <Compile Include="Helpers\ExcelExportTests.cs" />
     <Compile Include="Helpers\MatchGenerationTests.cs" />
     <Compile Include="Helpers\ScheduleManagerTests.cs" />
     <Compile Include="Helpers\ValidatorTests.cs" />
