@@ -1,9 +1,12 @@
 // PoolController is the controller for the pool.html page,
 app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', function ($scope, $rootScope, $location, $http, $routeParams) {
   $scope.changeName = false
+  $scope.reverseSort = false;
   $scope.FavoriteFieldIds = [];
   $scope.orderByField = 'Number';
-  $scope.reverseSort = false;
+
+  $scope.getPoolData();
+  $scope.getFields();
   
   // getPoolData is a get-request, which
   // returns a JSON object, containing the required information
@@ -22,7 +25,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.error = err;
     })
   }
-  $scope.getPoolData();
   
   $scope.EmField = [];
   $scope.OmField = [];
@@ -53,10 +55,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.error = err;
     })
   }
-
-  $scope.getFields();
-
-  $scope.getPoolData();
 
   // addTeamToPool is a post-request which sends
   // the poolId and a team name to the c# TeamController.Create

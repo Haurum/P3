@@ -11,6 +11,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
 
+  $scope.getDivisionData();
+
   //Getting all the data for the divisions, by using a get request to the backend, which will send back the data from the database.
   $scope.getDivisionData = function() {
     $http.get($rootScope.apiUrl + "/Division/Details?id=" +  $routeParams.divisionId)
@@ -29,7 +31,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       $scope.error = err;
     })
   }
-  $scope.getDivisionData(); 
 
   $scope.newPoolFunc = function() {
     $scope.newPool = !$scope.newPool;

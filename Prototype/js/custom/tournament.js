@@ -1,5 +1,13 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
 
+  $scope.newDivName = "";
+  $scope.chooseField = "";
+  $scope.newMatchDuration = "";
+  $scope.new = false;
+  $scope.tournamentId = $routeParams.tournamentId;
+
+  $scope.getDivisions();
+
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
@@ -29,16 +37,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       })
   }
 
-  $scope.tournamentId = $routeParams.tournamentId;
-
-  $scope.getDivisions();
-
-  $scope.newDivName = "";
-  $scope.chooseField = "";
-  $scope.newMatchDuration = "";
-  
-  $scope.new = false;
-
   $scope.createNew = function () {
     $scope.new = !$scope.new;
   }
@@ -47,17 +45,11 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.animationsEnabled = true;
 
   $scope.open = function (size) {
-
     var uibModalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl',
       size: size,
-      /*resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }*/
     });
 
     uibModalInstance.result.then(function () {
@@ -66,7 +58,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
-
   };
 
   $scope.toggleAnimation = function () {
@@ -119,7 +110,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       console.log("Hello???");
       $scope.getDivisions();
     })
-    
   }
 
   /* 11man */
@@ -138,7 +128,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   } 
 
   /* Field end */
-
 }]);
 
 app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
@@ -146,15 +135,14 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
     $scope.chooseField = "";
+
   $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
     $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
-        
         $uibModalInstance.close();
         $scope.newDivName = "";
         $scope.newMatchDuration = "";
         $scope.chooseField = "";
-
         $scope.getDivisions();
       }).error(function(data){
         $scope.newDivError = data;
@@ -179,6 +167,8 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', 'cfpLoadingBar', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader, cfpLoadingBar) {
   
   $scope.tournamentData =  {};
+
+  $scope.today();
 
   var uploader = $scope.uploader = new FileUploader({
     url: $rootScope.apiUrl + '/Tournament/Create'
@@ -211,7 +201,6 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
     $scope.endDate.setMinutes(0);
     $scope.endDate.setMilliseconds(0);
   };
-  $scope.today();
 
   $scope.dateArray = [$scope.startDate];
   $scope.startTimes = [$scope.startDate];
