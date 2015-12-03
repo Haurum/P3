@@ -55,6 +55,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   }
   
   //Deleting the specific division. Making a post request to the backend to call the Delete function DivisionController.
+  $scope.remove = function() {
     var deleteDivision = $window.confirm('Er du sikker på du vil slette rækken?');
 
     if(deleteDivision){
