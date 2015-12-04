@@ -1,7 +1,6 @@
 // PoolController is the controller for the pool.html page,
 app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $window) {
   $scope.changeName = false
-  $scope.FavoriteFieldIds = [];
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
   
@@ -19,7 +18,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
         }
         $scope.divisionFieldSize = data.FieldSize;
       } else {
-        $scope.ErrorMessage = "Pulje kunne ikke læses";
+        $scope.error = "Pulje kunne ikke læses";
       }
       
     }).error(function(err) 
@@ -27,45 +26,8 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       $scope.error = err;
     })
   }
-
   $scope.getPoolData();
-  
-  $scope.EmField = [];
-  $scope.OmField = [];
-  $scope.FmField = [];
 
-  // getFields is a get-request, which
-  // returns a JSON object, containing the required information
-  // for all the fields, and puts them into a fieldsize-fitted list.
-  $scope.getFields = function() {
-    $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId)
-    .success(function(data){
-      if(data.status === "success"){
-        for (var i=0; i < data.Fields.length; i++)
-        {
-          if(data.Fields[i].fieldSize === 11)
-          {
-            $scope.EmField.push(data.Fields[i]);
-          }
-          else if(data.Fields[i].fieldSize === 8)
-          {
-            $scope.OmField.push(data.Fields[i]);
-          }
-          else
-          {
-            $scope.FmField.push(data.Fields[i]);
-          }
-        }
-      } else {
-        $scope.ErrorMessage = "Baner kunne ikke læses";
-      } 
-    }).error(function(err){
-      $scope.error = err;
-    })
-  }
-
-  $scope.getFields();
-  $scope.getPoolData();
   $scope.newTeamName="";
   // addTeamToPool is a post-request which sends
   // the poolId and a team name to the c# TeamController.Create
@@ -77,7 +39,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
       if(data.status === "success"){
         $scope.getPoolData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke oprette hold";
+        $scope.error = "Kunne ikke oprette hold";
       }
     }).error(function(err){
      $scope.deleteErr = err;
@@ -104,27 +66,6 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     $location.url("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
   }
 
-  $scope.favFieldsIds = [];
-
-  // setFavFieldFunc is a function, that adds a specific
-  // user-chosen field to a pools favorite fields list,
-  // through a post-request, given the pools Id, 
-  // divisionId, pool name and the fields Id.
-  $scope.setFavFieldFunc = function (favFieldsId) {
-    $scope.favFieldsIds.push(favFieldsId);
-    console.log($scope.favFieldsIds);
-    $http.post($rootScope.apiUrl + "/Pool/Edit", { id: $routeParams.poolId, name: $scope.pool.Name, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
-    .success(function(data){
-      if(data.status === "success"){
-      } else {
-        $scope.ErrorMessage = "Kunne ikke sætte foretrukne bane";
-      }
-    }).error(function(err){
-      $scope.favFieldErr = err;
-      console.log(err);
-    })
-  }
-
   // remove is the delete function for a pool, through
   // a post-request, with the parameter poolId. Returns
   // a JSON object containing a message: "success" or "error",
@@ -139,7 +80,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
           $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId);
         }
         else {
-          $scope.ErrorMessage = "Kunne ikke slætte pulje";
+          $scope.error = "Kunne ikke slætte pulje";
         }
       }).error(function(data) {
         $scope.deleteErr = data;
@@ -168,7 +109,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
         $scope.changePoolNameFunc();
         $scope.getPoolData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke skifte pulje-navn";
+        $scope.error = "Kunne ikke skifte pulje-navn";
       }
     }).error(function(err){
       $scope.editErr = err;

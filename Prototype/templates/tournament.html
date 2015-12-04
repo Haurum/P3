@@ -29,10 +29,10 @@
             <label class="pull-left">Tid for kamp</label>
             <div class="panel panel-default">
               <div class="panel-body alert alert-info" role="alert">
-                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp
+                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp. Tiden for kampene kan være fra 10 - 70 minutter.
               </div>
             </div>
-            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" ng-model="newMatchDuration" />
+            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" required="true" ng-model="newMatchDuration" />
             <br />
             <label class="pull-left">Vælg banestørrelse</label>
             <select class="form-control" ng-model="chooseField">
@@ -41,6 +41,16 @@
               <option value="5">5-mands bane</option>
             </select>
           </form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-danger alert-dismissable col-md-6 col-md-offset-3" role="alert" ng-if="error" id="addDivisionError">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="errMsg()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <p> {{error}} </p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Luk</button>

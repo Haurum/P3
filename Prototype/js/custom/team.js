@@ -35,7 +35,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
           $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
         }
       } else {
-        $scope.ErrorMessage = "Kunne ikke læse hold";
+        $scope.error = "Kunne ikke læse hold";
       }
     }).error(function(err) 
     {
@@ -59,7 +59,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
         $scope.changeTeamNameFunc();
         $scope.getTeamData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke ændre hold-navn";
+        $scope.error = "Kunne ikke ændre hold-navn";
       }
     }).error(function(err){
       $scope.editErr = err;
@@ -77,7 +77,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
         if(data.status === "success"){
           $location.path("/tournament/" + $routeParams.tournamentId + "/division/" + $routeParams.divisionId + "/pool/" + $routeParams.poolId);
         } else {
-          $scope.ErrorMessage = "Kunne ikke slætte hold";
+          $scope.error = "Kunne ikke slætte hold";
         }
       }).error(function(data) {
         $scope.deleteErr = data;
@@ -145,6 +145,14 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   $scope.statusEndDate = {
     opened: false
   };
+
+  $scope.errMsg = function () {
+    $scope.error = !$scope.error;
+  }
+
+  $scope.successMsg = function () {
+    $scope.isSuccess = !$scope.isSuccess;
+  }
   
   $scope.uploadTeam = function () {
     if (!$scope.team.Name){
@@ -176,11 +184,11 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
           $http.post("http://localhost:50229/Team/Edit/", teamData)
           .success(function(Data)
           {
-            if(data.status === "success"){
+            if(Data.status === "success"){
             $scope.isSuccess = true;
             $scope.getTeamData();
             } else {
-              $scope.ErrorMessage = "Kunne ikke oprette hold";
+              $scope.error = "Kunne ikke opdatere hold";
             }
           }).error(function(err)
           {

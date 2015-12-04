@@ -51,28 +51,8 @@
     </div>
     <div class="row">
       <div class="col-md-12">
-      <hr />
-        <div class="col-md-5">
-          <h4>Puljes favorit bane</h4>
-          <div ng-if="pool.FieldSize === 11">
-            <label class="checkbox-inline" ng-repeat="Emfield in EmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc(Emfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Emfield.Id) > -1" /> {{Emfield.Name}}
-            </label> 
-          </div>
-          <div ng-if="divisionFieldSize === 8">
-            <label class="checkbox-inline" ng-repeat="Omfield in OmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc(Omfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Omfield.Id) > -1" /> {{Omfield.Name}}
-            </label> 
-          </div>
-          <div ng-if="divisionFieldSize === 5">
-            <label class="checkbox-inline" ng-repeat="Fmfield in FmField track by $index" >
-              <input type="checkbox" ng-click="setFavFieldFunc(Fmfield.Id)" ng-checked="FavoriteFieldIds.indexOf(Fmfield.Id) > -1"/> {{Fmfield.Name}}
-            </label> 
-          </div>
-        </div>
-        <div class="col-md-2">
-          <a class="btn btn-danger" ng-click="remove(pool)">Slet pulje</a>
-        </div>
+        <hr />
+        <a class="btn btn-danger" ng-click="remove()">Slet pulje</a>
       </div>
     </div>
     <hr />
