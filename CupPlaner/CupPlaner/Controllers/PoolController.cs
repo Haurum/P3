@@ -26,6 +26,7 @@ namespace CupPlaner.Controllers
                 List<object> ffs = new List<object>();
                 List<object> matches = new List<object>();
 
+                // Get teams in pool
                 if (p.Teams != null)
                 {
                     foreach (Team t in p.Teams)
@@ -33,6 +34,7 @@ namespace CupPlaner.Controllers
                         teams.Add(new { Id = t.Id, Name = t.Name });
                     }
                 }
+                // Get favorite fields in pool
                 if (p.FavoriteFields != null)
                 {
                     foreach (Field f in p.FavoriteFields)
@@ -40,6 +42,7 @@ namespace CupPlaner.Controllers
                         ffs.Add(new { Id = f.Id, Name = f.Name });
                     }
                 }
+                // Get matches in pool
                 if (p.TournamentStage != null && p.TournamentStage.Matches.Count > 0)
                 {
                     foreach (Match m in p.TournamentStage.Matches)
@@ -93,6 +96,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
                 p.Name = name;
                 p.Division = db.DivisionSet.Find(divisionId);
+                // Set favorite fields if at least one is passed
                 if (fieldIds.Count > 0)
                 {
                     p.FavoriteFields.Clear();
@@ -123,7 +127,10 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
+                // Clear the schedule
                 sm.DeleteSchedule(p.Division.Tournament.Id);
+
+                // Remove dependencies
                 foreach (Team team in p.Teams.ToList())
                 {
                     db.MatchSet.RemoveRange(team.Matches);

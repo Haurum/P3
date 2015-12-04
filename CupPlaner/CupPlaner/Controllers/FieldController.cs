@@ -8,6 +8,7 @@ using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
+    // Field controller with CRUD functions and a function to get all the fields in a tournament
     public class FieldController : Controller
     {
         // Database container, has functionalities to connect to the database classes.
@@ -34,7 +35,6 @@ namespace CupPlaner.Controllers
         // Add some matches and make a start time and duration.
         // Add fields with matches
         // Return a JSON object if it succes or error.
-        
         public ActionResult GetAllTournamentFields(int tournamentId)
         {
             try
@@ -43,6 +43,7 @@ namespace CupPlaner.Controllers
                 List<object> fields = new List<object>();
                 List<object> matches = new List<object>();
 
+                // Get all fields and matches for each one
                 if(t.Fields != null)
                 {
                     foreach(Field f in t.Fields)
@@ -73,9 +74,9 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Field f = db.FieldSet.Add(new Field() { Name = name, Size = (FieldSize)size, Tournament = t });
+                // Set the next free time of the field for each day to that of the tournament
                 foreach (TimeInterval ti in t.TimeIntervals)
                 {
                     f.NextFreeTime.Add(new NextFreeTime() { FreeTime = ti.StartTime });
@@ -128,7 +129,10 @@ namespace CupPlaner.Controllers
             {
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
+                // Clear the schedule
                 sm.DeleteSchedule(t.Id);
+
+                // Remove dependencies
                 NextFreeTime n = db.NextFreeTimeSet.Find(id);
                 foreach (Division d in t.Divisions)
                 {
@@ -148,7 +152,6 @@ namespace CupPlaner.Controllers
                                 p.FavoriteFields.Remove(favField);                        
                             }
                         }
-                        
                     }
                 }
                 db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);

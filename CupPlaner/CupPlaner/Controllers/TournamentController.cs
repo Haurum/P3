@@ -28,6 +28,7 @@ namespace CupPlaner.Controllers
                 List<object> fields = new List<object>();
                 List<object> times = new List<object>();
 
+                // Get all divisions
                 if (t.Divisions != null)
                 {
                     foreach (Division d in t.Divisions)
@@ -35,6 +36,7 @@ namespace CupPlaner.Controllers
                         divs.Add(new { Id = d.Id, Name = d.Name });
                     }
                 }
+                // Get all time intervals
                 if (t.TimeIntervals != null)
                 {
                     foreach (TimeInterval ti in t.TimeIntervals)
@@ -42,7 +44,7 @@ namespace CupPlaner.Controllers
                         times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
                     }
                 }
-
+                // Get all fields
                 if (t.Fields != null)
                 {
                     foreach (Field f in t.Fields)
@@ -200,20 +202,23 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                // Check if new password already exists, not including the old password
                 if (db.TournamentSet.Any(x => x.Password == password))
                 {
                     string oldPass = db.TournamentSet.Find(id).Password;
                     if (oldPass != password) return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
                 }
                 Tournament t = db.TournamentSet.Find(id);
+                // Clear time intervals
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 List<TimeInterval> tis = new List<TimeInterval>();
-                TimeInterval timeinterval = new TimeInterval();
+                // Set new timeintervals
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                 }
                 t.TimeIntervals = tis;
+                // Set teams time interval to that of the tournament
                 foreach (Division d in t.Divisions)
                 {
                     foreach (Pool p in d.Pools)
@@ -224,7 +229,7 @@ namespace CupPlaner.Controllers
                             db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
                             foreach (TimeInterval ti in t.TimeIntervals)
                             {
-                                timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                                TimeInterval timeinterval = new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime };
                                 db.TimeIntervalSet.Add(timeinterval);
                                 team.TimeIntervals.Add(timeinterval);
                             }
@@ -258,6 +263,7 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(id);
                 DivisionController dc = new DivisionController();
+                // Remove dependencies
                 foreach (Division d in t.Divisions)
                 {
                     dc.Delete(d.Id);

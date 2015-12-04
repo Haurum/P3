@@ -121,6 +121,8 @@ namespace CupPlaner.Controllers
             try
             {
                 Match m = db.MatchSet.Find(id);
+
+                // Remove dependencies
                 foreach (Team t in m.Teams)
                 {
                     t.Matches.Remove(m);

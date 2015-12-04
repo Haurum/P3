@@ -23,6 +23,7 @@ namespace CupPlaner.Controllers
                 Team t = db.TeamSet.Find(id);
                 List<object> times = new List<object>();
                 List<object> matches = new List<object>();
+                // Get time intervals for team
                 if (t.TimeIntervals != null)
                 {
                     foreach (TimeInterval ti in t.TimeIntervals)
@@ -30,6 +31,7 @@ namespace CupPlaner.Controllers
                         times.Add(new { Id = ti.Id, StartTime = ti.StartTime, EndTime = ti.EndTime });
                     }
                 }
+                // Get matches for team
                 if (t.Matches.Count > 0)
                 {
                     foreach (Match m in t.Matches)
@@ -60,12 +62,12 @@ namespace CupPlaner.Controllers
         {
             try
             {
-                TimeInterval timeinterval = new TimeInterval();
                 Pool p = db.PoolSet.Find(poolId);
                 Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
+                // Add time intervals and default them to the tournament's time intervals
                 foreach (TimeInterval ti in p.Division.Tournament.TimeIntervals)
                 {
-                    timeinterval = new TimeInterval() { Team = t, StartTime = ti.StartTime, EndTime = ti.EndTime };
+                    TimeInterval timeinterval = new TimeInterval() { Team = t, StartTime = ti.StartTime, EndTime = ti.EndTime };
                     db.TimeIntervalSet.Add(timeinterval);
                     t.TimeIntervals.Add(timeinterval);
                 }
@@ -92,6 +94,7 @@ namespace CupPlaner.Controllers
                 List<TimeInterval> teamtis = new List<TimeInterval>();
                 Team t = db.TeamSet.Find(id);
                 teamtis = t.TimeIntervals.ToList();
+                // Set the new time intervals
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     if(startTimes[i] >= teamtis[i].StartTime && endTimes[i] <= teamtis[i].EndTime)
@@ -103,7 +106,7 @@ namespace CupPlaner.Controllers
                         tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
                     }
                 }
-
+                // Remove old time intervals
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
 
                 t.Name = name;
@@ -130,7 +133,9 @@ namespace CupPlaner.Controllers
             {
                 Team t = db.TeamSet.Find(id);
                 Pool p = db.PoolSet.Find(t.Pool.Id);
+                // Clear the schedule
                 sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+                // Remove dependencies
                 foreach (TimeInterval ti in t.TimeIntervals.ToList())
                 {
                     t.TimeIntervals.Remove(ti);

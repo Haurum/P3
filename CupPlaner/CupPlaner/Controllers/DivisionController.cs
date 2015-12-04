@@ -7,6 +7,7 @@ using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
+    // Division controller with CRUD functions.
     public class DivisionController : Controller
     {
         // Database container, has functionalities to connect to the database classes.
@@ -25,8 +26,10 @@ namespace CupPlaner.Controllers
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
 
+                // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+                // Get all pools in the division and their teams
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
@@ -41,6 +44,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
+                // Get matches in division
                 if (d.DivisionTournament != null && d.DivisionTournament.TournamentStage.Count > 0)
                 {
                     foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
@@ -58,6 +62,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
+                // Get finals links
                 if (d.FinalsLinks.Count > 0)
                 {
                     foreach (FinalsLink fl in d.FinalsLinks)
@@ -145,8 +150,10 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(id);
 
+                // Clear the schedule
                 sm.DeleteSchedule(d.Tournament.Id);
 
+                // Remove dependencies
                 foreach (Pool p in d.Pools)
                 {
                     foreach (Team team in p.Teams.ToList())
@@ -157,7 +164,6 @@ namespace CupPlaner.Controllers
                     db.TeamSet.RemoveRange(p.Teams);
                     p.FavoriteFields.Clear();
                 }
-
                 db.PoolSet.RemoveRange(d.Pools);
                 db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
                 db.DivisionSet.Remove(d);
