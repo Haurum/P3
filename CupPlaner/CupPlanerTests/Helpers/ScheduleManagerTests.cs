@@ -21,7 +21,7 @@ namespace CupPlaner.Helpers.Tests
             Tournament t = db.TournamentSet.Find(2);
 
 
-            Assert.AreEqual(new Tuple<DateTime, Field>(t.TimeIntervals.First().StartTime, db.FieldSet.First()), sm.scheduleMatch(db.MatchSet.First()));
+            Assert.Fail();
         }
 
         [TestMethod()]

@@ -33,6 +33,7 @@ namespace CupPlaner.Helpers.Tests
                             }
                             db.MatchSet.Remove(m);
                         }
+                        //db.TimeIntervalSet.Remove(ts.TimeInterval);
                         db.TournamentStageSet.Remove(ts);
                     }
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
@@ -48,6 +49,7 @@ namespace CupPlaner.Helpers.Tests
                             db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
                         }
                         db.TeamSet.RemoveRange(pool.Teams);
+                        pool.FavoriteFields.Clear();
                         db.PoolSet.Remove(pool);
                     }
                 }

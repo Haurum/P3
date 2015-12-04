@@ -51,7 +51,7 @@ namespace CupPlaner.Controllers
                         matches = new List<object>();
                         foreach (Match m in f.Matches)
                         {
-                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, Duration = m.Duration });
+                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, EndTime = m.StartTime.AddMinutes(m.Duration), Nr = m.Number });
                         }
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size, matches = matches });
                     }
