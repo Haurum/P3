@@ -65,6 +65,10 @@ app.controller('HomeController', ['$scope', '$http', '$location', function ($sco
   
   $scope.password = "";
 
+  $scope.errMsg = function () {
+    $scope.error = !$scope.error;
+  }
+
   // getId is the "log-in" to a tournament, which needs the password parameter,
   // to redirect the user to the specific tournament.
   $scope.getId = function(password)

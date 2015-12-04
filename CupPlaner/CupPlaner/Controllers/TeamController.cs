@@ -91,19 +91,24 @@ namespace CupPlaner.Controllers
             try
             {
                 List<TimeInterval> tis = new List<TimeInterval>();
-                List<TimeInterval> teamtis = new List<TimeInterval>();
+                List<TimeInterval> tournytis = new List<TimeInterval>();
                 Team t = db.TeamSet.Find(id);
+<<<<<<< HEAD
                 teamtis = t.TimeIntervals.ToList();
                 // Set the new time intervals
+=======
+                tournytis = t.Pool.Division.Tournament.TimeIntervals.ToList();
+
+>>>>>>> origin/master
                 for (int i = 0; i < startTimes.Count; i++)
                 {
-                    if(startTimes[i] >= teamtis[i].StartTime && endTimes[i] <= teamtis[i].EndTime)
+                    if(startTimes[i] >= tournytis[i].StartTime && endTimes[i] <= tournytis[i].EndTime)
                     {
                         tis.Add(new TimeInterval() { StartTime = startTimes[i], EndTime = endTimes[i] });
                     }
                     else
                     {
-                        tis.Add(new TimeInterval() { StartTime = teamtis[i].StartTime, EndTime = teamtis[i].EndTime });
+                        tis.Add(new TimeInterval() { StartTime = tournytis[i].StartTime, EndTime = tournytis[i].EndTime });
                     }
                 }
                 // Remove old time intervals

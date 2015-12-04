@@ -24,7 +24,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
           $scope.division.letters.push($scope.allLetters[i]);
         }
       } else {
-        $scope.ErrorMessage = "Kunne ikke læse række";
+        $scope.error = "Kunne ikke læse række";
       }
     }).error(function(err) 
     {
@@ -46,7 +46,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         $scope.newPoolFunc();
         $scope.getDivisionData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke tilføje pulje";
+        $scope.error = "Kunne ikke tilføje pulje";
       }
     }).error(function(err){
      $scope.deleteErr = err;
@@ -65,7 +65,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
           $location.path("/tournament/" + $routeParams.tournamentId);
         } 
         else {
-          $scope.ErrorMessage = "Kunne ikke slætte række";
+          $scope.error = "Kunne ikke slætte række";
         }
       }).error(function(data) {
         $scope.deleteErr = data;
@@ -87,7 +87,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         $scope.changeFieldFunc();
         $scope.getDivisionData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke ændre banestørrelse";
+        $scope.error = "Kunne ikke ændre banestørrelse";
       }      
     }).error(function(err){
       $scope.editErr = err;
@@ -108,7 +108,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         $scope.changeDurationFunc();
         $scope.getDivisionData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke ændre kamplængde";
+        $scope.error = "Kunne ikke ændre kamplængde";
       }
     }).error(function(err){
       $scope.editErr = err;
@@ -145,7 +145,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         $scope.changeDivNameFunc();
         $scope.getDivisionData();
       } else {
-        $scope.ErrorMessage = "Kunne ikke ændre række-navn";
+        $scope.error = "Kunne ikke ændre række-navn";
       }
     }).error(function(err){
       $scope.editErr = err;

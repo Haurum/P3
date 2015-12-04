@@ -35,6 +35,35 @@
   margin-bottom: 30px;
 }
 
+#addTournyError {
+  margin-top:10px;
+}
+
+#editTournyError {
+  margin-top:10px;
+}
+
+#teamError {
+  margin-top: 10px;
+}
+
+#teamSuccess {
+  margin-top: 10px;
+}
+
+#addDivisionError {
+  margin-top: 15px;
+  margin-bottom: 0px;
+}
+
+#changeTeamName {
+
+}
+
+#timeIntervalsTeam {
+  margin-top:25px;
+}
+
 .tlist{
   width: 200px;
 }

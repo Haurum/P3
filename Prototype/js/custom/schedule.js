@@ -5,7 +5,6 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
     .success(function(data)
     {
       $scope.fields = data;
-      console.log("hej");
       //default state of the scheduler
       if (!$scope.scheduler)
         $scope.scheduler = {};
