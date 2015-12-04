@@ -14,6 +14,17 @@ namespace CupPlaner.Helpers
 
         public void scheduleAll(Tournament t)
         {
+            foreach (Division d in t.Divisions)
+            {
+                foreach (Pool p in d.Pools)
+                {
+                    if(p.Teams.Count < 2)
+                    {
+                        throw new Exception("Ikke nok hold");
+                    }
+                }
+            }
+
             List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
             List<Match> allMatches = db.MatchSet.Where(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
 
