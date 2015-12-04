@@ -5,6 +5,7 @@ using System.Web;
 
 namespace CupPlaner.Helpers
 {
+    // Takes care of the schedule functions: generate and clear
     public class ScheduleManager
     {
         CupDBContainer db = new CupDBContainer();
@@ -228,12 +229,16 @@ namespace CupPlaner.Helpers
                 
         }
 
+
+        // Deletes the whole schedule for a tournament
         public void DeleteSchedule(int tournamentID)
         {
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
+
             foreach (Division d in t.Divisions.ToList())
             {
+                // Remove all division tournaments and their dependencies
                 if (d.DivisionTournament != null)
                 {
                     foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
@@ -250,6 +255,7 @@ namespace CupPlaner.Helpers
                     db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
                 }
+                // Remeove each pool that is generated automatically by the match generation class and their dependencies
                 foreach (Pool pool in d.Pools.ToList())
                 {
                     if (pool.IsAuto)
