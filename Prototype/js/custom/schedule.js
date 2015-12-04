@@ -63,7 +63,7 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
         x_unit: "minute",
         x_date: "%H:%i",
         x_step: 60,
-        x_size: 12,
+        x_size: 16,
         x_start: 8,
         x_length: 24,
         y_unit: sections,
@@ -78,15 +78,14 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
       {
         for (var j=0; j < $scope.fields.Fields[i].matches.length; j++)
         {
-          var endTime = $filter('jsonDate')($scope.fields.Fields[i].matches[j].StartTime) + $scope.fields.Fields[i].matches[j].Duration;
           matches.push({ 
             start_date: $filter('jsonDate')($scope.fields.Fields[i].matches[j].StartTime), 
-            end_date: endTime, 
-            text: $scope.fields.Fields[i].matches[j].Id,  
+            end_date: $filter('jsonDate')($scope.fields.Fields[i].matches[j].EndTime), 
+            text: $scope.fields.Fields[i].matches[j].Nr,  
             section_id: $scope.fields.Fields[i].Id });
         }
       }
-      $scope.testMatch = matches[0];
+      $scope.testMatch = matches[2];
 
       scheduler.parse(matches,"json");
     }).error(function (err) {

@@ -24,7 +24,7 @@ namespace CupPlaner.Helpers
                 }
                 foreach (Match match in team.Matches)
                 {
-                    if (match.IsScheduled && startTime.AddMinutes(m.Duration) > match.StartTime)
+                    if (match.IsScheduled && startTime.AddMinutes(m.Duration * 2) > match.StartTime)
                     {
                         DateTime teamBreakDone = match.StartTime.AddMinutes(match.Duration * 2);
                         if (startTime < teamBreakDone)
