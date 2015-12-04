@@ -7,6 +7,7 @@ using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
+    // Division controller with CRUD functions.
     public class DivisionController : Controller
     {
         // Database container, has functionalities to connect to the database classes.
@@ -24,13 +25,17 @@ namespace CupPlaner.Controllers
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
+
+                // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+                // Get all pools in the division and their teams
                 if (d.Pools != null)
                 {
                     foreach (Pool p in d.Pools)
                     {
                         teams = new List<object>();
+
                         foreach (Team t in p.Teams)
                         {
                             teams.Add(new { Name = t.Name, Id = t.Id });
@@ -38,6 +43,8 @@ namespace CupPlaner.Controllers
                         pools.Add(new { Id = p.Id, Name = p.Name, Teams = teams });
                     }
                 }
+
+                // Get matches in division
                 if (d.DivisionTournament != null && d.DivisionTournament.TournamentStage.Count > 0)
                 {
                     foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
@@ -48,11 +55,14 @@ namespace CupPlaner.Controllers
                             {
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
+
                                 matches.Add(new { Id = m.Id, Number = m.Number, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }                      
                     }
                 }
+
+                // Get finals links
                 if (d.FinalsLinks.Count > 0)
                 {
                     foreach (FinalsLink fl in d.FinalsLinks)
@@ -83,7 +93,7 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
-                //db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New division added", id = d.Id}, JsonRequestBehavior.AllowGet);
@@ -104,8 +114,10 @@ namespace CupPlaner.Controllers
             {
 
                 Division d = db.DivisionSet.Find(id);
-                d.Name = name;
                 d.Tournament = db.TournamentSet.Find(tournamentId);
+
+                d.Name = name;
+                
                 if(d.FieldSize != (FieldSize)fieldSizeInt)
                 {
                     foreach (Pool p in d.Pools)
@@ -114,6 +126,7 @@ namespace CupPlaner.Controllers
                     }
                     d.FieldSize = (FieldSize)fieldSizeInt;
                 }
+
                 d.MatchDuration = matchDuration;
 
                 db.Entry(d).State = EntityState.Modified;
@@ -128,7 +141,7 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Division/Delete/5 - Tries to delete a Division object, determined by the "id".
-        // Deletes both the Division object, and all Pool objects contained in the Division, and saves to the database, if succeeded.
+        // Deletes the Division object, all Pool objects contained in the Division, all the FinalsLink's made, and saves to the database, if succeeded.
         // Returns a Json object, indicating whether it succeeded deleting the Division object and pools, or not.
         [HttpPost]
         public ActionResult Delete(int id)
@@ -136,8 +149,11 @@ namespace CupPlaner.Controllers
             try
             {
                 Division d = db.DivisionSet.Find(id);
+
+                // Clear the schedule
                 sm.DeleteSchedule(d.Tournament.Id);
-                DivisionTournamentController dtc = new DivisionTournamentController();
+
+                // Remove dependencies
                 foreach (Pool p in d.Pools)
                 {
                     foreach (Team team in p.Teams.ToList())

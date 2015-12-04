@@ -29,8 +29,8 @@
         <div class="form-inline">
           <div class="form-group">
             <form>
-              <input type="text" ng-model="newPoolName" class="form-control" placeholder="Indtast puljenavn.."/>
-              <input type="submit" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
+              <input type="text" ng-model="newPoolName" placeholder="Indtast puljenavn.."/>
+              <input type="submit" ng-if="newPoolName!=''" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
               <a ng-click="newPoolFunc()" class="btn btn-danger">Annuller</a>
             </form>
           </div>
@@ -94,7 +94,7 @@
           <p>{{ division.MatchDuration }} min. pr. kamp<span ng-click="changeDurationFunc()" class="glyphicon glyphicon-pencil"></span></p>
         </div>
         <div ng-if="changeDuration">
-          <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" />
+          <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="{{ division.MatchDuration }}" min="10" max="70" required="true" />
           <a ng-click="changeNewDurationFunc(newMatchDuration)" class="btn btn-xs btn-default">Gem</a>
         </div>
       </div>
@@ -120,17 +120,15 @@
   <hr />
   <div class="col-lg-12 text-center">
     <div class="finalStage">
-
       <h4>Slutspilsindstillinger</h4>
-      <hr />
-      
+      <hr /> 
       <div class="col-md-12">
         <div class="col-md-3" ng-repeat="Finalslink in division.FinalsLinks track by $index">
           {{ $index+1 }}. plads går videre til
           <select ng-options="letter as letter for letter in division.letters" ng-model="Finalslink.Finalsstage" ng-change="finalsLinkChanged(Finalslink, letter)"></select>
         </div>
       </div>
-      <select class="finals-select">
+      <select class="finals-select" id="finalSelecter">
         <option value="">Knockout</option>
         <option value="">Round Robin</option>
         <option value="">Round Robin med finaler</option>

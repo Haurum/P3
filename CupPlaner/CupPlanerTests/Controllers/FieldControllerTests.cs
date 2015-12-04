@@ -21,12 +21,14 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Create("Test Field", 8, ID.TournamentId)).Data;
             ID.FieldId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("New field added", jsonResult.message);
+
+            //Create a new field using null values
+            jsonResult = ((JsonResult)controller.Create(null, 8, ID.TournamentId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
 
             //Create a new field, but to a non-existing tournament
             jsonResult = ((JsonResult)controller.Create("Test Field", 8, 999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("New field not added", jsonResult.message);
         }
 
         [TestMethod()]
@@ -56,7 +58,6 @@ namespace CupPlaner.Controllers.Tests
             //Find a field that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Could not find field", jsonResult.message);
         }
 
         [TestMethod()]
@@ -65,7 +66,6 @@ namespace CupPlaner.Controllers.Tests
             //Edit the created field
             dynamic jsonResult = ((JsonResult)controller.Edit(ID.FieldId, "Test Field2", 5)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Field edited", jsonResult.message);
 
             //Check to see if edits have been saved
             jsonResult = ((JsonResult)controller.Details(ID.FieldId)).Data;
@@ -73,10 +73,13 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual("Test Field2", jsonResult.name);
             Assert.AreEqual(FieldSize.FiveMan, jsonResult.size);
 
+            //Edit a field using null values
+            jsonResult = ((JsonResult)controller.Edit(ID.FieldId, null, 5)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
             //Edit a field that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "Test Field2", 5)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Field not edited", jsonResult.message);
         }
 
         [TestMethod()]
@@ -85,12 +88,10 @@ namespace CupPlaner.Controllers.Tests
             //Delete the created field
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.FieldId)).Data;
             Assert.AreEqual("success", jsonResult.status);
-            Assert.AreEqual("Field deleted", jsonResult.message);
 
             //Delete a field that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
-            Assert.AreEqual("Field not deleted", jsonResult.message);
         }
     }
 }

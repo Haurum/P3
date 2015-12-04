@@ -13,7 +13,7 @@ namespace CupPlaner.Controllers.Tests
 {
     public class ID
     {
-        public static int TournamentId = 3;
+        public static int TournamentId = 8;
         public static int DivisionId = 8;
         public static int DivisionTournamentId = 7;
         public static int PoolId = 32;
@@ -41,6 +41,12 @@ namespace CupPlaner.Controllers.Tests
             ID.TournamentId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
 
+            //Create a new tournament using null values
+            jsonResult = ((JsonResult)controller.Create(null, "TestPassword", startDates, endDates)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+            jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", null, endDates)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
             //Create a new tournament with the same password
             jsonResult = ((JsonResult)controller.Create("TestName", "TestPassword", startDates, endDates)).Data;
             Assert.AreEqual("error", jsonResult.status);
@@ -53,6 +59,10 @@ namespace CupPlaner.Controllers.Tests
             //Find the created tournament from the password
             dynamic jsonResult = ((JsonResult)controller.IdFromPass("TestPassword")).Data;
             Assert.AreEqual(ID.TournamentId, jsonResult.Id);
+
+            //Find a tournament using null as password
+            jsonResult = ((JsonResult)controller.IdFromPass(null)).Data;
+            Assert.AreEqual(0, jsonResult.Id);
 
             //Find a tournament that does not exist
             jsonResult = ((JsonResult)controller.IdFromPass("ATournamentThatDoesNotExist")).Data;
@@ -92,6 +102,13 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(DateTime.Parse("16-11-2015 21:00:00"), jsonResult.TimeIntervals[0].EndTime);
             Assert.AreEqual(DateTime.Parse("17-11-2015 11:00:00"), jsonResult.TimeIntervals[1].StartTime);
             Assert.AreEqual(DateTime.Parse("17-11-2015 22:30:00"), jsonResult.TimeIntervals[1].EndTime);
+
+
+            //Edit a tournament using null values
+            jsonResult = ((JsonResult)controller.Edit(ID.TournamentId, "TestName2", null, startDates2, endDates2)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+            jsonResult = ((JsonResult)controller.Edit(ID.TournamentId, "TestName2", "TestPassword2", startDates2, null)).Data;
+            Assert.AreEqual("error", jsonResult.status);
 
             //Edit a tournament that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "TestName2", "TestPassword2", startDates2, endDates2)).Data;

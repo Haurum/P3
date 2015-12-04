@@ -1,43 +1,47 @@
-app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal) {
+app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window) {
+  
+  $scope.new = false;
 
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
-        $scope.EmFields = [];
-        $scope.OmFields = [];
-        $scope.FmFields = [];
-        for (var i=0; i < data.Fields.length; i++)
-        {
-          if(data.Fields[i].fieldSize === 11)
+        if(data.status === "success"){
+          $scope.EmFields = [];
+          $scope.OmFields = [];
+          $scope.FmFields = [];
+          for (var i=0; i < data.Fields.length; i++)
           {
-            $scope.EmFields.push(data.Fields[i]);
+            if(data.Fields[i].fieldSize === 11)
+            {
+              $scope.EmFields.push(data.Fields[i]);
+            }
+            else if(data.Fields[i].fieldSize === 8)
+            {
+              $scope.OmFields.push(data.Fields[i]);
+            }
+            else
+            {
+              $scope.FmFields.push(data.Fields[i]);
+            }
           }
-          else if(data.Fields[i].fieldSize === 8)
-          {
-            $scope.OmFields.push(data.Fields[i]);
-          }
-          else
-          {
-            $scope.FmFields.push(data.Fields[i]);
-          }
+          $scope.divisions = data.Divisions;
+          $scope.tournament = data;
+        } else  {
+            $scope.error = "Række kunne ikke læses";
         }
-        $scope.divisions = data.Divisions;
-        $scope.tournament = data;
       }).error(function (err) {
         $scope.error = err;
       })
   }
 
-  $scope.tournamentId = $routeParams.tournamentId;
-
-  $scope.getDivisions();
-
   $scope.newDivName = "";
   $scope.chooseField = "";
   $scope.newMatchDuration = "";
-  
-  $scope.new = false;
+
+  $scope.tournamentId = $routeParams.tournamentId;
+
+  $scope.getDivisions();
 
   $scope.createNew = function () {
     $scope.new = !$scope.new;
@@ -66,14 +70,12 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
-
   };
 
   $scope.toggleAnimation = function () {
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
   /* Modal end */
-
 
   $scope.gotoDivison = function (currDiv, index) {
     $rootScope.currDivisionIndex = index;
@@ -91,16 +93,20 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.submitField = function(fieldName, fieldSize) {
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
-        if(fieldSize === 11){
-          $scope.createNewEmField();
-        }
-        else if(fieldSize === 8){
-          $scope.createNewOmField();
-        }
-        else {
-          $scope.createNewFmField();
-        }
-        $scope.getDivisions();
+        if(data.status === "success"){
+          if(fieldSize === 11){
+            $scope.createNewEmField();
+          }
+          else if(fieldSize === 8){
+            $scope.createNewOmField();
+          }
+          else {
+            $scope.createNewFmField();
+          }
+            $scope.getDivisions();
+          } else {
+            $scope.error = "Bane ikke oprettet";
+          }
     }).error(function(err){
       $scope.createErr = err;
     }).finally(function(hej){
@@ -110,16 +116,22 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   }
   
   $scope.removeField = function(Field) {
-    $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
-    .success(function(data){
+    var deleteField = $window.confirm('Er du sikker på du vil slette banen?');
 
-    }).error(function(err){
-      $scope.deleteErr = err;
-    }).finally(function(hej) {
-      console.log("Hello???");
-      $scope.getDivisions();
-    })
-    
+    if(deleteField){
+      $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
+      .success(function(data){
+        if(data.status === "success"){
+        }
+        else {
+          $scope.error = "Bane ikke fjernet";
+        }
+      }).error(function(err){
+        $scope.deleteErr = err;
+      }).finally(function(hej) {
+        $scope.getDivisions();
+      })
+    }
   }
 
   /* 11man */
@@ -138,7 +150,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   } 
 
   /* Field end */
-
 }]);
 
 app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
@@ -146,20 +157,33 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
     $scope.chooseField = "";
+    $scope.errMsg = function () {
+      $scope.error = !$scope.error;
+    }
   $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
+    if(newMatchDuration >= 10 && newMatchDuration <= 70 && chooseField != "")
+    {
     $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
-        
-        $uibModalInstance.close();
-        $scope.newDivName = "";
-        $scope.newMatchDuration = "";
-        $scope.chooseField = "";
-
-        $scope.getDivisions();
+        if(data.status === "success"){
+          $uibModalInstance.close();
+          $scope.newDivName = "";
+          $scope.newMatchDuration = "";
+          $scope.chooseField = "";
+          $scope.getDivisions();
+        }
+        else {
+          $scope.error = "Række ikke tilføjet";
+        }     
       }).error(function(data){
         $scope.newDivError = data;
       })
+    }
+    else
+    {
+      $scope.error = "Kamplængde eller banestørrelse ugyldig";
     } 
+  } 
 
   $scope.ok = function () {
     $uibModalInstance.close();
@@ -173,7 +197,6 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   $scope.schedule = function () {
     $scope.isScheduled = !$scope.isScheduled;
   }
-
 }]);
 
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', 'cfpLoadingBar', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader, cfpLoadingBar) {
@@ -257,12 +280,17 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   };
   /* DATE PICKER END */
 
+  $scope.errMsg = function () {
+    $scope.error = !$scope.error;
+  }
+
   $scope.uploadTournament = function () 
   {
     $scope.startTimesString = "";
     $scope.endTimesString = ""; 
     if (!$scope.tournamentName || !$scope.tournamentPassword){
       $scope.error = "Navn eller kode ikke sat";
+      $scope.errStatus = true;
     }else{
       $scope.startDateTimes = [];
       $scope.endDateTimes = [];
@@ -270,19 +298,14 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
       for (var index = 0; index <= $scope.dateRange; index++) {
         $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
         $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
-        
       }
       
       if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
-        console.log($scope.startDateTimes.length);
-        console.log($scope.dateRange);
-        $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
-           
+        $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";   
       }else{
-
         for(var i = 0; i <= $scope.dateRange; i++){
           if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-            $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+            $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
           }
           $scope.startTimesString += $scope.startDateTimes[i] + (i == $scope.dateRange ? '': ',');
           $scope.endTimesString += $scope.endDateTimes[i] + (i == $scope.dateRange ? '': ',');
@@ -294,7 +317,6 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
             startTimes: $scope.startTimesString,
             endTimes: $scope.endTimesString
           }
-
           if (uploader.queue.length > 0)
           {
             cfpLoadingBar.start();
@@ -304,8 +326,8 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           {
             $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
-              if(Data.status === "error"){
-                $scope.error = Data.message;
+              if(Data.message == "Password already exists"){
+                $scope.error = "Adgangskoden eksisterer allerede";
               } else {
                 $location.path("tournament/" + Data.id);
               }
@@ -390,6 +412,10 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
       $scope.statusEndDate = {
         opened: false
       };
+
+      $scope.errMsg = function () {
+        $scope.error = !$scope.error;
+      }
       
       $scope.uploadTournament = function () {
         if (!$scope.tournamentName || !$scope.tournamentPassword){
@@ -399,20 +425,23 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
           $scope.endDateTimes = [];
           $scope.error = false;
           for (var index = 0; index <= $scope.dateRange; index++) {
+            if($scope.startTimes[index] !== null && $scope.endTimes[index] !== null)
+            {
             $scope.startDateTimes[index] = $scope.startTimes[index].toISOString();
-            $scope.endDateTimes[index] = $scope.endTimes[index].toISOString();        
-            
+            $scope.endDateTimes[index] = $scope.endTimes[index].toISOString(); 
+            }
+            else
+            {
+              $scope.error = "Dette er et udgyldigt tidspunkt";
+            }
+        
           }
-          
           if($scope.startDateTimes.length-1 !== $scope.dateRange && $scope.endDateTimes.length-1 !== $scope.dateRange){
-            console.log($scope.startDateTimes.length);
-            console.log($scope.dateRange);
             $scope.error = "Fejl i start eller slut tidspunkt for en af dagene";
-              
           }else{
             for(var i = 0; i <= $scope.dateRange; i++){
               if($scope.startDateTimes[i] >= $scope.endDateTimes[i]){
-                $scope.error = "alle slut tidspunkter skal være senere end start tidspunkter";
+                $scope.error = "Alle slut tidspunkter skal være senere end start tidspunkter";
               }
             }
             if(!$scope.error){
@@ -423,15 +452,17 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
                 startTimes: $scope.startDateTimes,
                 endTimes: $scope.endDateTimes
               }
-          
               $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
               {
-                if(Data.status === "error"){
-                  $scope.error = Data.message;
-                }else{
-                  $location.path("tournament/" + $routeParams.tournamentId);
+                if(Data.message === "Password already exists"){
+                $scope.error = "Adgangskoden eksisterer allerede";
                 }
-              }).error(function(err) 
+                if(Data.status === "success"){
+                  $location.path("tournament/" + $routeParams.tournamentId);
+                } else {
+                  $scope.error = "Kunne ikke redigere turnering";
+                }
+              }).error(function(err)
               {
                 $scope.error = "Kunne ikke uploade til serveren";
               });
@@ -445,5 +476,4 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
   }).error(function(err){
     $scope.error = "Kunne ikke finde turneringen";
   });
-  
 }]);

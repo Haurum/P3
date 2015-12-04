@@ -24,15 +24,15 @@
         <div class="modal-body">
           <form>
             <label class="pull-left">Tilføj banens navn</label>
-            <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." required="true" />
+            <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." />
             <br />
             <label class="pull-left">Tid for kamp</label>
             <div class="panel panel-default">
               <div class="panel-body alert alert-info" role="alert">
-                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp
+                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp. Tiden for kampene kan være fra 10 - 70 minutter.
               </div>
             </div>
-            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" min="10" max="70" required="true" ng-model="newMatchDuration" />
+            <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" required="true" ng-model="newMatchDuration" />
             <br />
             <label class="pull-left">Vælg banestørrelse</label>
             <select class="form-control" ng-model="chooseField">
@@ -41,10 +41,20 @@
               <option value="5">5-mands bane</option>
             </select>
           </form>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="alert alert-danger alert-dismissable col-md-6 col-md-offset-3" role="alert" ng-if="error" id="addDivisionError">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="errMsg()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <p> {{error}} </p>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Luk</button>
-            <input type="submit" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" />
+          <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Luk</button>
+          <input type="submit" ng-if="newDivName!=''" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" />
         </div>
     </script>
 
@@ -71,8 +81,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="EmField" />
-                  <input type="submit" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="EmField" class="form-control" placeholder="Indtast banens navn.."/>
+                  <input type="submit" ng-if="EmField!=''" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewEmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -97,8 +107,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="OmField" />
-                  <input type="submit" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="OmField" class="form-control" placeholder="Indtast banens navn.."/>
+                  <input type="submit" ng-if="OmField!=''" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewOmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -123,8 +133,8 @@
             <div class="form-inline">
               <div class="form-group">
                 <form>
-                  <input type="text" ng-model="FmField" />
-                  <input type="submit" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Submit" />
+                  <input type="text" ng-model="FmField" class="form-control" placeholder="Indtast banens navn.."/>
+                  <input type="submit" ng-if="FmField!=''" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewFmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>

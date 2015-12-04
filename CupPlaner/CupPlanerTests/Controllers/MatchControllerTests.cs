@@ -65,16 +65,20 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(60, jsonResult.Duration);
             Assert.AreEqual(DateTime.Parse("2015-11-17 11:20:00"), jsonResult.StartTime);
 
+            //Schedule a new match using null values
+            jsonResult = ((JsonResult)controller.Schedule(ID.MatchId, null , ID.FieldId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
             //Schedule a new match, but to a non-existing match ID
             jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
             //Schedule a new match, but with an invalid start time parameter
-            jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            jsonResult = ((JsonResult)controller.Schedule(ID.MatchId, "17-152015 11:98", ID.FieldId)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
             //Schedule a new match, but to a non-existing field
-            jsonResult = ((JsonResult)controller.Schedule(999999, "17-11-2015 11:20:00", ID.FieldId)).Data;
+            jsonResult = ((JsonResult)controller.Schedule(ID.MatchId, "17-11-2015 11:20:00", 999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
 
@@ -89,6 +93,10 @@ namespace CupPlaner.Controllers.Tests
             jsonResult = ((JsonResult)controller.Details(ID.MatchId)).Data;
             Assert.AreEqual(40, jsonResult.Duration);
             Assert.AreEqual(DateTime.Parse("2015-11-18 12:00:00"), jsonResult.StartTime);
+
+            //Edit a match using null values
+            jsonResult = ((JsonResult)controller.Edit(ID.MatchId, null, 40)).Data;
+            Assert.AreEqual("error", jsonResult.status);
 
             //Edit a match that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "18-11-2015 12:00:00", 40)).Data;
