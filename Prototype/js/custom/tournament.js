@@ -194,9 +194,15 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   };
 
   $scope.isScheduled = false;
-  $scope.schedule = function () {
+  $scope.scheduleTournament = function () {
     $scope.isScheduled = !$scope.isScheduled;
   }
+
+  $scope.schedule = function () {
+    
+  }
+
+
 }]);
 
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', 'cfpLoadingBar', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader, cfpLoadingBar) {
