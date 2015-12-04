@@ -93,13 +93,8 @@ namespace CupPlaner.Controllers
                 List<TimeInterval> tis = new List<TimeInterval>();
                 List<TimeInterval> tournytis = new List<TimeInterval>();
                 Team t = db.TeamSet.Find(id);
-<<<<<<< HEAD
-                teamtis = t.TimeIntervals.ToList();
-                // Set the new time intervals
-=======
                 tournytis = t.Pool.Division.Tournament.TimeIntervals.ToList();
 
->>>>>>> origin/master
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     if(startTimes[i] >= tournytis[i].StartTime && endTimes[i] <= tournytis[i].EndTime)
