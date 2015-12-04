@@ -201,8 +201,8 @@ namespace CupPlaner.Controllers
             Microsoft.Office.Interop.Excel.Range oRng;
             object misvalue = System.Reflection.Missing.Value;
             Tournament t = db.TournamentSet.Find(tournamentId);
-            //string fileName = t.Id.ToString() + ".xls";
-            string fileName = "2.xls";
+            string fileName = t.Id.ToString() + ".xls";
+            //string fileName = "2.xls";
             try
             {
                 
