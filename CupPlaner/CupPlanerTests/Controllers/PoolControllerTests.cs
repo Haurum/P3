@@ -22,6 +22,10 @@ namespace CupPlaner.Controllers.Tests
             ID.PoolId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
 
+            //Create a new pool using null values
+            jsonResult = ((JsonResult)controller.Create(null, ID.DivisionId)).Data;
+            Assert.AreEqual("error", jsonResult.status);
+
             //Create a new pool, but to a non-existing division
             jsonResult = ((JsonResult)controller.Create("Pulje Test", 999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
@@ -52,6 +56,10 @@ namespace CupPlaner.Controllers.Tests
             jsonResult = ((JsonResult)controller.Details(ID.PoolId)).Data;
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
             Assert.AreEqual("Pulje Test2", jsonResult.Name);
+
+            //Edit a pool using null values
+            jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
+            Assert.AreEqual("error", jsonResult.status);
 
             //Edit a pool that does not exist
             jsonResult = ((JsonResult)controller.Edit(999999, "Pulje Test2", ID.DivisionId, new List<int>())).Data;

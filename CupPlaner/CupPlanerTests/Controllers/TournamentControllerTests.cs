@@ -13,7 +13,7 @@ namespace CupPlaner.Controllers.Tests
 {
     public class ID
     {
-        public static int TournamentId = 9;
+        public static int TournamentId = 8;
         public static int DivisionId = 8;
         public static int DivisionTournamentId = 7;
         public static int PoolId = 32;
