@@ -34,6 +34,10 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
           $scope.startTimes.push(new Date(parseInt(data.TimeIntervals[index].StartTime.substr(6))));
           $scope.endTimes.push(new Date(parseInt(data.TimeIntervals[index].EndTime.substr(6))));
         }
+        for(var i = 0; i < $scope.team.Matches.length; i++)
+        {
+          $scope.team.Matches[i].StartTime = new Date(parseInt($scope.team.Matches[i].StartTime.substr(6)));
+        }
       } else {
         $scope.error = "Kunne ikke læse hold";
       }

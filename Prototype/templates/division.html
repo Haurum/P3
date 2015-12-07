@@ -159,16 +159,11 @@
                 Pulje <span ng-show="orderByField == 'division.Pools.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
                 </a>
               </th>
-              <!--<th>
-                <a href="" ng-click="orderByField='date'; reverseSort = !reverseSort">
-                Dag <span ng-show="orderByField == 'date'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+              <th>
+                <a href="" ng-click="orderByField='StartTime'; reverseSort = !reverseSort">
+                Dag <span ng-show="orderByField == 'StartTime'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
                 </a>
               </th>
-              <th>
-                <a href="" ng-click="orderByField='time'; reverseSort = !reverseSort">
-                Tid <span ng-show="orderByField == 'time'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
-                </a>
-              </th>-->
               <th>
                 <a href="" ng-click="orderByField='Field.Name'; reverseSort = !reverseSort">
                 Bane <span ng-show="orderByField == 'Field.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
@@ -188,13 +183,12 @@
           </thead>
           <tbody>
             <tr ng-repeat="match in division.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
-              <td> {{match.Number}} </td>
-              <td><a ng-click="gotoPool(division.Pools, $index)"> {{ match.Pool.Name}} </a></td>
-              <!--<td> {{}} </td> -->
-              <!--<td> {{}} </td> -->
-              <td> {{match.Field.Name}} </td>
-              <td><a ng-click="gotoTeam(match.Team1, division.Pools)"> {{match.Team1.name}} </a></td>
-              <td><a ng-click="gotoTeam(match.Team2, division.Pools)"> {{match.Team2.name}} </a></td>
+              <td> {{ match.Number }} </td>
+              <td><a ng-click="gotoPool(match.Pool)"> {{ match.Pool.Name}} </a></td>
+              <td> {{ match.StartTime | date:"dd/MM 'kl.' HH:mm" }} </td>
+              <td> {{ match.FieldName }} </td>
+              <td><a ng-click="gotoTeam(match.Team1, match.Pool)"> {{ match.Team1.name }} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2, match.Pool)"> {{ match.Team2.name }} </a></td>
             </tr>
           </tbody>
         </table>
