@@ -20,11 +20,15 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                Validator validator = new Validator();
                 Division d = db.DivisionSet.Find(id);
+                Tournament t = db.TournamentSet.Find(d.Tournament.Id);
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
+
+                bool FrontendValidation = validator.IsScheduleReady(t.Id);
 
                 // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -71,7 +75,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }

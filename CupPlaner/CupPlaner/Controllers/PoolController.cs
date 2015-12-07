@@ -21,10 +21,14 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
-                
+                Tournament t = db.TournamentSet.Find(p.Division.Tournament.Id);
+                Validator validator = new Validator();
+
                 List<object> teams = new List<object>();
                 List<object> ffs = new List<object>();
                 List<object> matches = new List<object>();
+
+                bool FrontendValidation = validator.IsScheduleReady(t.Id);
 
                 // Get teams in pool
                 if (p.Teams != null)
@@ -52,7 +56,7 @@ namespace CupPlaner.Controllers
                         matches.Add(new { Id = m.Id, Number = m.Number, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                     }
                 }
-                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs, Matches = matches };
+                object obj = new { status = "success", Id = p.Id, Name = p.Name, FieldSize = p.Division.FieldSize, Teams = teams, FavoriteFields = ffs, Matches = matches, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
