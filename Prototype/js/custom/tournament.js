@@ -77,8 +77,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   };
   /* Modal end */
 
-  $scope.gotoDivison = function (currDiv, index) {
-    $rootScope.currDivisionIndex = index;
+  $scope.gotoDivison = function (currDiv) {
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
 
