@@ -197,7 +197,7 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        //This function will export the scheduled tournament plan to an excel file
         public ActionResult ExportExcel(int tournamentId)
         {
             Microsoft.Office.Interop.Excel.Application oXL;
