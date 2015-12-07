@@ -270,10 +270,14 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
-            foreach (Field f in t.Fields)
+            foreach (TimeInterval ti in t.TimeIntervals)
             {
-                db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
+                foreach (Field f in t.Fields)
+                {
+                    db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
+                }
             }
+
 
             db.SaveChanges();
         }
