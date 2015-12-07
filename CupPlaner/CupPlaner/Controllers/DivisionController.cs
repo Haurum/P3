@@ -22,13 +22,13 @@ namespace CupPlaner.Controllers
             {
                 Validator validator = new Validator();
                 Division d = db.DivisionSet.Find(id);
-                Tournament t = db.TournamentSet.Find(d.Tournament.Id);
+                Tournament tourny = db.TournamentSet.Find(d.Tournament.Id);
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
 
-                bool FrontendValidation = validator.IsScheduleReady(t.Id);
+                bool FrontendValidation = validator.IsScheduleReady(tourny.Id);
 
                 // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";

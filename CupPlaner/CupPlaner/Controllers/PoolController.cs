@@ -21,14 +21,14 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
-                Tournament t = db.TournamentSet.Find(p.Division.Tournament.Id);
+                Tournament tourny = db.TournamentSet.Find(p.Division.Tournament.Id);
                 Validator validator = new Validator();
 
                 List<object> teams = new List<object>();
                 List<object> ffs = new List<object>();
                 List<object> matches = new List<object>();
 
-                bool FrontendValidation = validator.IsScheduleReady(t.Id);
+                bool FrontendValidation = validator.IsScheduleReady(tourny.Id);
 
                 // Get teams in pool
                 if (p.Teams != null)
