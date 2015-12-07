@@ -261,5 +261,23 @@ namespace CupPlaner.Helpers
             }
             return intervals;
         }
+
+        public int MinNumOfFields(Tournament t, FieldSize fs)
+        {
+            int duration = 0;
+            foreach (Division d in t.Divisions)
+            {
+                foreach (Pool p in d.Pools)
+                {
+                    foreach (Match m in p.TournamentStage.Matches)
+                    {
+                        if (m.Field.Size == fs) duration += m.Duration;
+                    }
+                }
+            }
+            int tDuration = 0;
+            foreach (TimeInterval ti in t.TimeIntervals) tDuration += (ti.StartTime - ti.EndTime).Minutes;
+            return (int)Math.Ceiling((double)(duration / tDuration));
+        }
     }
 }
