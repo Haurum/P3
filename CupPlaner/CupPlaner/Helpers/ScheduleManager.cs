@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -26,7 +27,7 @@ namespace CupPlaner.Helpers
             while (!IsScheduled)
             {
                 List<TournamentStage> unscheduledTournamentstages = TournamentStages.Where(x => !x.IsScheduled).ToList();
-                
+
                 if (unscheduledTournamentstages.Count == 0)
                 {
                     IsScheduled = true;
@@ -58,7 +59,7 @@ namespace CupPlaner.Helpers
                     {
                         continue;
                     }
-                                            
+
 
                     List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
                     Match matchToSchedule;
@@ -72,7 +73,7 @@ namespace CupPlaner.Helpers
                     else if (indicator > 0)
                     {
                         matchToSchedule = unscheduledMatches.First();
-                        
+
                     }
                     else
                     {
@@ -121,19 +122,19 @@ namespace CupPlaner.Helpers
                                 db.Entry(fieldsNotChecked[j]).State = System.Data.Entity.EntityState.Modified;
                                 break;
                             }
-                            if (j == fieldsNotChecked.Count-1)
+                            if (j == fieldsNotChecked.Count - 1)
                             {
                                 j = -1;
                             }
                         }
-                        
-                        if(matchToSchedule.IsScheduled)
+
+                        if (matchToSchedule.IsScheduled)
                         {
                             startingPoint++;
                             break;
                         }
-                        
-                        
+
+
                     }
                     if (matchToSchedule.IsScheduled)
                     {
@@ -231,7 +232,7 @@ namespace CupPlaner.Helpers
                 indicator *= -1;
             }
             db.SaveChanges();
-                
+
         }
 
 
@@ -240,52 +241,56 @@ namespace CupPlaner.Helpers
         {
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
-
-            foreach (Division d in t.Divisions.ToList())
+            if(t.IsScheduled)
             {
-                // Remove all division tournaments and their dependencies
-                if (d.DivisionTournament != null)
+                foreach (Division d in t.Divisions.ToList())
                 {
-                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                    // Remove all division tournaments and their dependencies
+                    if (d.DivisionTournament != null)
                     {
-                        foreach (Match m in ts.Matches)
+                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
                         {
-                            foreach (Team team in m.Teams)
+                            foreach (Match m in ts.Matches)
                             {
-                                team.Matches.Remove(m);
-                            }                           
+                                foreach (Team team in m.Teams)
+                                {
+                                    team.Matches.Remove(m);
+                                }
+                            }
+                            db.MatchSet.RemoveRange(ts.Matches);
                         }
-                        db.MatchSet.RemoveRange(ts.Matches);
+                        db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
+                        db.DivisionTournamentSet.Remove(d.DivisionTournament);
                     }
-                    db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
-                    db.DivisionTournamentSet.Remove(d.DivisionTournament);
-                }
-                // Remeove each pool that is generated automatically by the match generation class and their dependencies
-                foreach (Pool pool in d.Pools.ToList())
-                {
-                    if (pool.IsAuto)
+                    // Remeove each pool that is generated automatically by the match generation class and their dependencies
+                    foreach (Pool pool in d.Pools.ToList())
                     {
-                        foreach (Team team in pool.Teams)
+                        if (pool.IsAuto)
                         {
-                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            foreach (Team team in pool.Teams)
+                            {
+                                db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            }
+                            db.TeamSet.RemoveRange(pool.Teams);
+                            pool.FavoriteFields.Clear();
+                            db.PoolSet.Remove(pool);
                         }
-                        db.TeamSet.RemoveRange(pool.Teams);
-                        pool.FavoriteFields.Clear();
-                        db.PoolSet.Remove(pool);
                     }
                 }
-            }
-            foreach (TimeInterval ti in t.TimeIntervals)
-            {
+                // Reset next free time of each field to default (tournament start time) for each day
+                TimeInterval[] tournamentTi = t.TimeIntervals.ToArray();
                 foreach (Field f in t.Fields)
                 {
-                    db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
+                    NextFreeTime[] nftArray = f.NextFreeTime.ToArray();
+                    for (int i = 0; i < f.NextFreeTime.Count; i++)
+                    {
+                        nftArray[i].FreeTime = tournamentTi[i].StartTime;
+                        db.Entry(nftArray[i]).State = EntityState.Modified;
+                    }
                 }
+                db.SaveChanges();
+                t.IsScheduled = false;
             }
-
-
-            db.SaveChanges();
         }
-
     }
 }

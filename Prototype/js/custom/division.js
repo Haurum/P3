@@ -18,6 +18,12 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     {
       if(data.status === "success"){
         $scope.division = data;
+
+        for(var i = 0; i < $scope.division.Matches.length; i++)
+        {
+          $scope.division.Matches[i].StartTime = new Date(parseInt($scope.division.Matches[i].StartTime.substr(6)));
+        }
+
         $scope.division.letters = [];
         for (var i = 0; i < $scope.division.FinalsLinks.length; i++)
         {
@@ -116,8 +122,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   }
 
   //Function used to to go a specific pool
-  $scope.gotoPool = function(currPool, index) {
-    $rootScope.currPoolIndex = index;
+  $scope.gotoPool = function(currPool) {
     $location.url($location.url() + "/pool/" + currPool.Id);
   }
 
