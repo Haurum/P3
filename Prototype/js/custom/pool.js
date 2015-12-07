@@ -13,14 +13,14 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
     {
       if(data.status === "success"){
         $scope.pool = data;
-        for(var i = 0; i < $scope.pool.FavoriteFields.length; i++){
-          $scope.FavoriteFieldIds.push($scope.pool.FavoriteFields[i].Id);
+        for(var i = 0; i < $scope.pool.Matches.length; i++)
+        {
+          $scope.pool.Matches[i].StartTime = new Date(parseInt($scope.pool.Matches[i].StartTime.substr(6)));
         }
         $scope.divisionFieldSize = data.FieldSize;
       } else {
         $scope.error = "Pulje kunne ikke læses";
-      }
-      
+      }     
     }).error(function(err) 
     {
       $scope.error = err;
@@ -28,7 +28,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   }
   $scope.getPoolData();
 
-  $scope.newTeamName="";
+  $scope.newTeamName="";  
   // addTeamToPool is a post-request which sends
   // the poolId and a team name to the c# TeamController.Create
   // method, returning a JSON object containing a message: "success" or "error",
@@ -49,8 +49,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
 
   // gotoTeamDetail is a function redirecting the user
   // to a specific teams html page.
-  $scope.gotoTeamDetail = function(currTeam, index) {
-    $rootScope.currTeamIndex = index;
+  $scope.gotoTeamDetail = function(currTeam) {
     $location.url($location.url() + "/team/" + currTeam.Id);
   }
 

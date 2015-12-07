@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Excel = Microsoft.Office.Interop.Excel;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
@@ -25,10 +26,14 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                Validator validator = new Validator();
                 Tournament t = db.TournamentSet.Find(id);
                 List<object> divs = new List<object>();
                 List<object> fields = new List<object>();
                 List<object> times = new List<object>();
+
+                //isScheduleReady - for frontend use.
+                bool FrontendValidation = validator.IsScheduleReady(t.Id);
 
                 // Get all divisions
                 if (t.Divisions != null)
@@ -54,7 +59,7 @@ namespace CupPlaner.Controllers
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
                     }
                 }
-                object obj = new { status = "success", Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields };
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -192,7 +197,7 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
-
+        //This function will export the scheduled tournament plan to an excel file
         public ActionResult ExportExcel(int tournamentId)
         {
             Microsoft.Office.Interop.Excel.Application oXL;

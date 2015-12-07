@@ -67,7 +67,7 @@
       </div>
       <div class="row">
         <!-- creates the new division as a link in a button, with its name and it links to the divisions own page -->
-        <a ng-click="gotoDivison(division, $index)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+        <a ng-click="gotoDivison(division, $index)" ng-repeat="division in tournament.Divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
           {{ division.Name }}
         </a>
       </div>
@@ -154,7 +154,7 @@
           </div>
         </div>
       </div>
-    <div ng-if="!isScheduled" class="col-md-12 add-button">
+    <div ng-if="tournament.isValid" class="col-md-12 add-button">
       <hr />
       <a ng-click="scheduleTournament()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
         <span class="glyphicon glyphicon-list-alt"> </span>

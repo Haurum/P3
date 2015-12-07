@@ -20,11 +20,15 @@ namespace CupPlaner.Controllers
         {
             try
             {
+                Validator validator = new Validator();
                 Division d = db.DivisionSet.Find(id);
+                Tournament tourny = db.TournamentSet.Find(d.Tournament.Id);
                 List<object> pools = new List<object>();
                 List<object> teams = new List<object>();
                 List<object> matches = new List<object>();
                 List<object> finalslinks = new List<object>();
+
+                bool FrontendValidation = validator.IsScheduleReady(tourny.Id);
 
                 // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -56,7 +60,7 @@ namespace CupPlaner.Controllers
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
 
-                                matches.Add(new { Id = m.Id, Number = m.Number, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
+                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }                      
                     }
@@ -71,7 +75,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -117,6 +121,9 @@ namespace CupPlaner.Controllers
                 d.Tournament = db.TournamentSet.Find(tournamentId);
 
                 d.Name = name;
+
+                // Clear the schedule
+                sm.DeleteSchedule(d.Tournament.Id);
                 
                 if(d.FieldSize != (FieldSize)fieldSizeInt)
                 {

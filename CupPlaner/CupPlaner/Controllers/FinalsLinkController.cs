@@ -4,12 +4,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CupPlaner.Helpers;
 
 namespace CupPlaner.Controllers
 {
     public class FinalsLinkController : Controller
     {
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
 
         // GET: FinalsLink/Details/5 - Gets the details of the FinalsLink class with its id as a parameter. The id are used to get to the specific FinalsLink object.
         // The Details function returns a JSON object, containing a copy of the FinalsLinks varibles.
@@ -64,6 +66,9 @@ namespace CupPlaner.Controllers
                 fl.Finalstage = finalStage;
                 fl.PoolPlacement = poolPlacement;
 
+                //Clear the schedule
+                sm.DeleteSchedule(fl.Division.Tournament.Id);
+
                 db.Entry(fl).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -86,6 +91,8 @@ namespace CupPlaner.Controllers
             {
                 FinalsLink fl = db.FinalsLinkSet.Find(id);
 
+                //Clear the schedule
+                sm.DeleteSchedule(fl.Division.Tournament.Id);
                 db.FinalsLinkSet.Remove(fl);
                 db.SaveChanges();
 
