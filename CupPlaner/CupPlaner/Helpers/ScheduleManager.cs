@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -23,7 +24,7 @@ namespace CupPlaner.Helpers
             while (!t.IsScheduled)
             {
                 List<TournamentStage> unscheduledTournamentstages = TournamentStages.Where(x => !x.IsScheduled).ToList();
-                
+
                 if (unscheduledTournamentstages.Count == 0)
                 {
                     t.IsScheduled = true;
@@ -55,7 +56,7 @@ namespace CupPlaner.Helpers
                     {
                         continue;
                     }
-                                            
+
 
                     List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
                     Match matchToSchedule;
@@ -69,7 +70,7 @@ namespace CupPlaner.Helpers
                     else if (indicator > 0)
                     {
                         matchToSchedule = unscheduledMatches.First();
-                        
+
                     }
                     else
                     {
@@ -118,19 +119,19 @@ namespace CupPlaner.Helpers
                                 db.Entry(fieldsNotChecked[j]).State = System.Data.Entity.EntityState.Modified;
                                 break;
                             }
-                            if (j == fieldsNotChecked.Count-1)
+                            if (j == fieldsNotChecked.Count - 1)
                             {
                                 j = -1;
                             }
                         }
-                        
-                        if(matchToSchedule.IsScheduled)
+
+                        if (matchToSchedule.IsScheduled)
                         {
                             startingPoint++;
                             break;
                         }
-                        
-                        
+
+
                     }
                     if (matchToSchedule.IsScheduled)
                     {
@@ -153,7 +154,7 @@ namespace CupPlaner.Helpers
                         {
                             int k = 10;
                             while (!validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
-                            {                                   
+                            {
                                 if (field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k) >= t.TimeIntervals.ElementAt(i).EndTime)
                                 {
                                     break;
@@ -175,7 +176,7 @@ namespace CupPlaner.Helpers
                         {
                             break;
                         }
-                        fieldsNotChecked.Remove(field);                           
+                        fieldsNotChecked.Remove(field);
                     }
                     if (!firstMatch.IsScheduled)
                     {
@@ -209,7 +210,7 @@ namespace CupPlaner.Helpers
                             }
                         }
                     }
-                    
+
                     if (!firstMatch.IsScheduled)
                     {
                         t.IsScheduled = true;
@@ -226,7 +227,7 @@ namespace CupPlaner.Helpers
                 indicator *= -1;
             }
             db.SaveChanges();
-                
+
         }
 
 
@@ -248,7 +249,7 @@ namespace CupPlaner.Helpers
                             foreach (Team team in m.Teams)
                             {
                                 team.Matches.Remove(m);
-                            }                           
+                            }
                         }
                         db.MatchSet.RemoveRange(ts.Matches);
                     }
@@ -270,15 +271,17 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
-            foreach (TimeInterval ti in t.TimeIntervals)
+            // Reset next free time of each field to default (tournament start time) for each day
+            TimeInterval[] tournamentTi = t.TimeIntervals.ToArray();
+            foreach (Field f in t.Fields)
             {
-                foreach (Field f in t.Fields)
+                NextFreeTime[] nftArray = f.NextFreeTime.ToArray();
+                for (int i = 0; i < f.NextFreeTime.Count; i++)
                 {
-                    db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
+                    nftArray[i].FreeTime = tournamentTi[i].StartTime;
+                    db.Entry(nftArray[i]).State = EntityState.Modified;
                 }
             }
-
-
             db.SaveChanges();
         }
 
