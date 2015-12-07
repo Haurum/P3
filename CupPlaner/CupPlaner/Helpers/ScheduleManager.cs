@@ -63,7 +63,7 @@ namespace CupPlaner.Helpers
                     if (unscheduledMatches.Count == 0)
                     {
                         DateTime lastMatchStart = ts.Matches.Max(x => x.StartTime);
-                        ts.TimeInterval.EndTime = lastMatchStart.AddMinutes(ts.DivisionTournament.Division.MatchDuration);
+                        ts.TimeInterval.EndTime = lastMatchStart.AddMinutes(ts.DivisionTournament.Division.MatchDuration * 2);
                         ts.IsScheduled = true;
                         continue;
                     }
