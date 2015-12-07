@@ -109,6 +109,9 @@ namespace CupPlaner.Controllers
                 // Remove old time intervals
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
 
+                // Clear the schedule
+                sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+
                 t.Name = name;
                 t.TimeIntervals = tis;
 

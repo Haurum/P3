@@ -121,6 +121,9 @@ namespace CupPlaner.Controllers
                 d.Tournament = db.TournamentSet.Find(tournamentId);
 
                 d.Name = name;
+
+                // Clear the schedule
+                sm.DeleteSchedule(d.Tournament.Id);
                 
                 if(d.FieldSize != (FieldSize)fieldSizeInt)
                 {

@@ -236,54 +236,56 @@ namespace CupPlaner.Helpers
         {
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
-
-            foreach (Division d in t.Divisions.ToList())
+            if(t.IsScheduled)
             {
-                // Remove all division tournaments and their dependencies
-                if (d.DivisionTournament != null)
+                foreach (Division d in t.Divisions.ToList())
                 {
-                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                    // Remove all division tournaments and their dependencies
+                    if (d.DivisionTournament != null)
                     {
-                        foreach (Match m in ts.Matches)
+                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
                         {
-                            foreach (Team team in m.Teams)
+                            foreach (Match m in ts.Matches)
                             {
-                                team.Matches.Remove(m);
+                                foreach (Team team in m.Teams)
+                                {
+                                    team.Matches.Remove(m);
+                                }
                             }
+                            db.MatchSet.RemoveRange(ts.Matches);
                         }
-                        db.MatchSet.RemoveRange(ts.Matches);
+                        db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
+                        db.DivisionTournamentSet.Remove(d.DivisionTournament);
                     }
-                    db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
-                    db.DivisionTournamentSet.Remove(d.DivisionTournament);
-                }
-                // Remeove each pool that is generated automatically by the match generation class and their dependencies
-                foreach (Pool pool in d.Pools.ToList())
-                {
-                    if (pool.IsAuto)
+                    // Remeove each pool that is generated automatically by the match generation class and their dependencies
+                    foreach (Pool pool in d.Pools.ToList())
                     {
-                        foreach (Team team in pool.Teams)
+                        if (pool.IsAuto)
                         {
-                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            foreach (Team team in pool.Teams)
+                            {
+                                db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
+                            }
+                            db.TeamSet.RemoveRange(pool.Teams);
+                            pool.FavoriteFields.Clear();
+                            db.PoolSet.Remove(pool);
                         }
-                        db.TeamSet.RemoveRange(pool.Teams);
-                        pool.FavoriteFields.Clear();
-                        db.PoolSet.Remove(pool);
                     }
                 }
-            }
-            // Reset next free time of each field to default (tournament start time) for each day
-            TimeInterval[] tournamentTi = t.TimeIntervals.ToArray();
-            foreach (Field f in t.Fields)
-            {
-                NextFreeTime[] nftArray = f.NextFreeTime.ToArray();
-                for (int i = 0; i < f.NextFreeTime.Count; i++)
+                // Reset next free time of each field to default (tournament start time) for each day
+                TimeInterval[] tournamentTi = t.TimeIntervals.ToArray();
+                foreach (Field f in t.Fields)
                 {
-                    nftArray[i].FreeTime = tournamentTi[i].StartTime;
-                    db.Entry(nftArray[i]).State = EntityState.Modified;
+                    NextFreeTime[] nftArray = f.NextFreeTime.ToArray();
+                    for (int i = 0; i < f.NextFreeTime.Count; i++)
+                    {
+                        nftArray[i].FreeTime = tournamentTi[i].StartTime;
+                        db.Entry(nftArray[i]).State = EntityState.Modified;
+                    }
                 }
+                db.SaveChanges();
+                t.IsScheduled = false;
             }
-            db.SaveChanges();
         }
-
     }
 }
