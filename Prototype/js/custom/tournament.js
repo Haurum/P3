@@ -1,7 +1,5 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window) {
   
-  $scope.new = false;
-
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
@@ -35,6 +33,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       })
   }
 
+  $scope.new = false;
   $scope.newDivName = "";
   $scope.chooseField = "";
   $scope.newMatchDuration = "";
