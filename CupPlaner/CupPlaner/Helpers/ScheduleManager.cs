@@ -19,6 +19,7 @@ namespace CupPlaner.Helpers
 
             int indicator = 1;
             int prevCount = 0;
+            int prevPrevCount = 0;
             int startingPoint = 0;
             while (!t.IsScheduled)
             {
@@ -97,7 +98,7 @@ namespace CupPlaner.Helpers
 
                         }
 
-                        if (matchToSchedule.IsScheduled)
+                        if (matchToSchedule.IsScheduled || fieldsNotChecked.Count == 0)
                         {
                             break;
                         }
@@ -139,7 +140,7 @@ namespace CupPlaner.Helpers
 
                 }
                 List<Match> allUnscheduledMatches = allMatches.Where(x => !x.IsScheduled).ToList();
-                if (allUnscheduledMatches.Count != 0 && allUnscheduledMatches.Count == prevCount)
+                if (allUnscheduledMatches.Count != 0 && allUnscheduledMatches.Count == prevCount && prevCount == prevPrevCount)
                 {
 
                     Match firstMatch = allUnscheduledMatches.OrderBy(x => x.TournamentStage.TimeInterval.StartTime).First(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue);
@@ -221,6 +222,7 @@ namespace CupPlaner.Helpers
                 }
                 else
                 {
+                    prevPrevCount = prevCount;
                     prevCount = allUnscheduledMatches.Count;
                 }
                 indicator *= -1;
