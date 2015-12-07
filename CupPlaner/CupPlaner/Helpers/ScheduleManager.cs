@@ -14,7 +14,7 @@ namespace CupPlaner.Helpers
 
         public void scheduleAll(Tournament t)
         {
-            foreach (Division d in t.Divisions)
+            /*foreach (Division d in t.Divisions)
             {
                 foreach (Pool p in d.Pools)
                 {
@@ -23,7 +23,7 @@ namespace CupPlaner.Helpers
                         throw new Exception("Ikke nok hold");
                     }
                 }
-            }
+            }*/
 
             List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
             List<Match> allMatches = db.MatchSet.Where(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
@@ -240,15 +240,14 @@ namespace CupPlaner.Helpers
                 
         }
 
-
         // Deletes the whole schedule for a tournament
         public void DeleteSchedule(int tournamentID)
         {
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
-
             foreach (Division d in t.Divisions.ToList())
             {
+
                 // Remove all division tournaments and their dependencies
                 if (d.DivisionTournament != null)
                 {
@@ -266,6 +265,7 @@ namespace CupPlaner.Helpers
                     db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
                     db.DivisionTournamentSet.Remove(d.DivisionTournament);
                 }
+
                 // Remeove each pool that is generated automatically by the match generation class and their dependencies
                 foreach (Pool pool in d.Pools.ToList())
                 {
@@ -281,6 +281,7 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
+
             /*foreach (Field f in t.Fields)
             {
                 db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
