@@ -13,21 +13,24 @@ namespace CupPlaner.Helpers
         MatchGeneration mg = new MatchGeneration();
         Validator validator = new Validator();
 
-        public void scheduleAll(Tournament t)
+        public void scheduleAll(Tournament t, FieldSize fSize)
         {
-            List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
-            List<Match> allMatches = db.MatchSet.Where(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == t.Id).ToList();
+            List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id && x.DivisionTournament.Division.FieldSize == fSize).ToList();
+            List<Match> allMatches = db.MatchSet.Where(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == t.Id && x.TournamentStage.DivisionTournament.Division.FieldSize == fSize).ToList();
 
+            int dayCount = 1;
             int indicator = 1;
             int prevCount = 0;
+            int prevPrevCount = 0;
             int startingPoint = 0;
-            while (!t.IsScheduled)
+            bool IsScheduled = false;
+            while (!IsScheduled)
             {
                 List<TournamentStage> unscheduledTournamentstages = TournamentStages.Where(x => !x.IsScheduled).ToList();
 
                 if (unscheduledTournamentstages.Count == 0)
                 {
-                    t.IsScheduled = true;
+                    IsScheduled = true;
                     continue;
                 }
                 foreach (TournamentStage ts in unscheduledTournamentstages)
@@ -77,10 +80,10 @@ namespace CupPlaner.Helpers
                         matchToSchedule = unscheduledMatches.Last();
                     }
 
-                    List<Field> fields = matchToSchedule.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == matchToSchedule.TournamentStage.DivisionTournament.Division.FieldSize).ToList();
+                    List<Field> fields = matchToSchedule.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == fSize).ToList();
                     List<Field> fieldsNotChecked = new List<Field>();
 
-                    for (int i = 0; i < fields.First().NextFreeTime.Count; i++)
+                    for (int i = 0; i < dayCount; i++)
                     {
                         fieldsNotChecked.AddRange(fields);
                         foreach (Field field in matchToSchedule.TournamentStage.Pool.FavoriteFields)
@@ -98,7 +101,7 @@ namespace CupPlaner.Helpers
 
                         }
 
-                        if (matchToSchedule.IsScheduled)
+                        if (matchToSchedule.IsScheduled || fieldsNotChecked.Count == 0)
                         {
                             break;
                         }
@@ -140,49 +143,51 @@ namespace CupPlaner.Helpers
 
                 }
                 List<Match> allUnscheduledMatches = allMatches.Where(x => !x.IsScheduled).ToList();
-                if (allUnscheduledMatches.Count != 0 && allUnscheduledMatches.Count == prevCount)
+                if (allUnscheduledMatches.Count != 0 && allUnscheduledMatches.Count == prevCount && prevCount == prevPrevCount)
                 {
-
-                    Match firstMatch = allUnscheduledMatches.OrderBy(x => x.TournamentStage.TimeInterval.StartTime).First(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue);
-                    List<Field> fields = firstMatch.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == firstMatch.TournamentStage.DivisionTournament.Division.FieldSize).ToList();
-                    List<Field> fieldsNotChecked = new List<Field>();
-
-                    fieldsNotChecked.AddRange(fields);
-                    foreach (Field field in firstMatch.TournamentStage.Pool.FavoriteFields)
+                    if (dayCount < t.TimeIntervals.Count)
                     {
-                        for (int i = 0; i < field.NextFreeTime.Count; i++)
-                        {
-                            int k = 10;
-                            while (!validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
-                            {
-                                if (field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k) >= t.TimeIntervals.ElementAt(i).EndTime)
-                                {
-                                    break;
-                                }
-                                k += 10;
-                            }
-                            if (validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
-                            {
-                                field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k);
-                                firstMatch.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
-                                firstMatch.Field = field;
-                                field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(firstMatch.Duration);
-                                firstMatch.IsScheduled = true;
-                                db.Entry(field).State = System.Data.Entity.EntityState.Modified;
-                                break;
-                            }
-                        }
-                        if (firstMatch.IsScheduled)
-                        {
-                            break;
-                        }
-                        fieldsNotChecked.Remove(field);
+                        dayCount++;
                     }
-                    if (!firstMatch.IsScheduled)
+                    else
                     {
-                        foreach (Field field in fieldsNotChecked)
+                        Match firstMatch = allUnscheduledMatches.OrderBy(x => x.TournamentStage.TimeInterval.StartTime).First(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue);
+                        List<Field> fields = firstMatch.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == fSize).ToList();
+                        List<Field> fieldsNotChecked = new List<Field>();
+
+                        
+                        for (int i = 0; i < dayCount; i++)
                         {
-                            for (int i = 0; i < field.NextFreeTime.Count; i++)
+                            fieldsNotChecked.AddRange(fields);
+                            //foreach (Field field in firstMatch.TournamentStage.Pool.FavoriteFields)
+                            //{
+                            //    int k = 10;
+                            //    while (!validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
+                            //    {
+                            //        if (field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k) >= t.TimeIntervals.ElementAt(i).EndTime)
+                            //        {
+                            //            break;
+                            //        }
+                            //        k += 10;
+                            //    }
+                            //    if (validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
+                            //    {
+                            //        field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k);
+                            //        firstMatch.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
+                            //        firstMatch.Field = field;
+                            //        field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(firstMatch.Duration);
+                            //        firstMatch.IsScheduled = true;
+                            //        db.Entry(field).State = System.Data.Entity.EntityState.Modified;
+                            //        break;
+                            //    }
+                            //    fieldsNotChecked.Remove(field);
+                            //}
+                            //if (firstMatch.IsScheduled)
+                            //{
+                            //    break;
+                            //}
+                            
+                            foreach (Field field in fieldsNotChecked)
                             {
                                 int k = 10;
                                 while (!validator.areTeamsFree(firstMatch, field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(k)))
@@ -209,19 +214,19 @@ namespace CupPlaner.Helpers
                                 break;
                             }
                         }
-                    }
-
-                    if (!firstMatch.IsScheduled)
-                    {
-                        t.IsScheduled = true;
-                    }
-                    else
-                    {
-                        db.Entry(firstMatch).State = System.Data.Entity.EntityState.Modified;
-                    }
+                        if (!firstMatch.IsScheduled)
+                        {
+                            t.IsScheduled = true;
+                        }
+                        else
+                        {
+                            db.Entry(firstMatch).State = System.Data.Entity.EntityState.Modified;
+                        }
+                    }                                                          
                 }
                 else
                 {
+                    prevPrevCount = prevCount;
                     prevCount = allUnscheduledMatches.Count;
                 }
                 indicator *= -1;
