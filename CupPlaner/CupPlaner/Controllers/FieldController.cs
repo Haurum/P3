@@ -42,6 +42,7 @@ namespace CupPlaner.Controllers
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 List<object> fields = new List<object>();
                 List<object> matches = new List<object>();
+                List<object> timeintervals = new List<object>();
 
                 // Get all fields and matches for each one
                 if(t.Fields != null)
@@ -49,14 +50,28 @@ namespace CupPlaner.Controllers
                     foreach(Field f in t.Fields)
                     {
                         matches = new List<object>();
-                        foreach (Match m in f.Matches)
+                        foreach (Match m in f.Matches.OrderBy(match => match.StartTime))
                         {
-                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, EndTime = m.StartTime.AddMinutes(m.Duration), Nr = m.Number });
+                            matches.Add(new { Id = m.Id, StartTime = m.StartTime, EndTime = m.StartTime.AddMinutes(m.Duration), Duration = m.Duration, Date = m.StartTime.Date, Nr = m.Number, HomeTeam = new { Id = m.Teams.First().Id, Name = m.Teams.First().Name }, AwayTeam = new { Id = m.Teams.Last().Id, Name = m.Teams.Last().Name } });
                         }
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size, matches = matches });
                     }
+                    foreach (TimeInterval ti in t.TimeIntervals)
+                    {
+                        List<int> times = new List<int>();
+                        
+                        int latest = ti.StartTime.Hour;
+                        int timeIndex = 0;
+                        while (latest < ti.EndTime.Hour)
+                        {
+                            latest = ti.StartTime.Hour + timeIndex;
+                            times.Add(latest);
+                            timeIndex++;
+                        }
+                        timeintervals.Add(new { StartTime = ti.StartTime, EndTime = ti.EndTime, Date = ti.StartTime.Date, Times = times });
+                    }
                 }
-                object obj = new { status = "success", Fields = fields };
+                object obj = new { status = "success", Fields = fields, TimeIntervals = timeintervals };
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
             catch(Exception ex)

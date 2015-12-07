@@ -1,37 +1,27 @@
-<!--
-   {{ tournament }}
-    <div dhx-scheduler fields="{{ tournament.Fields }}" style="width: 100%; height: 750px;">
-      <div class="dhx_cal_navline">
-       <div class="dhx_cal_tab" name="timeline_tab" style="right:280px;"></div>
-      </div>
-      <div class="dhx_cal_prev_button">&nbsp;</div>
-      <div class="dhx_cal_next_button">&nbsp;</div>
-      <div class="dhx_cal_today_button"></div>
-      
-      <div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
-      <div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
-      <div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>  
-      <div>
-  </div>
-</div>-->
+<div class="row">
+  <center>
+  <button ng-click="decDay()" class="btn btn-default">-</button> {{ tournament.TimeIntervals[chosenDay].Date }} <button ng-click="incDay()" class="btn btn-default">+</button>
+  </center>
+</div>
 
 <div class="row">
-  <div class="col-lg-12">
-    <div id="dhx_cal_container" class="dhx_cal_container" style="width: 100%; height: 750px;">
-      <div class="dhx_cal_navline">
-        <div class="dhx_cal_date"></div>
-        <div class="dhx_cal_prev_button">&nbsp;</div>
-        <div class="dhx_cal_next_button">&nbsp;</div>
-        <div class="dhx_cal_today_button"></div>
-      </div>
-      
-      <div>
-        <div class="dhx_cal_navline "></div><div class="dhx_cal_header"></div><div class="dhx_cal_data"></div>
-      </div>
-
-    </div>
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-3" ng-repeat="field in tournament.Fields">
+  <h2>{{ field.Name }}</h2>
   </div>
 </div>
 
-{{ testMatch }}
-{{ testTime }}
+<div class="row">
+  <div class="col-md-1">
+    <p ng-repeat="ti in tournament.TimeIntervals[chosenDay].Times" style="height: 60px; margin-bottom: 0px!important;">{{ ti }}:00</p>
+  </div>
+  <div ng-repeat="field in tournament.Fields" style="margin-top: 5px;">
+    <div class="col-md-2">
+      <div class="row"  ng-repeat="match in field.matches | filter: tournament.TimeIntervals[chosenDay].Date ">
+        <button style="overflow: hidden; width: 100%; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}</button>
+      </div>
+    </div>
+  <div class="col-md-1"></div>
+  </div>
+</div>
