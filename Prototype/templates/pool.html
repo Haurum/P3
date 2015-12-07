@@ -57,6 +57,16 @@
     </div>
     <hr />
     <div class="row">
+      <div class="col-md-12">
+    <div ng-if="pool.isValid" class="col-md-12 add-button">
+        <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
+          <span class="glyphicon glyphicon-list-alt"> </span>
+        </a>
+      </div>
+    </div>
+  </div>
+    <hr />
+    <div class="row">
       <div class="col-md-12 text-center">
         <div class="col-md-3">
           <form id="divisionSearch">
@@ -112,11 +122,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      <div ng-if="pool.isValid" class="col-md-12 add-button">
-        <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
-          <span class="glyphicon glyphicon-list-alt"> </span>
-        </a>
       </div>
     </div>
   </div>
