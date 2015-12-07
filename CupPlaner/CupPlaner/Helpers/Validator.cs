@@ -65,7 +65,7 @@ namespace CupPlaner.Helpers
                     }
                     foreach (Pool p in d.Pools)
                     {
-                        if (p.Teams.Count < 2)
+                        if (p.Teams.Count <= 2)
                         {
                             isValid = false;
                             return isValid;
