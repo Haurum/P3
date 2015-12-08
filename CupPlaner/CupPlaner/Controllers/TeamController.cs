@@ -72,6 +72,9 @@ namespace CupPlaner.Controllers
                     t.TimeIntervals.Add(timeinterval);
                 }
 
+                //Clear the schedule
+                sm.DeleteSchedule(p.Division.Tournament.Id);
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New team added", id = t.Id }, JsonRequestBehavior.AllowGet);
@@ -136,8 +139,10 @@ namespace CupPlaner.Controllers
             {
                 Team t = db.TeamSet.Find(id);
                 Pool p = db.PoolSet.Find(t.Pool.Id);
+
                 // Clear the schedule
                 sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+
                 // Remove dependencies
                 foreach (TimeInterval ti in t.TimeIntervals.ToList())
                 {

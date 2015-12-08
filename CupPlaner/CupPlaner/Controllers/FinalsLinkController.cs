@@ -43,6 +43,8 @@ namespace CupPlaner.Controllers
             {
                 Division d = db.DivisionSet.Find(divisionID);
 
+                sm.DeleteSchedule(d.Tournament.Id);
+
                 db.FinalsLinkSet.Add(new FinalsLink { Finalstage = finalStage, PoolPlacement = poolPlacement, Division = d });
                 db.SaveChanges();
 
@@ -93,6 +95,7 @@ namespace CupPlaner.Controllers
 
                 //Clear the schedule
                 sm.DeleteSchedule(fl.Division.Tournament.Id);
+
                 db.FinalsLinkSet.Remove(fl);
                 db.SaveChanges();
 
