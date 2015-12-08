@@ -124,17 +124,20 @@
       <div class="col-md-12">
         <div class="col-md-3" ng-repeat="Finalslink in division.FinalsLinks track by $index">
           {{ $index+1 }}. plads går videre til
-          <select ng-options="letter as letter for letter in division.letters" ng-model="Finalslink.Finalsstage" ng-change="finalsLinkChanged(Finalslink, letter)"></select>
+          <select ng-options="letter as letter for letter in division.letters" ng-model="Finalslink.Finalsstage" ng-change="finalsLinkChanged(Finalslink, Finalslink.Finalsstage)"></select>
         </div>
       </div>
-      <select class="finals-select" id="finalSelecter">
-        <option value="">Knockout</option>
-        <option value="">Round Robin</option>
-        <option value="">Round Robin med finaler</option>
-      </select>
-      <hr /> 
     </div>   
   </div>
+  <div class"row">
+    <div class="col col-md-12 col-center">
+      <center>
+          <select style="margin-top: 10px; margin-bottom: 10px;" ng-options="type as type.name for type in finalsTypes" ng-model="finalsType " ng-change="finalsTypeChanged(finalsType)"></select>
+      </center>
+      <hr /> 
+    </div>
+  </div>
+  
   <div class="row">
     <div class="col-md-12 text-center">
       <div ng-if="isScheduled" class="divisionSchedule">
