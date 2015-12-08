@@ -56,10 +56,10 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   //This function is used the change the name of the team. Done by making a post request ot the backend which calls the Edit function
   //in TeamController, and sends the required parameters with it.
   $scope.changeNewTeamNameFunc = function(newName) {
-    $http.post($rootScope.apiUrl + "/Team/Edit", { name: newName, id: $routeParams.teamId, poolId: $routeParams.poolId, startTimes: $scope.team.StartTime, endTimes: $scope.team.EndTime})
+    $http.post($rootScope.apiUrl + "/Team/Edit", { id: $routeParams.teamId, name: newName, poolId: $routeParams.poolId, startTimes: $scope.startTimes, endTimes: $scope.endTimes})
     .success(function(data){
       if(data.status === "success"){
-        $scope.pool.Name = data.newName;
+        $scope.team.Name = data.newName;
         $scope.changeTeamNameFunc();
         $scope.getTeamData();
       } else {

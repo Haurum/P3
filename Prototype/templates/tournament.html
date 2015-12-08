@@ -29,7 +29,7 @@
             <label class="pull-left">Tid for kamp</label>
             <div class="panel panel-default">
               <div class="panel-body alert alert-info" role="alert">
-                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp. Tiden for kampene kan være fra 10 - 70 minutter.
+                Tiden for en kamp er inklusive den tid det tager holdene at forlade banen og de nye hold at være klar til kamp. Tiden for kampene kan være fra 5 - 70 minutter.
               </div>
             </div>
             <input type="number" class="form-control" ng-model="newMatchDuration" placeholder="Tid pr. kamp for rækken" required="true" ng-model="newMatchDuration" />
@@ -54,7 +54,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" ng-click="cancel()" data-dismiss="modal">Luk</button>
-          <input type="submit" ng-if="newDivName!=''" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" />
+          <input type="submit" ng-if="newDivName!=''" ng-click="submitNewDiv(newDivName, newMatchDuration, chooseField)" data-dismiss="modal" class="btn btn-primary" value="Gem" ng-disabled="buttonDisabled" />
         </div>
     </script>
 
@@ -67,7 +67,7 @@
       </div>
       <div class="row">
         <!-- creates the new division as a link in a button, with its name and it links to the divisions own page -->
-        <a ng-click="gotoDivison(division, $index)" ng-repeat="division in divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+        <a ng-click="gotoDivison(division)" ng-repeat="division in tournament.Divisions track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
           {{ division.Name }}
         </a>
       </div>
@@ -82,7 +82,7 @@
               <div class="form-group">
                 <form>
                   <input type="text" ng-model="EmField" class="form-control" placeholder="Indtast banens navn.."/>
-                  <input type="submit" ng-if="EmField!=''" ng-click="submitField(EmField, 11)" class="btn btn-primary" value="Tilføj" />
+                  <input type="submit" ng-if="EmField!=''" ng-click="submitField(EmField, 11)" ng-disabled="buttonDisabled" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewEmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -108,7 +108,7 @@
               <div class="form-group">
                 <form>
                   <input type="text" ng-model="OmField" class="form-control" placeholder="Indtast banens navn.."/>
-                  <input type="submit" ng-if="OmField!=''" ng-click="submitField(OmField, 8)" class="btn btn-primary" value="Tilføj" />
+                  <input type="submit" ng-if="OmField!=''" ng-click="submitField(OmField, 8)" ng-disabled="buttonDisabled" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewOmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>
@@ -134,7 +134,7 @@
               <div class="form-group">
                 <form>
                   <input type="text" ng-model="FmField" class="form-control" placeholder="Indtast banens navn.."/>
-                  <input type="submit" ng-if="FmField!=''" ng-click="submitField(FmField, 5)" class="btn btn-primary" value="Tilføj" />
+                  <input type="submit" ng-if="FmField!=''" ng-click="submitField(FmField, 5)" ng-disabled="buttonDisabled" class="btn btn-primary" value="Tilføj" />
                   <a ng-click="createNewFmField()" class="btn btn-danger">Annuller</a>
                 </form> 
               </div>

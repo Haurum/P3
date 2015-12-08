@@ -30,7 +30,6 @@ namespace CupPlaner.Helpers
                 // Check all the matches for the team
                 foreach (Match match in team.Matches)
                 {
-                    // 
                     if (match.IsScheduled && startTime.AddMinutes(m.Duration * 2) > match.StartTime)
                     {
                         DateTime teamBreakDone = match.StartTime.AddMinutes(match.Duration * 2);
@@ -43,7 +42,7 @@ namespace CupPlaner.Helpers
             }
             return true;
         }
-
+        //Function that checks for different parameters that needs to be fulfiled for the cup to be able to be scheduled
         public bool IsScheduleReady(int tournamentId)
         {
             bool isValid = true;

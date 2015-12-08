@@ -96,3 +96,18 @@ app.filter('jsonDate', ['$filter', function ($filter) {
         return (input) ? $filter('date')(parseInt(input.substr(6)), "yyyy-MM-dd HH:mm") : '';
     };
 }]);
+app.filter('jsonOnlyDate', ['$filter', function ($filter) {
+    return function (input) {
+        return (input) ? $filter('date')(parseInt(input.substr(6)), "yyyy-MM-dd") : '';
+    };
+}]);
+app.filter('jsonOnlyTime', ['$filter', function ($filter) {
+    return function (input) {
+        return (input) ? $filter('date')(parseInt(input.substr(6)), "HH:mm") : '';
+    };
+}]);
+app.filter('jsonOnlyHour', ['$filter', function ($filter) {
+    return function (input) {
+        return (input) ? $filter('date')(parseInt(input.substr(6)), "HH") : '';
+    };
+}]);

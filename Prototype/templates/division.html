@@ -30,7 +30,7 @@
           <div class="form-group">
             <form>
               <input type="text" ng-model="newPoolName" placeholder="Indtast puljenavn.."/>
-              <input type="submit" ng-if="newPoolName!=''" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
+              <input type="submit" ng-if="newPoolName!=''" ng-disabled="buttonDisabled" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
               <a ng-click="newPoolFunc()" class="btn btn-danger">Annuller</a>
             </form>
           </div>
@@ -121,7 +121,6 @@
   <div class="col-lg-12 text-center">
     <div class="finalStage">
       <h4>Slutspilsindstillinger</h4>
-      <hr /> 
       <div class="col-md-12">
         <div class="col-md-3" ng-repeat="Finalslink in division.FinalsLinks track by $index">
           {{ $index+1 }}. plads går videre til
@@ -133,6 +132,7 @@
         <option value="">Round Robin</option>
         <option value="">Round Robin med finaler</option>
       </select>
+      <hr /> 
     </div>   
   </div>
   <div class="row">

@@ -46,6 +46,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
 
   //Adding a new pool to the division. Making a post request to the backend to call the Create function in PoolController.
   $scope.addPool = function(name) {
+    $scope.buttonDisabled = true;
     $http.post($rootScope.apiUrl + "/Pool/Create", { name: name, divisionId: $routeParams.divisionId })
     .success(function(data) {
       if(data.status === "success"){
@@ -53,12 +54,15 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         $scope.getDivisionData();
       } else {
         $scope.error = "Kunne ikke tilføje pulje";
+        $scope.buttonDisabled = false;
       }
+      $scope.buttonDisabled = false;
     }).error(function(err){
      $scope.deleteErr = err;
     })   
     $scope.getDivisionData();
   }
+  $scope.buttonDisabled = false;
   
   //Deleting the specific division. Making a post request to the backend to call the Delete function DivisionController.
   $scope.remove = function() {

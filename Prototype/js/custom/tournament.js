@@ -1,7 +1,13 @@
 app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window) {
   
   $scope.new = false;
+  $scope.newDivName = "";
+  $scope.chooseField = "";
+  $scope.newMatchDuration = "";
+  $scope.tournamentId = $routeParams.tournamentId;
 
+  //Get request - Gets tournament data, creates three field-arrays dependant on fieldsizes.
+  //Loads division data into divisions, and the whole data into the tournament.
   $scope.getDivisions = function(){
     $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
@@ -25,7 +31,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
               $scope.FmFields.push(data.Fields[i]);
             }
           }
-          $scope.divisions = data.Divisions;
           $scope.tournament = data;
         } else  {
             $scope.error = "Række kunne ikke læses";
@@ -35,14 +40,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       })
   }
 
-  $scope.newDivName = "";
-  $scope.chooseField = "";
-  $scope.newMatchDuration = "";
-
-  $scope.tournamentId = $routeParams.tournamentId;
-
   $scope.getDivisions();
 
+  //Variable used to hide and show a button.
   $scope.createNew = function () {
     $scope.new = !$scope.new;
   }
@@ -50,6 +50,8 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   /* Modal start */
   $scope.animationsEnabled = true;
 
+  //The modal-open function, used for the "form"-like modal,
+  //which is used to submit a division.
   $scope.open = function (size) {
 
     var uibModalInstance = $uibModal.open({
@@ -72,13 +74,14 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     });
   };
 
+  //Anoter variable used to show and hide the modal.
   $scope.toggleAnimation = function () {
     $scope.animationsEnabled = !$scope.animationsEnabled;
   };
   /* Modal end */
 
-  $scope.gotoDivison = function (currDiv, index) {
-    $rootScope.currDivisionIndex = index;
+//Redirecting function, redirecting to the specific division.
+  $scope.gotoDivison = function (currDiv) {
     $location.url("tournament/" + $routeParams.tournamentId+ "/division/" + currDiv.Id);
   }
 
@@ -90,7 +93,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.newOm = false;
   $scope.newFm = false;
 
+  //Function to submit a field, adding it to the correct field-size array.
   $scope.submitField = function(fieldName, fieldSize) {
+    $scope.buttonDisabled = true;
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
         if(data.status === "success"){
@@ -106,6 +111,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
             $scope.getDivisions();
           } else {
             $scope.error = "Bane ikke oprettet";
+            $scope.buttonDisabled = false;
           }
     }).error(function(err){
       $scope.createErr = err;
@@ -114,7 +120,9 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     })
     $scope.getDivisions();
   }
+  $scope.buttonDisabled = false;
   
+  //Delete post-request, used to delete a field, and removing it from the database.
   $scope.removeField = function(Field) {
     var deleteField = $window.confirm('Er du sikker på du vil slette banen?');
 
@@ -134,7 +142,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     }
   }
 
-  /* 11man */
+  /* 11man */ //Variables used to show and hide the submit field buttons.
   $scope.createNewEmField = function() {
     $scope.newEm = !$scope.newEm;
   }
@@ -152,17 +160,25 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   /* Field end */
 }]);
 
+//ModalInstanceController, the functions used to add new divisions,
+//added through the modal.
 app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
 
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
     $scope.chooseField = "";
+
+    //Error message function, used to show the error messages of the post-request
+    //in submitNewDiv().
     $scope.errMsg = function () {
       $scope.error = !$scope.error;
     }
+
+    //Post-request to add new divisions to the tournament.
   $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
-    if(newMatchDuration >= 10 && newMatchDuration <= 70 && chooseField != "")
+    if(newMatchDuration >= 5 && newMatchDuration <= 70 && chooseField != "")
     {
+      $scope.buttonDisabled = true;
     $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
         if(data.status === "success"){
@@ -174,6 +190,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
         }
         else {
           $scope.error = "Række ikke tilføjet";
+          $scope.buttonDisabled = false;
         }     
       }).error(function(data){
         $scope.newDivError = data;
@@ -182,9 +199,12 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     else
     {
       $scope.error = "Kamplængde eller banestørrelse ugyldig";
+      $scope.buttonDisabled = false;
     } 
-  } 
+  }
+  $scope.buttonDisabled = false;
 
+  //Functions used to close the modal.
   $scope.ok = function () {
     $uibModalInstance.close();
   };
@@ -194,10 +214,13 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   };
 
   $scope.isScheduled = false;
+
+  //Function used to show and hide the schedule button.
   $scope.scheduleTournament = function () {
     $scope.isScheduled = !$scope.isScheduled;
   }
 
+  //Schedule funcion, used to schedule a tournaments matches.
   $scope.schedule = function () {
     
   }
@@ -205,28 +228,37 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
 
 }]);
 
+//Create Tournament Controller, used to control the creation of tournament and tournament data.
 app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', 'FileUploader', 'cfpLoadingBar', function ($scope, $rootScope, $http, $location, $routeParams, FileUploader, cfpLoadingBar) {
   
   $scope.tournamentData =  {};
 
+  //File-uploader to create tournaments through excel files.
   var uploader = $scope.uploader = new FileUploader({
     url: $rootScope.apiUrl + '/Tournament/Create'
   });
 
+  //Function to send data when item is selected.
   uploader.onBeforeUploadItem = function(item) {
     item.formData.push($scope.tournamentData);
   };
+
+  //Funcion to send data when an item is successfully uploaded.
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
     cfpLoadingBar.complete()
     console.info('onSuccessItem', fileItem, response, status, headers);
     $location.path("tournament/" + response.id);
   };
+
+  //Function to send data when an item is not succcessfully uploaded.
   uploader.onErrorItem = function(fileItem, response, status, headers) {
     cfpLoadingBar.complete()
     console.info('onErrorItem', fileItem, response, status, headers);
   };
 
-  /* DATE PICKER START */
+  /* DATE PICKER START */ //The datepicker is used to generate and handle the time-intervals
+  // for a tournament, and it's teams. A default value is generated for each team, corresponding
+  // to the tournaments time-intervals. This can be edited in the team-view.
   $scope.dateRange = 0;
   $scope.today = function () {
     $scope.startDate = new Date();
@@ -286,10 +318,13 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   };
   /* DATE PICKER END */
 
+  //Function to show and hide error messages.
   $scope.errMsg = function () {
     $scope.error = !$scope.error;
   }
 
+  //Upload tournament function, which shows corresponding errors to user input
+  //and post-requests to create a tournament.
   $scope.uploadTournament = function () 
   {
     $scope.startTimesString = "";
@@ -348,6 +383,9 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
   }
 }]);
 
+//EditTournamentController has the same functionalities as the create controller,
+//but post-requests sends data along with it, to edit a tournament which has already
+//been created.
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
 
   $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){

@@ -93,22 +93,13 @@ namespace CupPlaner.Controllers
         // The function can change the pools name or the list of fieldIds which will be the fieldId's for the favoriteFields.
         // The function will either send back an "succes" or an "error" message if the functions eitehr succeeds or fails.
         [HttpPost]
-        public ActionResult Edit(int id, string name, int divisionId, List<int> fieldIds)
+        public ActionResult Edit(int id, string name, int divisionId)
         {
             try
             {
                 Pool p = db.PoolSet.Find(id);
                 p.Name = name;
                 p.Division = db.DivisionSet.Find(divisionId);
-                // Set favorite fields if at least one is passed
-                if (fieldIds.Count > 0)
-                {
-                    p.FavoriteFields.Clear();
-                    foreach (int fieldId in fieldIds)
-                    {
-                        p.FavoriteFields.Add(db.FieldSet.Find(fieldId));
-                    }
-                }
 
                 db.Entry(p).State = EntityState.Modified;
                 db.SaveChanges();
