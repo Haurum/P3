@@ -11,13 +11,40 @@ namespace CupPlaner.Helpers
 {
     public class MatchGeneration
     {
+        public bool GenerateGroupStage(int tournamentID)
+        {
+            CupDBContainer db = new CupDBContainer();
+            Tournament t = db.TournamentSet.Find(tournamentID);
+            int matchNumber = 1;
+
+            foreach (Division d in t.Divisions)
+            {
+                //gruopstage matches generation
+                DivisionTournament dt = db.DivisionTournamentSet.Add(new DivisionTournament() { TournamentStructure = d.TournamentStructure, Division = d });
+                foreach (Pool p in d.Pools)
+                {
+                    TournamentStage ts = db.TournamentStageSet.Add(new TournamentStage() { Pool = p, DivisionTournament = dt, TournamentStructure = TournamentStructure.RoundRobin, TimeInterval = new TimeInterval() { StartTime = t.TimeIntervals.First().StartTime, EndTime = t.TimeIntervals.Last().EndTime } });
+                    List<Team> teams = p.Teams.ToList();
+                    for (int i = 0; i < teams.Count; i++)
+                    {
+                        for (int j = i + 1; j < teams.Count; j++)
+                        {
+
+                            db.MatchSet.Add(new Match() { Teams = { teams[i], teams[j] }, TournamentStage = ts, Duration = d.MatchDuration, Number = matchNumber++ });
+                        }
+                    }
+                }
+            }
+            return true;
+        }
         // Database container, has functionalities to connect to the database classes.
-        CupDBContainer db = new CupDBContainer();
+        
 
         // Generates all the matches for the tournament
         // Saves the changes directlty to the database
         public void Generate(int tournamentID)
         {
+            CupDBContainer db = new CupDBContainer();
             Tournament t = db.TournamentSet.Find(tournamentID);
             int matchNumber = 1;
 

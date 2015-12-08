@@ -162,8 +162,7 @@ namespace CupPlaner.Helpers
                             k += 10;
                             if (fields.All(x => x.NextFreeTime.All(y => y.FreeTime.AddMinutes(k) > t.TimeIntervals.First(z => z.EndTime.Date == y.FreeTime.Date).EndTime)))
                             {
-                                IsScheduled = true;
-                                notDone = false;
+                                return false;
                             }
                             foreach (Match match in allUnscheduledMatches.Where(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue))
                             {
