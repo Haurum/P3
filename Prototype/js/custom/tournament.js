@@ -222,7 +222,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
 
   //Schedule funcion, used to schedule a tournaments matches.
   $scope.scheduleTournament = function () {
-    $rootScope.scheduler();
+    $rootScope.scheduler($routeParams.tournamentId);
   }
 
 

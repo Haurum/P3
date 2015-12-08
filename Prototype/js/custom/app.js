@@ -50,11 +50,18 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function($rootScope) {
+app.run(function($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
   $rootScope.scheduler = function() {
-    $scope.IsSchduleReady($routeParams.tournamentId);
+    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentId=" + $routeParams.tournamentId)
+    .success(function(data){
+      $scope.valdidator = data;
+    }).error(function(err){
+      scope.error = err;
+    })
+
+    $scope.validator.IsSchduleReady($routeParams.tournamentId);
     if(isValid)
     {
       console.log("hej");
