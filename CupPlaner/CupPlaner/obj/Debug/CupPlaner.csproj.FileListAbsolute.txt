@@ -31,36 +31,3 @@ C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
 C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\CupPlaner.dll.config
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\CupPlaner.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\CupPlaner.pdb
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\EntityFramework.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\EntityFramework.SqlServer.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\MySql.Data.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\MySql.Data.Entity.EF6.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\MySql.Web.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Helpers.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Mvc.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Optimization.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Razor.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Deployment.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\WebGrease.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\EntityFramework.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\EntityFramework.SqlServer.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Helpers.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Mvc.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Optimization.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.Razor.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Deployment.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.pdb
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
-C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb

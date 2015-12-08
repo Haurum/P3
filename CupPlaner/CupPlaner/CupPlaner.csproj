@@ -142,7 +142,6 @@
     <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\FinalsLinkController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MatchController.cs" />
     <Compile Include="Controllers\PoolController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
