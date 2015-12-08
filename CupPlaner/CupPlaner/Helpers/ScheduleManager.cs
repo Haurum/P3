@@ -268,11 +268,11 @@ namespace CupPlaner.Helpers
                     // Remove all division tournaments and their dependencies
                     if (d.DivisionTournament != null)
                     {
-                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage.ToList())
                         {
-                            foreach (Match m in ts.Matches)
+                            foreach (Match m in ts.Matches.ToList())
                             {
-                                foreach (Team team in m.Teams)
+                                foreach (Team team in m.Teams.ToList())
                                 {
                                     team.Matches.Remove(m);
                                 }
