@@ -17,16 +17,16 @@ namespace CupPlaner.Controllers
             {
                 if (v.IsScheduleReady(tournamentID))
                 {
-                    return Json(new { status = "success" });
+                    return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = "error", message = "turnering ikke klar" });
+                    return Json(new { status = "error", message = "turnering ikke klar" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception)
             {
-                return Json(new { status = "error", message = "fejl i programmet" });
+                return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
             }
             
 

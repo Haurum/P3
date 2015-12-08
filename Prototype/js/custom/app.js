@@ -53,15 +53,32 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 app.run(function($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
-  $rootScope.scheduler = function() {
-    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentId=" + $routeParams.tournamentId)
+  $rootScope.scheduler = function(tournamentID) {
+    console.log("Validere turnering");
+    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
     .success(function(data){
-      $scope.valdidator = data;
+      if(data.status === "success")
+      {
+        console.log("Generer gruppespil");
+        $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+        .success(function(data1){
+          if(data1.status === "success")
+          {
+            console.log("success");
+          }
+        }).error(function(){
+
+        })     
+      }
+      else
+      {
+         
+      }
     }).error(function(err){
-      scope.error = err;
+
     })
 
-    $scope.validator.IsSchduleReady($routeParams.tournamentId);
+   /*$scope.validator.IsSchduleReady($routeParams.tournamentId);
     if(isValid)
     {
       console.log("hej");
@@ -75,12 +92,7 @@ app.run(function($rootScope, $http, $routeParams) {
         $scope.error = "Fejl med generering af kampene. Sletter nu kampprogrammet."
         $scope.DeleteSchedule($routeParams.tournamentId);
       }
-    }
-    else
-    {
-      $scope.error = "Din turnering er ikke klar til blive planlagt endnu";
-    }
-    $scope.error = false;
+    }*/
 
   };
 
