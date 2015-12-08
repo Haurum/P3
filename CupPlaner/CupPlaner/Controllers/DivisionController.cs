@@ -60,7 +60,7 @@ namespace CupPlaner.Controllers
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
 
-                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
+                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, /*FieldName = m.Field.Name,*/ Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }
                     }
@@ -75,7 +75,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -186,6 +186,17 @@ namespace CupPlaner.Controllers
             {
                 return Json(new { status = "error", message = "Division not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult ChangeStructure(int divisionId, int typeId)
+        {
+            Division d = db.DivisionSet.Find(divisionId);
+            d.TournamentStructure = (TournamentStructure)typeId;
+            db.Entry(d).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return Json(new { State = "Success" });
         }
     }
 }

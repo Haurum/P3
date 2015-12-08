@@ -158,6 +158,18 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   } 
 
   /* Field end */
+
+    //Function used to show and hide the schedule button.
+  $scope.schedule = function () {
+    $scope.isScheduled = !$scope.isScheduled;
+  }
+
+  //Schedule funcion, used to schedule a tournaments matches.
+  $scope.scheduleTournament = function () {
+    $rootScope.scheduler($routeParams.tournamentId);
+  }
+
+
 }]);
 
 //ModalInstanceController, the functions used to add new divisions,
@@ -214,17 +226,6 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   };
 
   $scope.isScheduled = false;
-
-  //Function used to show and hide the schedule button.
-  $scope.schedule = function () {
-    $scope.isScheduled = !$scope.isScheduled;
-  }
-
-  //Schedule funcion, used to schedule a tournaments matches.
-  $scope.scheduleTournament = function () {
-    $rootScope.scheduler($routeParams.tournamentId);
-  }
-
 
 }]);
 

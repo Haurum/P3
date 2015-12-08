@@ -53,15 +53,56 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 app.run(function($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
-  $rootScope.scheduler = function() {
-    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentId=" + $routeParams.tournamentId)
-    .success(function(data){
-      $scope.valdidator = data;
+  $rootScope.scheduler = function(tournamentID) {
+    console.log("Sletter nuværende kampprogram");
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    .success(function(deleteData){
+      console.log("Kampprogram slettet")
+    }).error(function(){
+
+    })
+    console.log("Validere turnering");
+    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
+    .success(function(validateData){
+      if(validateData.status === "success")
+      {
+        console.log("Generer gruppespil");
+        $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+        .success(function(generateGSData){
+          if(generateGSData.status === "success")
+          {
+            console.log("Generer slutspils hold");
+            $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
+            .success(function(generateFTData){
+                if(generateFTData.status === "success")
+                {
+                  console.log("success");
+                }
+                else
+                {
+
+                }
+            }).error(function(){
+
+            })
+          }
+          else
+          {
+
+          }
+        }).error(function(){
+
+        })     
+      }
+      else
+      {
+         
+      }
     }).error(function(err){
-      scope.error = err;
+
     })
 
-    $scope.validator.IsSchduleReady($routeParams.tournamentId);
+   /*$scope.validator.IsSchduleReady($routeParams.tournamentId);
     if(isValid)
     {
       console.log("hej");
@@ -75,12 +116,7 @@ app.run(function($rootScope, $http, $routeParams) {
         $scope.error = "Fejl med generering af kampene. Sletter nu kampprogrammet."
         $scope.DeleteSchedule($routeParams.tournamentId);
       }
-    }
-    else
-    {
-      $scope.error = "Din turnering er ikke klar til blive planlagt endnu";
-    }
-    $scope.error = false;
+    }*/
 
   };
 

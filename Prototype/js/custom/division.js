@@ -10,6 +10,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   $scope.division.letters = [];
   $scope.orderByField = 'Number';
   $scope.reverseSort = false;
+  $scope.finalsTypes = [{ nr: 0, name: "Round Robin"}, { nr: 1, name: "Knockout"} ];
+  $scope.finalsType = "";
 
   //Getting all the data for the divisions, by using a get request to the backend, which will send back the data from the database.
   $scope.getDivisionData = function() {
@@ -18,7 +20,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     {
       if(data.status === "success"){
         $scope.division = data;
-
+        $scope.finalsType = $scope.finalsTypes[data.FinalsStage];
+        console.log($scope.finalsType);
         for(var i = 0; i < $scope.division.Matches.length; i++)
         {
           $scope.division.Matches[i].StartTime = new Date(parseInt($scope.division.Matches[i].StartTime.substr(6)));
@@ -161,18 +164,28 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
     })
   }
 
-  $scope.finalsLinkChanged = function(finalsLink)
+  $scope.finalsLinkChanged = function(finalsLink, letter)
   {
-    console.log(finalsLink.FinalStage);
-    console.log($scope.allLetters.indexOf(finalsLink.FinalStage));
-    console.log({ id: finalsLink.Id, finalStage: $scope.allLetters.indexOf(finalsLink.FinalStage) + 1, poolPlacement: finalsLink.PoolPlacement  });
-    /*$http.post($rootScope.apiUrl + "FinalsLink/Edit", { id: finalsLink.Id, finalStage: finalsLink.FinalStage, PoolPlacement: $scope.division.letters.indexOf(finalsLink.PoolPlacement) + 1 })
+    console.log({ id: finalsLink.Id, finalStage: $scope.allLetters.indexOf(letter) + 1, poolPlacement: finalsLink.PoolPlacement  });
+    $http.post($rootScope.apiUrl + "/FinalsLink/Edit", { id: finalsLink.Id, finalStage: ($scope.allLetters.indexOf(letter) + 1), poolPlacement: finalsLink.PoolPlacement  })
     .success(function(data) {
       console.log(data);
     })
     .error(function(err) {
       $scope.uflErr = err;
-    })*/
+    })
+  }
+
+  $scope.finalsTypeChanged = function(finalstype)
+  {
+    console.log(finalstype);
+    $http.post($rootScope.apiUrl + "/Division/ChangeStructure", { divisionId: $scope.division.Id, typeId: finalstype.nr  })
+    .success(function(data) {
+      console.log(data);
+    })
+    .error(function(err) {
+      $scope.uflErr = err;
+    })
   }
 
   $scope.isScheduled = false;
