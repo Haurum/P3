@@ -18,8 +18,8 @@ namespace CupPlaner.Controllers
         // Returns a Json object, which contains a copy of the corresponding Divisions variables.
         public ActionResult Details(int id)
         {
-            //try
-            //{
+            try
+            {
                 Validator validator = new Validator();
                 Division d = db.DivisionSet.Find(id);
                 Tournament tourny = db.TournamentSet.Find(d.Tournament.Id);
@@ -60,9 +60,9 @@ namespace CupPlaner.Controllers
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
 
-                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, /*FieldName = m.Field.Name,*/ Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
+                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
-                        }                      
+                        }
                     }
                 }
 
@@ -71,18 +71,23 @@ namespace CupPlaner.Controllers
                 {
                     foreach (FinalsLink fl in d.FinalsLinks)
                     {
-                        finalslinks.Add(new { Id = fl.Id, PoolPlacement = fl.PoolPlacement, Finalsstage = letters[fl.Finalstage-1] });
+                        finalslinks.Add(new { Id = fl.Id, PoolPlacement = fl.PoolPlacement, Finalsstage = letters[fl.Finalstage - 1] });
                     }
                 }
 
                 object obj = new { status = "success", Id = d.Id, Name = d.Name, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
-            //}
-            //catch (Exception ex)
-            //{
-            //    return Json(new { status = "error", message = "Could not find division", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            //}
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    status = "error",
+                    message = "Could not find division",
+                    details = ex.Message
+                }, JsonRequestBehavior.AllowGet);
+            }
 
         }
 
@@ -97,13 +102,10 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
-                
-                // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
 
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "New division added", id = d.Id}, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division added", id = d.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -127,8 +129,8 @@ namespace CupPlaner.Controllers
 
                 // Clear the schedule
                 sm.DeleteSchedule(d.Tournament.Id);
-                
-                if(d.FieldSize != (FieldSize)fieldSizeInt)
+
+                if (d.FieldSize != (FieldSize)fieldSizeInt)
                 {
                     foreach (Pool p in d.Pools)
                     {
