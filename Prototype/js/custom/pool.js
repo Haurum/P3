@@ -100,10 +100,9 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   // through a post-request, with the parameters: new pool name,
   // poolId, divisionId and favorite fields ids.
   $scope.changeNewPoolNameFunc = function(newName) {
-    $http.post($rootScope.apiUrl + "/Pool/Edit", { name: newName, id: $routeParams.poolId, divisionId: $routeParams.divisionId, fieldIds: $scope.favFieldsIds})
+    $http.post($rootScope.apiUrl + "/Pool/Edit", { name: newName, id: $routeParams.poolId, divisionId: $routeParams.divisionId})
     .success(function(data){
       if(data.status === "success"){
-        console.log(data);
         $scope.pool.Name = data.newName;
         $scope.changePoolNameFunc();
         $scope.getPoolData();
