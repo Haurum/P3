@@ -54,17 +54,41 @@ app.run(function($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
   $rootScope.scheduler = function(tournamentID) {
+    console.log("Sletter nuværende kampprogram");
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    .success(function(deleteData){
+      console.log("Kampprogram slettet")
+    }).error(function(){
+
+    })
     console.log("Validere turnering");
     $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
-    .success(function(data){
-      if(data.status === "success")
+    .success(function(validateData){
+      if(validateData.status === "success")
       {
         console.log("Generer gruppespil");
         $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
-        .success(function(data1){
-          if(data1.status === "success")
+        .success(function(generateGSData){
+          if(generateGSData.status === "success")
           {
-            console.log("success");
+            console.log("Generer slutspils hold");
+            $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
+            .success(function(generateFTData){
+                if(generateFTData.status === "success")
+                {
+                  console.log("success");
+                }
+                else
+                {
+
+                }
+            }).error(function(){
+
+            })
+          }
+          else
+          {
+
           }
         }).error(function(){
 
