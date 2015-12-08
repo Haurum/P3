@@ -51,12 +51,32 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
 }]);
 
 app.run(function($rootScope) {
-  $rootScope.divisions = [];
-  $rootScope.EmFields = [];
-  $rootScope.OmFields = [];
-  $rootScope.FmFields = [];
-  $rootScope.Tournament = {};
   $rootScope.apiUrl = "http://localhost:50229";
+
+  $rootScope.scheduler = function() {
+    $scope.IsSchduleReady($routeParams.tournamentId);
+    if(isValid)
+    {
+      console.log("hej");
+      Generate($routeParams.tournamentId);
+      if(data.status === "success")
+      {
+        $scope.scheduleAll();
+      }
+      else
+      {
+        $scope.error = "Fejl med generering af kampene. Sletter nu kampprogrammet."
+        $scope.DeleteSchedule($routeParams.tournamentId);
+      }
+    }
+    else
+    {
+      $scope.error = "Din turnering er ikke klar til blive planlagt endnu";
+    }
+    $scope.error = false;
+
+  };
+
 });
 
 // HomeController is the controller for the home.html page,

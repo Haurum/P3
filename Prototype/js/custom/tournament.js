@@ -216,13 +216,13 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
   $scope.isScheduled = false;
 
   //Function used to show and hide the schedule button.
-  $scope.scheduleTournament = function () {
+  $scope.schedule = function () {
     $scope.isScheduled = !$scope.isScheduled;
   }
 
   //Schedule funcion, used to schedule a tournaments matches.
-  $scope.schedule = function () {
-    
+  $scope.scheduleTournament = function () {
+    $rootScope.scheduler();
   }
 
 
