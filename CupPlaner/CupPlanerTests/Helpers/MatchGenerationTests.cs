@@ -42,6 +42,7 @@ namespace CupPlaner.Helpers.Tests
 
                 foreach (Pool pool in d.Pools.ToList())
                 {
+                    pool.FavoriteFields.Clear();
                     if (pool.IsAuto)
                     {
                         foreach (Team team in pool.Teams)
@@ -49,7 +50,7 @@ namespace CupPlaner.Helpers.Tests
                             db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
                         }
                         db.TeamSet.RemoveRange(pool.Teams);
-                        pool.FavoriteFields.Clear();
+                        
                         db.PoolSet.Remove(pool);
                     }
                 }
