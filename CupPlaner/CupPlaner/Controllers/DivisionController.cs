@@ -62,7 +62,7 @@ namespace CupPlaner.Controllers
 
                                 matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
-                        }                      
+                        }
                     }
                 }
 
@@ -71,7 +71,7 @@ namespace CupPlaner.Controllers
                 {
                     foreach (FinalsLink fl in d.FinalsLinks)
                     {
-                        finalslinks.Add(new { Id = fl.Id, PoolPlacement = fl.PoolPlacement, Finalsstage = letters[fl.Finalstage-1] });
+                        finalslinks.Add(new { Id = fl.Id, PoolPlacement = fl.PoolPlacement, Finalsstage = letters[fl.Finalstage - 1] });
                     }
                 }
 
@@ -81,7 +81,12 @@ namespace CupPlaner.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { status = "error", message = "Could not find division", details = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new
+                {
+                    status = "error",
+                    message = "Could not find division",
+                    details = ex.Message
+                }, JsonRequestBehavior.AllowGet);
             }
 
         }
@@ -97,13 +102,10 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
-                
-                // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
 
                 db.SaveChanges();
 
-                return Json(new { status = "success", message = "New division added", id = d.Id}, JsonRequestBehavior.AllowGet);
+                return Json(new { status = "success", message = "New division added", id = d.Id }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -127,8 +129,8 @@ namespace CupPlaner.Controllers
 
                 // Clear the schedule
                 sm.DeleteSchedule(d.Tournament.Id);
-                
-                if(d.FieldSize != (FieldSize)fieldSizeInt)
+
+                if (d.FieldSize != (FieldSize)fieldSizeInt)
                 {
                     foreach (Pool p in d.Pools)
                     {

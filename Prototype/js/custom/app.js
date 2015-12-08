@@ -50,13 +50,52 @@ app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function($rootScope) {
-  $rootScope.divisions = [];
-  $rootScope.EmFields = [];
-  $rootScope.OmFields = [];
-  $rootScope.FmFields = [];
-  $rootScope.Tournament = {};
+app.run(function($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
+
+  $rootScope.scheduler = function(tournamentID) {
+    console.log("Validere turnering");
+    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
+    .success(function(data){
+      if(data.status === "success")
+      {
+        console.log("Generer gruppespil");
+        $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+        .success(function(data1){
+          if(data1.status === "success")
+          {
+            console.log("success");
+          }
+        }).error(function(){
+
+        })     
+      }
+      else
+      {
+         
+      }
+    }).error(function(err){
+
+    })
+
+   /*$scope.validator.IsSchduleReady($routeParams.tournamentId);
+    if(isValid)
+    {
+      console.log("hej");
+      Generate($routeParams.tournamentId);
+      if(data.status === "success")
+      {
+        $scope.scheduleAll();
+      }
+      else
+      {
+        $scope.error = "Fejl med generering af kampene. Sletter nu kampprogrammet."
+        $scope.DeleteSchedule($routeParams.tournamentId);
+      }
+    }*/
+
+  };
+
 });
 
 // HomeController is the controller for the home.html page,

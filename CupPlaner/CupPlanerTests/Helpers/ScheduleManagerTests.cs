@@ -28,7 +28,11 @@ namespace CupPlaner.Helpers.Tests
         public void scheduleAllTest()
         {
             Tournament t = db.TournamentSet.Find(1);
-            sm.scheduleAll(t, FieldSize.ElevenMan);
+            //bool succes = sm.scheduleAll(t, FieldSize.ElevenMan, 2);
+            //if (!succes)
+            //{
+            sm.scheduleAll(t, FieldSize.ElevenMan, 3);
+            //}
         }
     }
 }
