@@ -17,16 +17,16 @@ namespace CupPlaner.Controllers
             {
                 if (mg.GenerateGroupStage(tournamentID))
                 {
-                    return Json(new { status = "success" });
+                    return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = "error", message = "Generering mislykkedes" });
+                    return Json(new { status = "error", message = "Generering mislykkedes" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception)
             {
-                return Json(new { status = "error", message = "fejl i programmet" });
+                return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -36,16 +36,16 @@ namespace CupPlaner.Controllers
             {
                 if (mg.GenerateFinalsTeams(tournamentID))
                 {
-                    return Json(new { status = "success" });
+                    return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = "error", message = "Generering mislykkedes" });
+                    return Json(new { status = "error", message = "Generering mislykkedes" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception)
             {
-                return Json(new { status = "error", message = "fejl i programmet" });
+                return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -55,16 +55,16 @@ namespace CupPlaner.Controllers
             {
                 if (mg.GenerateFinalsMatches(tournamentID))
                 {
-                    return Json(new { status = "success" });
+                    return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(new { status = "error", message = "Generering mislykkedes" });
+                    return Json(new { status = "error", message = "Generering mislykkedes" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception)
             {
-                return Json(new { status = "error", message = "fejl i programmet" });
+                return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -63,11 +63,7 @@ namespace CupPlaner.Helpers
                             if (pool.Teams.Count >= fl.PoolPlacement)
                             {
                                 Team team = db.TeamSet.Add(new Team() { Name = "Nr " + fl.PoolPlacement + " fra " + d.Name + " - " + pool.Name, PoolPlacement = fl.PoolPlacement, PrevPool = pool, IsAuto = true, Pool = autoPool });
-                                foreach (TimeInterval ti in t.TimeIntervals)
-                                {
-                                    TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = team, StartTime = ti.StartTime, EndTime = ti.EndTime });
-                                    team.TimeIntervals.Add(timeInterval);
-                                }
+                                team.TimeIntervals = SameTimeInterval(team.PrevPool);
                             }
                         }
                     }
@@ -168,11 +164,7 @@ namespace CupPlaner.Helpers
                                 }
                                 extraTeams[i].Pool = KOPool;
                                 db.TeamSet.Add(extraTeams[i]);
-                                foreach (TimeInterval ti in t.TimeIntervals)
-                                {
-                                    TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = extraTeams[i], StartTime = ti.StartTime, EndTime = ti.EndTime });
-                                    extraTeams[i].TimeIntervals.Add(timeInterval);
-                                }
+                                extraTeams[i].TimeIntervals = SameTimeInterval(extraTeams[i].PrevPool);
                             }
                         }
                         List<Team> teamsToAdd = new List<Team>();
@@ -208,13 +200,8 @@ namespace CupPlaner.Helpers
                                     teamsToAdd[0].Pool = KOPool;
                                     teamsToAdd[1].Pool = KOPool;
                                     db.TeamSet.AddRange(teamsToAdd);
-                                    foreach (TimeInterval ti in t.TimeIntervals)
-                                    {
-                                        TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[0], StartTime = ti.StartTime, EndTime = ti.EndTime });
-                                        teamsToAdd[0].TimeIntervals.Add(timeInterval);
-                                        timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[1], StartTime = ti.StartTime, EndTime = ti.EndTime });
-                                        teamsToAdd[1].TimeIntervals.Add(timeInterval);
-                                    }
+                                    teamsToAdd[0].TimeIntervals = SameTimeInterval(teamsToAdd[0].PrevPool);
+                                    teamsToAdd[1].TimeIntervals = SameTimeInterval(teamsToAdd[1].PrevPool);
                                 }
                                 else
                                 {
@@ -249,11 +236,7 @@ namespace CupPlaner.Helpers
                                         }
                                         teamsToAdd[i].Pool = KOPool;
                                         db.TeamSet.Add(teamsToAdd[i]);
-                                        foreach (TimeInterval ti in t.TimeIntervals)
-                                        {
-                                            TimeInterval timeInterval = db.TimeIntervalSet.Add(new TimeInterval() { Team = teamsToAdd[i], StartTime = ti.StartTime, EndTime = ti.EndTime });
-                                            teamsToAdd[i].TimeIntervals.Add(timeInterval);
-                                        }
+                                        teamsToAdd[i].TimeIntervals = SameTimeInterval(teamsToAdd[i].PrevPool);
                                     }
                                 }
                             }
