@@ -78,6 +78,9 @@ namespace CupPlaner.Controllers
 
                 Pool p = db.PoolSet.Add(new Pool() { Name = name, Division = d });
 
+                //Clear the schedule
+                sm.DeleteSchedule(d.Tournament.Id);
+
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "New pool added", id = p.Id }, JsonRequestBehavior.AllowGet);
@@ -122,6 +125,7 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(id);
+
                 // Clear the schedule
                 sm.DeleteSchedule(p.Division.Tournament.Id);
 

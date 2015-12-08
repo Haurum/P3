@@ -97,6 +97,9 @@ namespace CupPlaner.Controllers
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
+                
+                // Clear the schedule
+                sm.DeleteSchedule(d.Tournament.Id);
 
                 db.SaveChanges();
 

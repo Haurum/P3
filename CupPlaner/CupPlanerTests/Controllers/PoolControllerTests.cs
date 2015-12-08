@@ -49,7 +49,7 @@ namespace CupPlaner.Controllers.Tests
         public void EditTest()
         {
             //Edit the created pool
-            dynamic jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
+            dynamic jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId)).Data;
             Assert.AreEqual("success", jsonResult.status);
 
             //Check to see if edits have been saved
@@ -57,12 +57,12 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
             Assert.AreEqual("Pulje Test2", jsonResult.Name);
 
-            //Edit a pool using null values
-            jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
+            //Edit a pool using null valueshttp://localhost:50229/Service References/
+            jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
             //Edit a pool that does not exist
-            jsonResult = ((JsonResult)controller.Edit(999999, "Pulje Test2", ID.DivisionId, new List<int>())).Data;
+            jsonResult = ((JsonResult)controller.Edit(999999, "Pulje Test2", ID.DivisionId)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
 

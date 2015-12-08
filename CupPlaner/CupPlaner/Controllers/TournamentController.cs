@@ -16,6 +16,7 @@ namespace CupPlaner.Controllers
     public class TournamentController : Controller
     {
         CupDBContainer db = new CupDBContainer();
+        ScheduleManager sm = new ScheduleManager();
 
         // GET: Tournament/Details/5
         // Define a list with divisions, fields and times.
@@ -522,6 +523,9 @@ namespace CupPlaner.Controllers
                 t.Name = name;
                 t.Password = password;
 
+                //Clear the schedule
+                sm.DeleteSchedule(t.Id);
+
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();
 
@@ -551,6 +555,10 @@ namespace CupPlaner.Controllers
                 {
                     dc.Delete(d.Id);
                 }
+
+                //Clear the schedule
+                sm.DeleteSchedule(t.Id);
+
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 db.TournamentSet.Remove(t);
                 db.SaveChanges();

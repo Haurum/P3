@@ -96,41 +96,14 @@ namespace CupPlaner.Controllers
                 {
                     f.NextFreeTime.Add(new NextFreeTime() { FreeTime = ti.StartTime });
                 }
+
                 db.SaveChanges();
+
                 return Json(new { status = "success", message = "New field added", id = f.Id, fieldName = f.Name }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(new { status = "error", message = "New field not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
-        }
-
-        // POST: Field/Edit/5 - Tries to edit a Field, determined by the "id" parameter.
-        // Edits a Fields name and FieldSize. Saves the changes to the database, if succeeded.
-        // Returns a Json object with a state, indicating whether it succeeded editing the Field object or not.
-        [HttpPost]
-        public ActionResult Edit(int id, string name, int size)
-        {
-            try
-            {
-                Field f = db.FieldSet.Find(id);
-                if (name != null)
-                {
-                    f.Name = name;
-                }
-                if ((FieldSize)size != f.Size)
-                {
-                    f.Size = (FieldSize)size;
-                }
-
-                db.Entry(f).State = EntityState.Modified;
-                db.SaveChanges();
-
-                return Json(new { status = "success", message = "Field edited" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(new { status = "error", message = "Field not edited", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
 
