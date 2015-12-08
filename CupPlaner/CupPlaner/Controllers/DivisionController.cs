@@ -128,7 +128,7 @@ namespace CupPlaner.Controllers
                 d.Name = name;
 
                 // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
+                sm.DeleteSchedule(d.Tournament.Id, db);
 
                 if (d.FieldSize != (FieldSize)fieldSizeInt)
                 {
@@ -163,7 +163,7 @@ namespace CupPlaner.Controllers
                 Division d = db.DivisionSet.Find(id);
 
                 // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
+                sm.DeleteSchedule(d.Tournament.Id, db);
 
                 // Remove dependencies
                 foreach (Pool p in d.Pools)
