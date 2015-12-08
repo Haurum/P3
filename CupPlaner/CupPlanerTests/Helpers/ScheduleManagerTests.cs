@@ -15,13 +15,10 @@ namespace CupPlaner.Helpers.Tests
         ScheduleManager sm = new ScheduleManager();
 
         [TestMethod()]
-        public void scheduleMatchTest()
+        public void deleteScheduleTest()
         {
 
-            Tournament t = db.TournamentSet.Find(2);
-
-
-            Assert.Fail();
+            sm.DeleteSchedule(2);
         }
 
         [TestMethod()]

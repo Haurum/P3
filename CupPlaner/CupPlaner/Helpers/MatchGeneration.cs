@@ -36,6 +36,7 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
+            db.SaveChanges();
             return true;
         }
         
@@ -69,6 +70,7 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
+            db.SaveChanges();
             return true;
         }
 
@@ -247,6 +249,7 @@ namespace CupPlaner.Helpers
 
                 }
             }
+            db.SaveChanges();
             return true;
         }
 

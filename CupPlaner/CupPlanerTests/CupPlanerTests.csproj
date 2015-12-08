@@ -102,7 +102,6 @@
     <Compile Include="Controllers\DivisionControllerTests.cs" />
     <Compile Include="Controllers\FieldControllerTests.cs" />
     <Compile Include="Controllers\FinalsLinkControllerTests.cs" />
-    <Compile Include="Controllers\MatchControllerTests.cs" />
     <Compile Include="Controllers\PoolControllerTests.cs" />
     <Compile Include="Controllers\TeamControllerTests.cs" />
     <Compile Include="Controllers\TournamentControllerTests.cs" />

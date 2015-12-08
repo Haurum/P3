@@ -261,7 +261,7 @@ namespace CupPlaner.Helpers
             CupDBContainer db = new CupDBContainer();
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
-            if(db.MatchSet.Any(x => x.Field.Tournament.Id == tournamentID))
+            if(db.MatchSet.Any(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == tournamentID))
             {
                 foreach (Division d in t.Divisions.ToList())
                 {
