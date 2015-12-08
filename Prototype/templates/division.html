@@ -30,7 +30,7 @@
           <div class="form-group">
             <form>
               <input type="text" ng-model="newPoolName" placeholder="Indtast puljenavn.."/>
-              <input type="submit" ng-if="newPoolName!=''" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
+              <input type="submit" ng-if="newPoolName!=''" ng-disabled="buttonDisabled" ng-click="addPool(newPoolName); newPoolName = ''" class="btn btn-primary" value="Tilføj" />
               <a ng-click="newPoolFunc()" class="btn btn-danger">Annuller</a>
             </form>
           </div>

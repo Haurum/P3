@@ -34,18 +34,22 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   // method, returning a JSON object containing a message: "success" or "error",
   // indicating wether the team was created or not.
   $scope.addTeamToPool = function(name, index) {
+    $scope.buttonDisabled = true;
     $http.post($rootScope.apiUrl + "/Team/Create", { name: name, poolId: $routeParams.poolId })
     .success(function(data) {
       if(data.status === "success"){
         $scope.getPoolData();
       } else {
         $scope.error = "Kunne ikke oprette hold";
+        $scope.buttonDisabled = false;
       }
+      $scope.buttonDisabled = false;
     }).error(function(err){
      $scope.deleteErr = err;
     })   
     $scope.getPoolData();
   }
+  $scope.buttonDisabled = false;
 
   // gotoTeamDetail is a function redirecting the user
   // to a specific teams html page.

@@ -95,6 +95,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
   //Function to submit a field, adding it to the correct field-size array.
   $scope.submitField = function(fieldName, fieldSize) {
+    $scope.buttonDisabled = true;
     $http.post($rootScope.apiUrl + "/Field/Create", { name: fieldName, size: fieldSize, tournamentId: $routeParams.tournamentId })
     .success(function(data){
         if(data.status === "success"){
@@ -110,6 +111,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
             $scope.getDivisions();
           } else {
             $scope.error = "Bane ikke oprettet";
+            $scope.buttonDisabled = false;
           }
     }).error(function(err){
       $scope.createErr = err;
@@ -118,6 +120,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     })
     $scope.getDivisions();
   }
+  $scope.buttonDisabled = false;
   
   //Delete post-request, used to delete a field, and removing it from the database.
   $scope.removeField = function(Field) {
@@ -173,8 +176,9 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
 
     //Post-request to add new divisions to the tournament.
   $scope.submitNewDiv = function(newDivName, newMatchDuration, chooseField) {
-    if(newMatchDuration >= 10 && newMatchDuration <= 70 && chooseField != "")
+    if(newMatchDuration >= 5 && newMatchDuration <= 70 && chooseField != "")
     {
+      $scope.buttonDisabled = true;
     $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
         if(data.status === "success"){
@@ -186,6 +190,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
         }
         else {
           $scope.error = "Række ikke tilføjet";
+          $scope.buttonDisabled = false;
         }     
       }).error(function(data){
         $scope.newDivError = data;
@@ -194,8 +199,10 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     else
     {
       $scope.error = "Kamplængde eller banestørrelse ugyldig";
+      $scope.buttonDisabled = false;
     } 
-  } 
+  }
+  $scope.buttonDisabled = false;
 
   //Functions used to close the modal.
   $scope.ok = function () {
