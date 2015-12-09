@@ -9,7 +9,7 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
       $scope.chosenDay--;
   }
   $scope.getData = function(){
-    $http.get("http://localhost:50229/Field/GetAllTournamentFields?tournamentId=" + 2).success(function(data) {
+    $http.get("http://localhost:50229/Field/GetAllTournamentFields?tournamentId=" + 14).success(function(data) {
       $scope.tournament = data;
       $scope.days = [];
       for (var i=0; i < $scope.tournament.Fields.length; i++) {
@@ -26,5 +26,12 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
       }
     })
   }   
-  $scope.getData();      
+  $scope.getData();    
+
+  $scope.getNumber = function(num) {
+    if (num % 3 == 0)
+      return new Array(num/3);  
+    else 
+      return new Array((num/3)+1)
+  }  
 }]);
