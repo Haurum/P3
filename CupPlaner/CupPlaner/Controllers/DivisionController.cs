@@ -18,8 +18,8 @@ namespace CupPlaner.Controllers
         // Returns a Json object, which contains a copy of the corresponding Divisions variables.
         public ActionResult Details(int id)
         {
-            try
-            {
+            /*try
+            {*/
                 Validator validator = new Validator();
                 Division d = db.DivisionSet.Find(id);
                 Tournament tourny = db.TournamentSet.Find(d.Tournament.Id);
@@ -78,7 +78,7 @@ namespace CupPlaner.Controllers
                 object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
-            }
+            /*}
             catch (Exception ex)
             {
                 return Json(new
@@ -87,7 +87,7 @@ namespace CupPlaner.Controllers
                     message = "Could not find division",
                     details = ex.Message
                 }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
 
         }
 
