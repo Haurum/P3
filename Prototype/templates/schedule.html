@@ -8,20 +8,29 @@
   <div class="col-md-1">
   </div>
   <div class="col-md-3" ng-repeat="field in tournament.Fields">
-  <h2>{{ field.Name }}</h2>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-1">
-    <p ng-repeat="ti in tournament.TimeIntervals[chosenDay].Times" style="height: 60px; margin-bottom: 0px!important;">{{ ti }}:00</p>
-  </div>
-  <div ng-repeat="field in tournament.Fields" style="margin-top: 5px;">
-    <div class="col-md-2">
-      <div class="row"  ng-repeat="match in field.matches | filter: tournament.TimeIntervals[chosenDay].Date ">
-        <button style="overflow: hidden; width: 100%; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}</button>
-      </div>
+  <div ng-repeat="field in tournament.Fields track by $index" style="margin-top: 5px;">
+  <div ng-if="$index % 3 == 0 && $index != 0" class="col-md-12 clearfix"></div>
+    <div class="col-md-1" ng-if="$index % 3 == 0" style="margin-top: 63px;">
+      <p ng-repeat="ti in tournament.TimeIntervals[chosenDay].Times" style="height: 60px; margin-bottom: 0px!important;">{{ ti }}:00</p>
     </div>
-  <div class="col-md-1"></div>
+  
+    
+    <div class="col-md-3">
+      <div class="row">
+        <h2>{{ field.Name }}</h2>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row"  ng-repeat="match in field.matches | filter: tournament.TimeIntervals[chosenDay].Date">
+            <button style="overflow: hidden; width: 100%; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}</button>
+          </div>
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </div>    
   </div>
 </div>

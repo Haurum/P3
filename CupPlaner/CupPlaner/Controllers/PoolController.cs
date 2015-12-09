@@ -129,16 +129,20 @@ namespace CupPlaner.Controllers
                 // Clear the schedule
                 sm.DeleteSchedule(p.Division.Tournament.Id, db);
 
-                // Remove dependencies
-                foreach (Team team in p.Teams.ToList())
+                if(p.IsAuto == false)
                 {
-                    db.MatchSet.RemoveRange(team.Matches);
-                    team.TimeIntervals.Clear();
+                    // Remove dependencies
+                    foreach (Team team in p.Teams.ToList())
+                    {
+                        db.MatchSet.RemoveRange(team.Matches);
+                        team.TimeIntervals.Clear();
+                    }
+
+                    db.TeamSet.RemoveRange(p.Teams);
+                    p.FavoriteFields.Clear();
+                    db.PoolSet.Remove(p);
                 }
 
-                db.TeamSet.RemoveRange(p.Teams);
-                p.FavoriteFields.Clear();
-                db.PoolSet.Remove(p);
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "Pool deleted" });
