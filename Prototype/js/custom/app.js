@@ -76,7 +76,7 @@ app.run(function ($rootScope, $http, $routeParams) {
 
   $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentId=" + tournamentID)
       .success(function (deleteData) {
         console.log("Kampprogram slettet")
 
