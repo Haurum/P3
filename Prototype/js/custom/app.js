@@ -54,26 +54,63 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function ($rootScope, $http, $routeParams, $q) {
+app.run(function ($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
-  $rootScope.deleteSchedule = function (tournamentID) {
+  $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentID=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
       .success(function (deleteData) {
-        if(deleteData.status === "success")
-        {
-          console.log("Kampprogram slettet")
-        }
-        else
-        {
-          console.log("Fejl ved sletningen af kampprogrammet")
-        }
+        console.log("Kampprogram slettet")
       }).error(function () {
 
       })
-  }
+    console.log("Validere turnering");
+    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
+      .success(function (validateData) {
+        if (validateData.status === "success") {
+          console.log("Generer gruppespil");
+          $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+            .success(function (generateGSData) {
+              if (generateGSData.status === "success") {
+                console.log("Generer slutspils hold");
+                $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
+                  .success(function (generateFTData) {
+                    if (generateFTData.status === "success") {
+                      console.log("Generer slutspils kampe");
+                      $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsMatches?tournamentID=" + tournamentID)
+                        .success(function (generateFMData) {
+                          if (generateFMData.status === "success") {
+                            console.log("success");
+                          }
+                          else {
 
+                          }
+                        }).error(function () {
+
+                        })
+                    }
+                    else {
+
+                    }
+                  }).error(function () {
+
+                  })
+              }
+              else {
+
+              }
+            }).error(function () {
+
+            })
+        }
+        else {
+
+        }
+      }).error(function (err) {
+
+      })
+  }
 });
 
 // HomeController is the controller for the home.html page,
