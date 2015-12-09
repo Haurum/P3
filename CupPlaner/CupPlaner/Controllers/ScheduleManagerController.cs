@@ -47,14 +47,20 @@ namespace CupPlaner.Controllers
             //{
                 Tournament t = db.TournamentSet.Find(tournamentID);
                 int numOfFields = t.Fields.Count(x => x.Size == fs);
-                int minNumOfFields = sm.MinNumOfFields(tournamentID, fs);
-                for (int i = minNumOfFields; i <= numOfFields; i++)
+                if (numOfFields > 0 && t.Divisions.Any(x => x.FieldSize == fs))
                 {
-                    if (sm.scheduleAll(tournamentID, fs, i))
+                    int minNumOfFields = sm.MinNumOfFields(tournamentID, fs);
+                    for (int i = minNumOfFields; i <= numOfFields; i++)
                     {
-                        return Json(new { status = "success", errorCode = 0 }, JsonRequestBehavior.AllowGet);
+                        if (sm.scheduleAll(tournamentID, fs, i))
+                        {
+                            return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
+                        }
                     }
-                }
+                }else
+                {
+                    return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
+                }                
                 return Json(new { status = "error", errorCode = 1, message = "algoritmen fandt ingen løsning" }, JsonRequestBehavior.AllowGet);
             //}
             //catch (Exception)
