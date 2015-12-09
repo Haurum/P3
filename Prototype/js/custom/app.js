@@ -54,12 +54,12 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function ($rootScope, $http, $routeParams) {
+app.run(function ($rootScope, $http, $routeParams, $q) {
   $rootScope.apiUrl = "http://localhost:50229";
 
   $rootScope.deleteSchedule = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentID=" + tournamentID)
       .success(function (deleteData) {
         if(deleteData.status === "success")
         {

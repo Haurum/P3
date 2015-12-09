@@ -113,8 +113,8 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            try
-            {
+            //try
+            //{
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
                 // Clear the schedule
@@ -140,11 +140,11 @@ namespace CupPlaner.Controllers
                 db.SaveChanges();
 
                 return Json(new { status = "success", message = "Field deleted" });
-            }
-            catch (Exception ex)
-            {
-                return Json(new { status = "error", message = "Field not deleted", details = ex.Message });
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return Json(new { status = "error", message = "Field not deleted", details = ex.Message });
+            //}
         }
     }
 }
