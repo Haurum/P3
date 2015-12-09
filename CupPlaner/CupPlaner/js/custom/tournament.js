@@ -179,7 +179,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
 //ModalInstanceController, the functions used to add new divisions,
 //added through the modal.
-app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
+app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$rootScope', '$http', '$routeParams', function ($scope, $uibModalInstance, $rootScope, $http, $routeParams) {
 
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
@@ -196,7 +196,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     if(newMatchDuration >= 5 && newMatchDuration <= 70 && chooseField != "")
     {
       $scope.buttonDisabled = true;
-    $http.post($rootScope.apiUrl + "/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
+      $http.post($rootScope.apiUrl + "/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
         if(data.status === "success"){
           $uibModalInstance.close();
