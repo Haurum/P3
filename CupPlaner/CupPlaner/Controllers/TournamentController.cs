@@ -111,13 +111,16 @@ namespace CupPlaner.Controllers
                     if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         file = Request.Files[0];
-                        string charRange = "CDEFGHIJKLMNOPQRSTY";
+                        string charRange = "CDEFGHIJKLMNOPQRSTUVXYZ";
                         List<string> divisions = new List<string>();
                         List<string> pools = new List<string>();
                         List<string> teams = new List<string>();
 
                         Division d = new Division();
                         Pool p = new Pool();
+
+                        int missingFLs = 0;
+                        int flIndex = 0;
 
                         // extract only the filename
                         var fileName = Path.GetFileName(file.FileName);
@@ -165,6 +168,8 @@ namespace CupPlaner.Controllers
                                                 break;
                                         }
                                         p = db.PoolSet.Add(p);
+                                        if (p.Teams.Count > missingFLs)
+                                            missingFLs = p.Teams.Count;
                                     }
                                 }
 
@@ -172,11 +177,17 @@ namespace CupPlaner.Controllers
                                     break;
 
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
+                                
+                                for (flIndex = 0; flIndex <= missingFLs; flIndex++)
+                                {
+                                    d.FinalsLinks.Add(new FinalsLink() { Division = d, PoolPlacement = flIndex+1, Finalstage = flIndex+1 });
+                                }
                                 d = db.DivisionSet.Add(d);
+                                missingFLs = 0;
                                 poolStart = i;
                             }
                         }
-                        // TODO instert some close workbook
+                        // TODO insert some close workbook
                     }
 
                     foreach (Team teamitem in teams2)

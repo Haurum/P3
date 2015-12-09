@@ -22,7 +22,7 @@ namespace CupPlaner.Controllers.Tests
             ID.DivisionId = jsonResult.id;
             Assert.AreEqual("success", jsonResult.status);
 
-            //Create a new division, but to a non-existing tournament
+            //Create a new division, using null values
             jsonResult = ((JsonResult)controller.Create(null, ID.TournamentId, 60, FieldSize.EightMan)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
@@ -59,7 +59,7 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(FieldSize.ElevenMan, jsonResult.FieldSize);
             Assert.AreEqual(75, jsonResult.MatchDuration);
 
-            //Edit a division that does not exist
+            //Edit a division using null values
             jsonResult = ((JsonResult)controller.Edit(ID.DivisionId, null, ID.TournamentId, 11, 75)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
