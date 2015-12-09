@@ -109,10 +109,13 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
             $scope.createNewFmField();
           }
             $scope.getDivisions();
-          } else {
-            $scope.error = "Bane ikke oprettet";
-            $scope.buttonDisabled = false;
-          }
+        }
+        else 
+        {
+          $scope.error = "Bane ikke oprettet";
+          $scope.buttonDisabled = false;
+        }
+        $scope.buttonDisabled = false;
     }).error(function(err){
       $scope.createErr = err;
     }).finally(function(hej){

@@ -118,7 +118,7 @@ namespace CupPlaner.Controllers
                 Field f = db.FieldSet.Find(id);
                 Tournament t = db.TournamentSet.Find(f.Tournament.Id);
                 // Clear the schedule
-                sm.DeleteSchedule(t.Id);
+                sm.DeleteSchedule(t.Id, db);
 
                 // Remove dependencies
                 foreach (Division d in t.Divisions)

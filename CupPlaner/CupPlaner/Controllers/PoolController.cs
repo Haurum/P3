@@ -79,7 +79,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Add(new Pool() { Name = name, Division = d });
 
                 //Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
+                sm.DeleteSchedule(d.Tournament.Id, db);
 
                 db.SaveChanges();
 
@@ -127,7 +127,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(id);
 
                 // Clear the schedule
-                sm.DeleteSchedule(p.Division.Tournament.Id);
+                sm.DeleteSchedule(p.Division.Tournament.Id, db);
 
                 // Remove dependencies
                 foreach (Team team in p.Teams.ToList())

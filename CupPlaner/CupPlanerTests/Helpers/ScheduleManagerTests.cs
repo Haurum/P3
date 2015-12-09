@@ -18,17 +18,17 @@ namespace CupPlaner.Helpers.Tests
         public void deleteScheduleTest()
         {
 
-            sm.DeleteSchedule(2);
+            sm.DeleteSchedule(11);
         }
 
         [TestMethod()]
         public void scheduleAllTest()
         {
-            Tournament t = db.TournamentSet.Find(1);
+            Tournament t = db.TournamentSet.Find(11);
             //bool succes = sm.scheduleAll(t, FieldSize.ElevenMan, 2);
             //if (!succes)
             //{
-            sm.scheduleAll(t, FieldSize.ElevenMan, 3);
+            sm.scheduleAll(t, FieldSize.ElevenMan, sm.MinNumOfFields(t, FieldSize.ElevenMan));
             //}
         }
     }

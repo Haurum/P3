@@ -13,6 +13,7 @@ namespace CupPlaner.Helpers
         // Validates to check if teams in a match are available for a given time
         public bool areTeamsFree(Match m, DateTime startTime)
         {
+
             // Start time can not be earlier than the tournament stage start time
             if (m.TournamentStage.TimeInterval.StartTime > startTime)
             {
@@ -48,6 +49,8 @@ namespace CupPlaner.Helpers
             bool isValid = true;
             Tournament t = db.TournamentSet.Find(tournamentId);
 
+            bool fieldIsValid;
+
             if(t.Divisions.Count < 1)
             {
                 isValid = false;
@@ -57,6 +60,20 @@ namespace CupPlaner.Helpers
             {
                 foreach (Division d in t.Divisions)
                 {
+                    fieldIsValid = false;
+
+                    foreach(Field f in d.Tournament.Fields)
+                    {
+                        if(f.Size == d.FieldSize)
+                        {
+                            fieldIsValid = true;
+                        }
+                    }
+                    if (fieldIsValid == false)
+                    {
+                        isValid = false;
+                        return isValid;
+                    }
                     if (d.Pools.Count < 1)
                     {
                         isValid = false;
@@ -72,6 +89,7 @@ namespace CupPlaner.Helpers
                     }
                 }
             }
+
             return isValid;
         }
     }
