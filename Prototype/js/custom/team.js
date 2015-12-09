@@ -73,7 +73,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
   //The remove function is used to delete a specific team with its id as a parameter. The function is making a post request to the backend
   //calling the Delete function 
   $scope.remove = function() {
-    var deleteTeam = $window.confirm('Er du sikker på at du vil slette holdet?');
+    var deleteTeam = $window.confirm('Er du sikker på at du vil slette holdet? \nHvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
 
     if(deleteTeam) {
       $http.post($rootScope.apiUrl + "/Team/Delete", { id: $routeParams.teamId })

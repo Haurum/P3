@@ -74,7 +74,7 @@ app.controller('PoolController', ['$scope', '$rootScope', '$location', '$http', 
   // a JSON object containing a message: "success" or "error",
   // indicating wether the pool was deleted or not.
   $scope.remove = function() {
-    var deletePool = $window.confirm('Er du sikker på du vil slette puljen?');
+    var deletePool = $window.confirm('Er du sikker på du vil slette puljen? \nHvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
 
     if(deletePool){
       $http.post($rootScope.apiUrl + "/Pool/Delete", { id: $routeParams.poolId })

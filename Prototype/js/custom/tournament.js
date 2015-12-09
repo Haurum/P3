@@ -127,10 +127,10 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   
   //Delete post-request, used to delete a field, and removing it from the database.
   $scope.removeField = function(Field) {
-    var deleteField = $window.confirm('Er du sikker på du vil slette banen? Hvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
+    var deleteField = $window.confirm('Er du sikker på du vil slette banen? \nHvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
 
     if(deleteField){
-      $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
+      $http.post($rootScope.apiUrl + "/Field/Delete", { id: Field.Id })
       .success(function(data){
         if(data.status === "success")
         {
@@ -196,7 +196,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     if(newMatchDuration >= 5 && newMatchDuration <= 70 && chooseField != "")
     {
       $scope.buttonDisabled = true;
-    $http.post("http://localhost:50229/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
+    $http.post($rootScope.apiUrl + "/Division/Create", { Name: newDivName, MatchDuration: newMatchDuration, FieldSize: chooseField, tournamentId: $routeParams.tournamentId })
       .success(function(data){
         if(data.status === "success"){
           $uibModalInstance.close();
@@ -371,7 +371,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
           }
           else
           {
-            $http.post("http://localhost:50229/Tournament/Create/", $scope.tournamentData).success(function(Data)
+            $http.post($rootScope.apiUrl + "/Tournament/Create/", $scope.tournamentData).success(function(Data)
             {
               if(Data.message == "Password already exists"){
                 $scope.error = "Adgangskoden eksisterer allerede";
@@ -502,7 +502,7 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
                 startTimes: $scope.startDateTimes,
                 endTimes: $scope.endDateTimes
               }
-              $http.post("http://localhost:50229/Tournament/Edit/", tournamentData).success(function(Data)
+              $http.post($rootScope.apiUrl + "/Tournament/Edit/", tournamentData).success(function(Data)
               {
                 if(Data.message === "Password already exists"){
                 $scope.error = "Adgangskoden eksisterer allerede";

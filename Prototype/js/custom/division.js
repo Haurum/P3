@@ -69,7 +69,7 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
   
   //Deleting the specific division. Making a post request to the backend to call the Delete function DivisionController.
   $scope.remove = function() {
-    var deleteDivision = $window.confirm('Er du sikker på du vil slette rækken?');
+    var deleteDivision = $window.confirm('Er du sikker på du vil slette rækken? \nHvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
 
     if(deleteDivision){
       $http.post($rootScope.apiUrl + "/Division/Delete", { id: $routeParams.divisionId })

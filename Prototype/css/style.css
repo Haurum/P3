@@ -35,6 +35,11 @@
   margin-bottom: 30px;
 }
 
+#logPanel {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 #addTournyError {
   margin-top:10px;
 }
