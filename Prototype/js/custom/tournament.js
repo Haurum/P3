@@ -9,7 +9,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   //Get request - Gets tournament data, creates three field-arrays dependant on fieldsizes.
   //Loads division data into divisions, and the whole data into the tournament.
   $scope.getDivisions = function(){
-    $http.get("http://localhost:50229/Tournament/Details?id=" +  $routeParams.tournamentId)
+    $http.get($rootScope.apiUrl + "/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
         if(data.status === "success"){
@@ -127,12 +127,14 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   
   //Delete post-request, used to delete a field, and removing it from the database.
   $scope.removeField = function(Field) {
-    var deleteField = $window.confirm('Er du sikker på du vil slette banen?');
+    var deleteField = $window.confirm('Er du sikker på du vil slette banen? Hvis kampprogrammet har været planlagt, vil det nu blive slettet og kan tage lidt tid');
 
     if(deleteField){
       $http.post("http://localhost:50229/Field/Delete", { id: Field.Id })
       .success(function(data){
-        if(data.status === "success"){
+        if(data.status === "success")
+        {
+
         }
         else {
           $scope.error = "Bane ikke fjernet";
@@ -392,7 +394,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 //been created.
 app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
 
-  $http.get("http://localhost:50229/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
+  $http.get($rootScope.apiUrl + "/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
     
     if(data.status === "success"){
     

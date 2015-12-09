@@ -54,12 +54,29 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function ($rootScope, $http, $routeParams, $q) {
+app.run(function ($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
+
+  $rootScope.deleteSchedule = function (tournamentID) {
+    console.log("Sletter nuværende kampprogram");
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+      .success(function (deleteData) {
+        if (deleteData.status === "success")
+        {
+          console.log("Kampprogram slettet")
+        }
+        else
+        {
+          console.log("Kampprogram ikke slettet");
+        }
+      }).error(function() {
+
+      })
+  }
 
   $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentID=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentId=" + tournamentID)
       .success(function (deleteData) {
         console.log("Kampprogram slettet")
 
@@ -120,11 +137,18 @@ app.run(function ($rootScope, $http, $routeParams, $q) {
           }).error(function (err) {
 
           })
+        if(deleteData.status === "success")
+        {
+          console.log("Kampprogram slettet")
+        }
+        else
+        {
+          console.log("Fejl ved sletningen af kampprogrammet")
+        }
       }).error(function () {
 
       })
-  }
-
+    }
 });
 
 // HomeController is the controller for the home.html page,

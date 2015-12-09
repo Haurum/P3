@@ -27,11 +27,4 @@ app.controller('ScheduleController', ['$scope', '$rootScope', '$location', '$htt
     })
   }   
   $scope.getData();    
-
-  $scope.getNumber = function(num) {
-    if (num % 3 == 0)
-      return new Array(num/3);  
-    else 
-      return new Array((num/3)+1)
-  }  
 }]);
