@@ -57,60 +57,98 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 app.run(function ($rootScope, $http, $routeParams) {
   $rootScope.apiUrl = "http://localhost:50229";
 
+  $rootScope.deleteSchedule = function (tournamentID) {
+    console.log("Sletter nuværende kampprogram");
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+      .success(function (deleteData) {
+        if (deleteData.status === "success")
+        {
+          console.log("Kampprogram slettet")
+        }
+        else
+        {
+          console.log("Kampprogram ikke slettet");
+        }
+      }).error(function() {
+
+      })
+  }
+
   $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
     $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
       .success(function (deleteData) {
         console.log("Kampprogram slettet")
+
+        console.log("Validere turnering");
+        $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
+          .success(function (validateData) {
+            if (validateData.status === "success") {
+              console.log("Generer gruppespil");
+              $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+                .success(function (generateGSData) {
+                  if (generateGSData.status === "success") {
+                    console.log("Generer slutspils hold");
+                    $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
+                      .success(function (generateFTData) {
+                        if (generateFTData.status === "success") {
+                          console.log("Generer slutspils kampe");
+                          $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsMatches?tournamentID=" + tournamentID)
+                            .success(function (generateFMData) {
+                              if (generateFMData.status === "success") {
+                                console.log("starter planlægning");
+                                $http.get($rootScope.apiUrl + "/ScheduleManager/Schedule?tournamentID=" + tournamentID + "&fs=" + 11)
+                                  .success(function (eScheduleData) {
+                                    if (eScheduleData.status === "success") {
+                                      console.log("success");
+
+                                    }
+                                    else {
+
+                                    }
+                                  }).error(function () {
+
+                                  })
+                              }
+                              else {
+
+                              }
+                            }).error(function () {
+
+                            })
+                        }
+                        else {
+
+                        }
+                      }).error(function () {
+
+                      })
+                  }
+                  else {
+
+                  }
+                }).error(function () {
+
+                })
+            }
+            else {
+
+            }
+          }).error(function (err) {
+
+          })
+        if(deleteData.status === "success")
+        {
+          console.log("Kampprogram slettet")
+        }
+        else
+        {
+          console.log("Fejl ved sletningen af kampprogrammet")
+        }
       }).error(function () {
 
       })
-    console.log("Validere turnering");
-    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
-      .success(function (validateData) {
-        if (validateData.status === "success") {
-          console.log("Generer gruppespil");
-          $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
-            .success(function (generateGSData) {
-              if (generateGSData.status === "success") {
-                console.log("Generer slutspils hold");
-                $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
-                  .success(function (generateFTData) {
-                    if (generateFTData.status === "success") {
-                      console.log("Generer slutspils kampe");
-                      $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsMatches?tournamentID=" + tournamentID)
-                        .success(function (generateFMData) {
-                          if (generateFMData.status === "success") {
-                            console.log("success");
-                          }
-                          else {
-
-                          }
-                        }).error(function () {
-
-                        })
-                    }
-                    else {
-
-                    }
-                  }).error(function () {
-
-                  })
-              }
-              else {
-
-              }
-            }).error(function () {
-
-            })
-        }
-        else {
-
-        }
-      }).error(function (err) {
-
-      })
-  }
+    }
 });
 
 // HomeController is the controller for the home.html page,
