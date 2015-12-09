@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CupDB" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="CupDBContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="TeamSet" EntityType="CupDB.Team" />
+    <EntitySet Name="PoolSet" EntityType="CupDB.Pool" />
+    <EntitySet Name="DivisionSet" EntityType="CupDB.Division" />
+    <EntitySet Name="FieldSet" EntityType="CupDB.Field" />
+    <EntitySet Name="TimeIntervalSet" EntityType="CupDB.TimeInterval" />
+    <EntitySet Name="TournamentSet" EntityType="CupDB.Tournament" />
+    <EntitySet Name="MatchSet" EntityType="CupDB.Match" />
+    <EntitySet Name="TournamentStageSet" EntityType="CupDB.TournamentStage" />
+    <AssociationSet Name="TeamMatch" Association="CupDB.TeamMatch">
+      <End Role="Team" EntitySet="TeamSet" />
+      <End Role="Match" EntitySet="MatchSet" />
+    </AssociationSet>
+    <AssociationSet Name="PoolTeam" Association="CupDB.PoolTeam">
+      <End Role="Pool" EntitySet="PoolSet" />
+      <End Role="Team" EntitySet="TeamSet" />
+    </AssociationSet>
+    <AssociationSet Name="TeamTimeInterval" Association="CupDB.TeamTimeInterval">
+      <End EntitySet="TeamSet" Role="Team" />
+      <End EntitySet="TimeIntervalSet" Role="TimeInterval" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionPool" Association="CupDB.DivisionPool">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="Pool" EntitySet="PoolSet" />
+    </AssociationSet>
+    <AssociationSet Name="TournamentDivision" Association="CupDB.TournamentDivision">
+      <End Role="Tournament" EntitySet="TournamentSet" />
+      <End Role="Division" EntitySet="DivisionSet" />
+    </AssociationSet>
+    <AssociationSet Name="MatchField" Association="CupDB.MatchField">
+      <End Role="Match" EntitySet="MatchSet" />
+      <End Role="Field" EntitySet="FieldSet" />
+    </AssociationSet>
+    <AssociationSet Name="PoolField" Association="CupDB.PoolField">
+      <End Role="Pool" EntitySet="PoolSet" />
+      <End Role="Field" EntitySet="FieldSet" />
+    </AssociationSet>
+    <AssociationSet Name="TournamentTimeInterval" Association="CupDB.TournamentTimeInterval">
+      <End EntitySet="TournamentSet" Role="Tournament" />
+      <End EntitySet="TimeIntervalSet" Role="TimeInterval" />
+    </AssociationSet>
+    <AssociationSet Name="TournamentStageMatch" Association="CupDB.TournamentStageMatch">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="Match" EntitySet="MatchSet" />
+    </AssociationSet>
+    <AssociationSet Name="TournamentStagePool" Association="CupDB.TournamentStagePool">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="Pool" EntitySet="PoolSet" />
+    </AssociationSet>
+    <EntitySet Name="DivisionTournamentSet" EntityType="CupDB.DivisionTournament" />
+    <AssociationSet Name="DivisionDivisionTournament" Association="CupDB.DivisionDivisionTournament">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
+    </AssociationSet>
+    <AssociationSet Name="DivisionTournamentTournamentStage" Association="CupDB.DivisionTournamentTournamentStage">
+      <End Role="DivisionTournament" EntitySet="DivisionTournamentSet" />
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+    </AssociationSet>
+    <EntitySet Name="FinalsLinkSet" EntityType="CupDB.FinalsLink" />
+    <AssociationSet Name="DivisionFinalsLink" Association="CupDB.DivisionFinalsLink">
+      <End Role="Division" EntitySet="DivisionSet" />
+      <End Role="FinalsLink" EntitySet="FinalsLinkSet" />
+    </AssociationSet>
+    <AssociationSet Name="FieldTournament" Association="CupDB.FieldTournament">
+      <End Role="Field" EntitySet="FieldSet" />
+      <End Role="Tournament" EntitySet="TournamentSet" />
+    </AssociationSet>
+    <AssociationSet Name="TeamPrevPool" Association="CupDB.TeamPrevPool">
+      <End Role="Team" EntitySet="TeamSet" />
+      <End Role="Pool" EntitySet="PoolSet" />
+    </AssociationSet>
+    <AssociationSet Name="TournamentStageTimeInterval" Association="CupDB.TournamentStageTimeInterval">
+      <End Role="TournamentStage" EntitySet="TournamentStageSet" />
+      <End Role="TimeInterval" EntitySet="TimeIntervalSet" />
+    </AssociationSet>
+    <EntitySet Name="NextFreeTimeSet" EntityType="CupDB.NextFreeTime" />
+    <AssociationSet Name="NextFreeTimeField" Association="CupDB.NextFreeTimeField">
+      <End Role="NextFreeTime" EntitySet="NextFreeTimeSet" />
+      <End Role="Field" EntitySet="FieldSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Team">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Matches" Relationship="CupDB.TeamMatch" FromRole="Team" ToRole="Match" />
+    <NavigationProperty Name="Pool" Relationship="CupDB.PoolTeam" FromRole="Team" ToRole="Pool" />
+    <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TeamTimeInterval" FromRole="Team" ToRole="TimeInterval" />
+    <Property Name="IsAuto" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="PrevPool" Relationship="CupDB.TeamPrevPool" FromRole="Team" ToRole="Pool" />
+    <Property Name="PoolPlacement" Type="Int32" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Pool">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Teams" Relationship="CupDB.PoolTeam" FromRole="Pool" ToRole="Team" />
+    <NavigationProperty Name="Division" Relationship="CupDB.DivisionPool" FromRole="Pool" ToRole="Division" />
+    <NavigationProperty Name="FavoriteFields" Relationship="CupDB.PoolField" FromRole="Pool" ToRole="Field" />
+    <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStagePool" FromRole="Pool" ToRole="TournamentStage" />
+    <Property Name="IsAuto" Type="Boolean" Nullable="false" ConcurrencyMode="None" />
+  </EntityType>
+  <EntityType Name="Division">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FieldSize" Type="CupDB.FieldSize" Nullable="false" />
+    <Property Name="MatchDuration" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Pools" Relationship="CupDB.DivisionPool" FromRole="Division" ToRole="Pool" />
+    <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentDivision" FromRole="Division" ToRole="Tournament" />
+    <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionDivisionTournament" FromRole="Division" ToRole="DivisionTournament" />
+    <NavigationProperty Name="FinalsLinks" Relationship="CupDB.DivisionFinalsLink" FromRole="Division" ToRole="FinalsLink" />
+    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Field">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Size" Type="CupDB.FieldSize" Nullable="false" />
+    <NavigationProperty Name="Matches" Relationship="CupDB.MatchField" FromRole="Field" ToRole="Match" />
+    <NavigationProperty Name="Pool" Relationship="CupDB.PoolField" FromRole="Field" ToRole="Pool" />
+    <NavigationProperty Name="Tournament" Relationship="CupDB.FieldTournament" FromRole="Field" ToRole="Tournament" />
+    <NavigationProperty Name="NextFreeTime" Relationship="CupDB.NextFreeTimeField" FromRole="Field" ToRole="NextFreeTime" />
+  </EntityType>
+  <EntityType Name="TimeInterval">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
+    <Property Name="StartTime" Nullable="false" Precision="3" Type="DateTime" />
+    <Property Name="EndTime" Nullable="false" Precision="3" Type="DateTime" />
+    <NavigationProperty Name="Team" Relationship="CupDB.TeamTimeInterval" FromRole="TimeInterval" ToRole="Team" />
+    <NavigationProperty Name="Tournament" Relationship="CupDB.TournamentTimeInterval" FromRole="TimeInterval" ToRole="Tournament" />
+    <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TimeInterval" ToRole="TournamentStage" />
+  </EntityType>
+  <EntityType Name="Tournament">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Divisions" Relationship="CupDB.TournamentDivision" FromRole="Tournament" ToRole="Division" />
+    <NavigationProperty Name="TimeIntervals" Relationship="CupDB.TournamentTimeInterval" FromRole="Tournament" ToRole="TimeInterval" />
+    <Property Name="Password" Type="String" Nullable="false" />
+    <NavigationProperty Name="Fields" Relationship="CupDB.FieldTournament" FromRole="Tournament" ToRole="Field" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Match">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Duration" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Teams" Relationship="CupDB.TeamMatch" FromRole="Match" ToRole="Team" />
+    <NavigationProperty Name="Field" Relationship="CupDB.MatchField" FromRole="Match" ToRole="Field" />
+    <NavigationProperty Name="TournamentStage" Relationship="CupDB.TournamentStageMatch" FromRole="Match" ToRole="TournamentStage" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+    <Property Name="Number" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="TournamentStage">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
+    <NavigationProperty Name="Matches" Relationship="CupDB.TournamentStageMatch" FromRole="TournamentStage" ToRole="Match" />
+    <NavigationProperty Name="Pool" Relationship="CupDB.TournamentStagePool" FromRole="TournamentStage" ToRole="Pool" />
+    <NavigationProperty Name="DivisionTournament" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="TournamentStage" ToRole="DivisionTournament" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="TimeInterval" Relationship="CupDB.TournamentStageTimeInterval" FromRole="TournamentStage" ToRole="TimeInterval" />
+  </EntityType>
+  <Association Name="TeamMatch">
+    <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
+    <End Type="CupDB.Match" Role="Match" Multiplicity="*" />
+  </Association>
+  <Association Name="PoolTeam">
+    <End Type="CupDB.Pool" Role="Pool" Multiplicity="1" />
+    <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
+  </Association>
+  <Association Name="TeamTimeInterval">
+    <End Type="CupDB.Team" Multiplicity="0..1" Role="Team" />
+    <End Type="CupDB.TimeInterval" Multiplicity="*" Role="TimeInterval" />
+  </Association>
+  <Association Name="DivisionPool">
+    <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
+    <End Type="CupDB.Pool" Role="Pool" Multiplicity="*" />
+  </Association>
+  <Association Name="TournamentDivision">
+    <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
+    <End Type="CupDB.Division" Role="Division" Multiplicity="*" />
+  </Association>
+  <Association Name="MatchField">
+    <End Type="CupDB.Match" Role="Match" Multiplicity="*" />
+    <End Type="CupDB.Field" Role="Field" Multiplicity="0..1" />
+  </Association>
+  <Association Name="PoolField">
+    <End Type="CupDB.Pool" Role="Pool" Multiplicity="*" />
+    <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
+  </Association>
+  <Association Name="TournamentTimeInterval">
+    <End Type="CupDB.Tournament" Multiplicity="0..1" Role="Tournament" />
+    <End Type="CupDB.TimeInterval" Multiplicity="*" Role="TimeInterval" />
+  </Association>
+  <Association Name="TournamentStageMatch">
+    <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="1" />
+    <End Type="CupDB.Match" Role="Match" Multiplicity="*" />
+  </Association>
+  <Association Name="TournamentStagePool">
+    <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="0..1" />
+    <End Type="CupDB.Pool" Role="Pool" Multiplicity="1" />
+  </Association>
+  <EnumType Name="FieldSize">
+    <Member Name="FiveMan" Value="5" />
+    <Member Name="EightMan" Value="8" />
+    <Member Name="ElevenMan" Value="11" />
+  </EnumType>
+  <EnumType Name="TournamentStructure">
+    <Member Name="RoundRobin" />
+    <Member Name="KnockOut" />
+  </EnumType>
+  <EntityType Name="DivisionTournament">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TournamentStructure" Type="CupDB.TournamentStructure" Nullable="false" />
+    <NavigationProperty Name="Division" Relationship="CupDB.DivisionDivisionTournament" FromRole="DivisionTournament" ToRole="Division" />
+    <NavigationProperty Name="TournamentStage" Relationship="CupDB.DivisionTournamentTournamentStage" FromRole="DivisionTournament" ToRole="TournamentStage" />
+    <Property Name="IsScheduled" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="DivisionDivisionTournament">
+    <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
+    <End Type="CupDB.DivisionTournament" Role="DivisionTournament" Multiplicity="0..1" />
+  </Association>
+  <Association Name="DivisionTournamentTournamentStage">
+    <End Type="CupDB.DivisionTournament" Role="DivisionTournament" Multiplicity="1" />
+    <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="*" />
+  </Association>
+  <EntityType Name="FinalsLink">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Finalstage" Type="Int32" Nullable="false" />
+    <Property Name="PoolPlacement" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Division" Relationship="CupDB.DivisionFinalsLink" FromRole="FinalsLink" ToRole="Division" />
+  </EntityType>
+  <Association Name="DivisionFinalsLink">
+    <End Type="CupDB.Division" Role="Division" Multiplicity="1" />
+    <End Type="CupDB.FinalsLink" Role="FinalsLink" Multiplicity="*" />
+  </Association>
+  <Association Name="FieldTournament">
+    <End Type="CupDB.Field" Role="Field" Multiplicity="*" />
+    <End Type="CupDB.Tournament" Role="Tournament" Multiplicity="1" />
+  </Association>
+  <Association Name="TeamPrevPool">
+    <End Type="CupDB.Team" Role="Team" Multiplicity="*" />
+    <End Type="CupDB.Pool" Role="Pool" Multiplicity="0..1" />
+  </Association>
+  <Association Name="TournamentStageTimeInterval">
+    <End Type="CupDB.TournamentStage" Role="TournamentStage" Multiplicity="0..1" />
+    <End Type="CupDB.TimeInterval" Role="TimeInterval" Multiplicity="0..1" />
+  </Association>
+  <EntityType Name="NextFreeTime">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FreeTime" Type="DateTime" Nullable="false" />
+  </EntityType>
+  <Association Name="NextFreeTimeField">
+    <End Type="CupDB.NextFreeTime" Role="NextFreeTime" Multiplicity="*" />
+    <End Type="CupDB.Field" Role="Field" Multiplicity="1" />
+  </Association>
+</Schema>

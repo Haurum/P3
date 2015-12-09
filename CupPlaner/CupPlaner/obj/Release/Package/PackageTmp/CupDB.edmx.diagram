@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="6d14d5090da6442e87caca4a918c369b" Name="Diagram1" >
+        <EntityTypeShape EntityType="CupDB.Team" Width="1.5" PointX="10.125" PointY="6.75" />
+        <EntityTypeShape EntityType="CupDB.Pool" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CupDB.Division" Width="1.5" PointX="3.125" PointY="6.75" />
+        <EntityTypeShape EntityType="CupDB.Field" Width="1.5" PointX="7.75" PointY="5" />
+        <EntityTypeShape EntityType="CupDB.TimeInterval" PointX="0.625" PointY="7.75" Width="1.5" />
+        <EntityTypeShape EntityType="CupDB.Tournament" Width="1.5" PointX="0.75" PointY="4.125" />
+        <EntityTypeShape EntityType="CupDB.Match" Width="1.5" PointX="10.125" PointY="3.125" />
+        <EntityTypeShape EntityType="CupDB.TournamentStage" Width="1.5" PointX="5.5" PointY="3.125" />
+        <AssociationConnector Association="CupDB.TeamMatch" />
+        <AssociationConnector Association="CupDB.PoolTeam" />
+        <AssociationConnector Association="CupDB.TeamTimeInterval" />
+        <AssociationConnector Association="CupDB.DivisionPool" />
+        <AssociationConnector Association="CupDB.TournamentDivision" />
+        <AssociationConnector Association="CupDB.MatchField" />
+        <AssociationConnector Association="CupDB.PoolField" />
+        <AssociationConnector Association="CupDB.TournamentTimeInterval" />
+        <AssociationConnector Association="CupDB.TournamentStageMatch" />
+        <AssociationConnector Association="CupDB.TournamentStagePool" />
+        <EntityTypeShape EntityType="CupDB.DivisionTournament" Width="1.5" PointX="3" PointY="3.125" />
+        <AssociationConnector Association="CupDB.DivisionDivisionTournament" />
+        <AssociationConnector Association="CupDB.DivisionTournamentTournamentStage" />
+        <EntityTypeShape EntityType="CupDB.FinalsLink" Width="1.5" PointX="3.125" PointY="10" />
+        <AssociationConnector Association="CupDB.DivisionFinalsLink" />
+        <AssociationConnector Association="CupDB.FieldTournament" />
+        <AssociationConnector Association="CupDB.TeamPrevPool" />
+        <AssociationConnector Association="CupDB.TournamentStageTimeInterval" />
+        <EntityTypeShape EntityType="CupDB.NextFreeTime" Width="1.5" PointX="7.75" PointY="2.375" />
+        <AssociationConnector Association="CupDB.NextFreeTimeField" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
