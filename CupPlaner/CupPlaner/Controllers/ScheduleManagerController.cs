@@ -55,7 +55,7 @@ namespace CupPlaner.Controllers
                 {
                     if (sm.scheduleAll(tournamentID, fs, i))
                     {
-                        return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
                     }
                 }
             }
