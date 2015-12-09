@@ -10,11 +10,12 @@ namespace CupPlaner.Helpers
     public class ScheduleManager
     {
 
-        public bool scheduleAll(Tournament t, FieldSize fSize, int numberOfFields)
+        public bool scheduleAll(int tournamentID, FieldSize fSize, int numberOfFields)
         {
             CupDBContainer db = new CupDBContainer();
             MatchGeneration mg = new MatchGeneration();
             Validator validator = new Validator();
+            Tournament t = db.TournamentSet.Find(tournamentID);
             List<TournamentStage> TournamentStages = db.TournamentStageSet.Where(x => x.DivisionTournament.Division.Tournament.Id == t.Id && x.DivisionTournament.Division.FieldSize == fSize).ToList();
             List<Match> allMatches = db.MatchSet.Where(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == t.Id && x.TournamentStage.DivisionTournament.Division.FieldSize == fSize).ToList();
 
@@ -155,9 +156,9 @@ namespace CupPlaner.Helpers
                     else
                     {
                         int k = 0;
-                        bool notDone = true;
+                        bool done = false;
                         List<Field> fields = allUnscheduledMatches.First().TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == fSize).Take(numberOfFields).ToList();
-                        while (notDone)
+                        while (!done)
                         {
                             k += 10;
                             if (fields.All(x => x.NextFreeTime.All(y => y.FreeTime.AddMinutes(k) > t.TimeIntervals.First(z => z.EndTime.Date == y.FreeTime.Date).EndTime)))
@@ -199,7 +200,7 @@ namespace CupPlaner.Helpers
                                 if (match.IsScheduled)
                                 {
                                     selector = 0;
-                                    notDone = false;
+                                    done = true;
                                     break;
                                 }
                             }                           
@@ -233,8 +234,10 @@ namespace CupPlaner.Helpers
             return true;
         }
 
-        public int MinNumOfFields(Tournament t, FieldSize fs)
+        public int MinNumOfFields(int tournamentID, FieldSize fs)
         {
+            CupDBContainer db = new CupDBContainer();
+            Tournament t = db.TournamentSet.Find(tournamentID);
             int duration = 0;
             foreach (Division d in t.Divisions)
             {
@@ -283,6 +286,7 @@ namespace CupPlaner.Helpers
                                 }
                             }
                             db.MatchSet.RemoveRange(ts.Matches);
+                            db.TimeIntervalSet.Remove(ts.TimeInterval);
                         }
                         db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
                         db.DivisionTournamentSet.Remove(d.DivisionTournament);
@@ -307,11 +311,10 @@ namespace CupPlaner.Helpers
                 TimeInterval[] tournamentTi = t.TimeIntervals.ToArray();
                 foreach (Field f in t.Fields)
                 {
-                    NextFreeTime[] nftArray = f.NextFreeTime.ToArray();
-                    for (int i = 0; i < f.NextFreeTime.Count; i++)
+                    db.NextFreeTimeSet.RemoveRange(f.NextFreeTime);
+                    for (int i = 0; i < tournamentTi.Count(); i++)
                     {
-                        nftArray[i].FreeTime = tournamentTi[i].StartTime;
-                        db.Entry(nftArray[i]).State = EntityState.Modified;
+                        f.NextFreeTime.Add(new NextFreeTime() { FreeTime = tournamentTi[i].StartTime });
                     }
                 }
                 db.SaveChanges();
