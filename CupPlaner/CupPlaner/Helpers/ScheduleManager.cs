@@ -283,6 +283,7 @@ namespace CupPlaner.Helpers
                                 }
                             }
                             db.MatchSet.RemoveRange(ts.Matches);
+                            db.TimeIntervalSet.Remove(ts.TimeInterval);
                         }
                         db.TournamentStageSet.RemoveRange(d.DivisionTournament.TournamentStage);
                         db.DivisionTournamentSet.Remove(d.DivisionTournament);
