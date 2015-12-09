@@ -170,7 +170,14 @@ namespace CupPlaner.Helpers
                                 }
                                 extraTeams[i].Pool = KOPool;
                                 db.TeamSet.Add(extraTeams[i]);
-                                extraTeams[i].TimeIntervals = SameTimeInterval(extraTeams[i].PrevPool);
+                                List<TimeInterval> intervals = new List<TimeInterval>();
+                                for (int l = 0; l < extraTeams[i].PrevPool.Division.Tournament.TimeIntervals.Count; l++)
+                                {
+                                    DateTime dtStart = extraTeams[i].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].StartTime).OrderByDescending(x => x.TimeOfDay).First();
+                                    DateTime dtEnd = extraTeams[i].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].EndTime).OrderBy(x => x.TimeOfDay).First();
+                                    intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
+                                }
+                                extraTeams[i].TimeIntervals = intervals;
                             }
                         }
                         List<Team> teamsToAdd = new List<Team>();
@@ -204,8 +211,22 @@ namespace CupPlaner.Helpers
                                     teamsToAdd[0].Pool = KOPool;
                                     teamsToAdd[1].Pool = KOPool;
                                     db.TeamSet.AddRange(teamsToAdd);
-                                    teamsToAdd[0].TimeIntervals = SameTimeInterval(teamsToAdd[0].PrevPool);
-                                    teamsToAdd[1].TimeIntervals = SameTimeInterval(teamsToAdd[1].PrevPool);
+                                    List<TimeInterval> intervals = new List<TimeInterval>();
+                                    for (int l = 0; l < teamsToAdd[0].PrevPool.Division.Tournament.TimeIntervals.Count; l++)
+                                    {
+                                        DateTime dtStart = teamsToAdd[0].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].StartTime).OrderByDescending(x => x.TimeOfDay).First();
+                                        DateTime dtEnd = teamsToAdd[0].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].EndTime).OrderBy(x => x.TimeOfDay).First();
+                                        intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
+                                    }
+                                    teamsToAdd[0].TimeIntervals = intervals;
+                                    intervals.Clear();
+                                    for (int l = 0; l < teamsToAdd[1].PrevPool.Division.Tournament.TimeIntervals.Count; l++)
+                                    {
+                                        DateTime dtStart = teamsToAdd[1].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].StartTime).OrderByDescending(x => x.TimeOfDay).First();
+                                        DateTime dtEnd = teamsToAdd[1].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].EndTime).OrderBy(x => x.TimeOfDay).First();
+                                        intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
+                                    }
+                                    teamsToAdd[1].TimeIntervals = intervals;
                                 }
                                 else
                                 {
@@ -218,7 +239,7 @@ namespace CupPlaner.Helpers
                                             {
                                                 if (teamsToAdd[i].PrevPool != teamsToAdd[j].PrevPool && teamsToAdd[j].Matches.Count == 0)
                                                 {
-                                                    Team winnerTeam = new Team() { Name = "Vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                                    Team winnerTeam = db.TeamSet.Add(new Team() { Name = "Vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool });
                                                     teams.Add(winnerTeam);
                                                     Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                                     break;
@@ -230,7 +251,7 @@ namespace CupPlaner.Helpers
                                                 {
                                                     if (teamsToAdd[j].Matches.Count == 0)
                                                     {
-                                                        Team winnerTeam = new Team() { Name = "Vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool };
+                                                        Team winnerTeam = db.TeamSet.Add(new Team() { Name = "Vinder af kamp " + matchNumber, IsAuto = true, PrevPool = KOPool, Pool = KOPool });
                                                         teams.Add(winnerTeam);
                                                         Match m = db.MatchSet.Add(new Match() { Teams = { teamsToAdd[i], teamsToAdd[j] }, Duration = d.MatchDuration, TournamentStage = tournyStage, Number = matchNumber++ });
                                                         break;
@@ -240,7 +261,14 @@ namespace CupPlaner.Helpers
                                         }
                                         teamsToAdd[i].Pool = KOPool;
                                         db.TeamSet.Add(teamsToAdd[i]);
-                                        teamsToAdd[i].TimeIntervals = SameTimeInterval(teamsToAdd[i].PrevPool);
+                                        List<TimeInterval> intervals = new List<TimeInterval>();
+                                        for (int l = 0; l < teamsToAdd[i].PrevPool.Division.Tournament.TimeIntervals.Count; l++)
+                                        {
+                                            DateTime dtStart = teamsToAdd[i].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].StartTime).OrderByDescending(x => x.TimeOfDay).First();
+                                            DateTime dtEnd = teamsToAdd[i].PrevPool.Teams.Select(x => x.TimeIntervals.ToArray()[l].EndTime).OrderBy(x => x.TimeOfDay).First();
+                                            intervals.Add(new TimeInterval() { StartTime = dtStart, EndTime = dtEnd });
+                                        }
+                                        teamsToAdd[i].TimeIntervals = intervals;
                                     }
                                 }
                             }
