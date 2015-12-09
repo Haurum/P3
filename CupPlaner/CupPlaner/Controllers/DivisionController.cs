@@ -128,7 +128,7 @@ namespace CupPlaner.Controllers
                 d.Name = name;
 
                 // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
+                sm.DeleteSchedule(d.Tournament.Id, db);
 
                 if (d.FieldSize != (FieldSize)fieldSizeInt)
                 {
@@ -158,12 +158,12 @@ namespace CupPlaner.Controllers
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            try
-            {
+            //try
+            //{
                 Division d = db.DivisionSet.Find(id);
 
                 // Clear the schedule
-                sm.DeleteSchedule(d.Tournament.Id);
+                sm.DeleteSchedule(d.Tournament.Id, db);
 
                 // Remove dependencies
                 foreach (Pool p in d.Pools)
@@ -181,11 +181,11 @@ namespace CupPlaner.Controllers
                 db.DivisionSet.Remove(d);
                 db.SaveChanges();
                 return Json(new { status = "success", message = "Division deleted" }, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
+            //}
+            /*catch (Exception ex)
             {
                 return Json(new { status = "error", message = "Division not deleted", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }
+            }*/
         }
 
         [HttpPost]

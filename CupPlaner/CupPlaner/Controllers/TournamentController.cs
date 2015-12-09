@@ -535,7 +535,7 @@ namespace CupPlaner.Controllers
                 t.Password = password;
 
                 //Clear the schedule
-                sm.DeleteSchedule(t.Id);
+                sm.DeleteSchedule(t.Id, db);
 
                 db.Entry(t).State = EntityState.Modified;
                 db.SaveChanges();
@@ -568,7 +568,7 @@ namespace CupPlaner.Controllers
                 }
 
                 //Clear the schedule
-                sm.DeleteSchedule(t.Id);
+                sm.DeleteSchedule(t.Id, db);
 
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
                 db.TournamentSet.Remove(t);

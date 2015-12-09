@@ -259,20 +259,25 @@ namespace CupPlaner.Helpers
         public void DeleteSchedule(int tournamentID)
         {
             CupDBContainer db = new CupDBContainer();
+            DeleteSchedule(tournamentID, db);
+        }
+        public void DeleteSchedule(int tournamentID, CupDBContainer db)
+        {
+            //CupDBContainer db = new CupDBContainer();
             MatchGeneration mg = new MatchGeneration();
             Tournament t = db.TournamentSet.Find(tournamentID);
-            if(db.MatchSet.Any(x => x.Field.Tournament.Id == tournamentID))
+            if(db.MatchSet.Any(x => x.TournamentStage.DivisionTournament.Division.Tournament.Id == tournamentID))
             {
                 foreach (Division d in t.Divisions.ToList())
                 {
                     // Remove all division tournaments and their dependencies
                     if (d.DivisionTournament != null)
                     {
-                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage)
+                        foreach (TournamentStage ts in d.DivisionTournament.TournamentStage.ToList())
                         {
-                            foreach (Match m in ts.Matches)
+                            foreach (Match m in ts.Matches.ToList())
                             {
-                                foreach (Team team in m.Teams)
+                                foreach (Team team in m.Teams.ToList())
                                 {
                                     team.Matches.Remove(m);
                                 }

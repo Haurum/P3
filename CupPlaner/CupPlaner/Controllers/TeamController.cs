@@ -63,6 +63,11 @@ namespace CupPlaner.Controllers
             try
             {
                 Pool p = db.PoolSet.Find(poolId);
+                int max = p.Division.Pools.Max(x => x.Teams.Count);
+                if (p.Teams.Count == max)
+                {
+                    db.FinalsLinkSet.Add(new FinalsLink() { Division = p.Division, PoolPlacement = max + 1, Finalstage = max + 1 });
+                }
                 Team t = db.TeamSet.Add(new Team() { Name = name, Pool = p });
                 // Add time intervals and default them to the tournament's time intervals
                 foreach (TimeInterval ti in p.Division.Tournament.TimeIntervals)
@@ -71,9 +76,8 @@ namespace CupPlaner.Controllers
                     db.TimeIntervalSet.Add(timeinterval);
                     t.TimeIntervals.Add(timeinterval);
                 }
-
                 //Clear the schedule
-                sm.DeleteSchedule(p.Division.Tournament.Id);
+                sm.DeleteSchedule(p.Division.Tournament.Id, db);
 
                 db.SaveChanges();
 
@@ -113,7 +117,7 @@ namespace CupPlaner.Controllers
                 db.TimeIntervalSet.RemoveRange(t.TimeIntervals);
 
                 // Clear the schedule
-                sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+                sm.DeleteSchedule(t.Pool.Division.Tournament.Id, db);
 
                 t.Name = name;
                 t.TimeIntervals = tis;
@@ -141,7 +145,7 @@ namespace CupPlaner.Controllers
                 Pool p = db.PoolSet.Find(t.Pool.Id);
 
                 // Clear the schedule
-                sm.DeleteSchedule(t.Pool.Division.Tournament.Id);
+                sm.DeleteSchedule(t.Pool.Division.Tournament.Id, db);
 
                 // Remove dependencies
                 foreach (TimeInterval ti in t.TimeIntervals.ToList())
