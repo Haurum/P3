@@ -85,7 +85,7 @@ namespace CupPlaner.Helpers
                 {
                     if (finalPool.Teams.Count <2)
                     {
-                        throw new Exception();
+                        throw new Exception("not enough teams");
                     }
                     List<Team> teams = new List<Team>();
                     teams.AddRange(finalPool.Teams);
