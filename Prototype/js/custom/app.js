@@ -50,80 +50,76 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function ($rootScope, $http, $routeParams) {
+app.run(function ($rootScope, $http, $routeParams, $q) {
   $rootScope.apiUrl = "http://localhost:50229";
 
   $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentID=" + tournamentID)
       .success(function (deleteData) {
         console.log("Kampprogram slettet")
+
+        console.log("Validere turnering");
+        $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
+          .success(function (validateData) {
+            if (validateData.status === "success") {
+              console.log("Generer gruppespil");
+              $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
+                .success(function (generateGSData) {
+                  if (generateGSData.status === "success") {
+                    console.log("Generer slutspils hold");
+                    $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
+                      .success(function (generateFTData) {
+                        if (generateFTData.status === "success") {
+                          console.log("Generer slutspils kampe");
+                          $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsMatches?tournamentID=" + tournamentID)
+                            .success(function (generateFMData) {
+                              if (generateFMData.status === "success") {
+                                console.log("starter planlægning");
+                                $http.get($rootScope.apiUrl + "/ScheduleManager/Schedule?tournamentID=" + tournamentID + "&fs=" + 11)
+                                  .success(function (eScheduleData) {
+                                    if (eScheduleData.status === "success") {
+                                      console.log("success");
+
+                                    }
+                                    else {
+
+                                    }
+                                  }).error(function () {
+
+                                  })
+                              }
+                              else {
+
+                              }
+                            }).error(function () {
+
+                            })
+                        }
+                        else {
+
+                        }
+                      }).error(function () {
+
+                      })
+                  }
+                  else {
+
+                  }
+                }).error(function () {
+
+                })
+            }
+            else {
+
+            }
+          }).error(function (err) {
+
+          })
       }).error(function () {
 
       })
-    console.log("Validere turnering");
-    $http.get($rootScope.apiUrl + "/Validator/IsScheduleReady?tournamentID=" + tournamentID)
-      .success(function (validateData) {
-        if (validateData.status === "success") {
-          console.log("Generer gruppespil");
-          $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateGroupStage?tournamentID=" + tournamentID)
-            .success(function (generateGSData) {
-              if (generateGSData.status === "success") {
-                console.log("Generer slutspils hold");
-                $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsTeams?tournamentID=" + tournamentID)
-                  .success(function (generateFTData) {
-                    if (generateFTData.status === "success") {
-                      console.log("Generer slutspils kampe");
-                      $http.get($rootScope.apiUrl + "/MatchGeneration/GenerateFinalsMatches?tournamentID=" + tournamentID)
-                        .success(function (generateFMData) {
-                          if (generateFMData.status === "success") {
-                            console.log("success");
-                          }
-                          else {
-
-                          }
-                        }).error(function () {
-
-                        })
-                    }
-                    else {
-
-                    }
-                  }).error(function () {
-
-                  })
-              }
-              else {
-
-              }
-            }).error(function () {
-
-            })
-        }
-        else {
-
-        }
-      }).error(function (err) {
-
-      })
-
-    /*$scope.validator.IsSchduleReady($routeParams.tournamentId);
-     if(isValid)
-     {
-       console.log("hej");
-       Generate($routeParams.tournamentId);
-       if(data.status === "success")
-       {
-         $scope.scheduleAll();
-       }
-       else
-       {
-         $scope.error = "Fejl med generering af kampene. Sletter nu kampprogrammet."
-         $scope.DeleteSchedule($routeParams.tournamentId);
-       }
-     }*/
-
-  };
+  }
 
 });
 
