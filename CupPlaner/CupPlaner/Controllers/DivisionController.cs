@@ -126,7 +126,7 @@ namespace CupPlaner.Controllers
                 d.Tournament = db.TournamentSet.Find(tournamentId);
 
                 d.Name = name;
-
+                
                 // Clear the schedule
                 sm.DeleteSchedule(d.Tournament.Id, db);
 
@@ -192,6 +192,8 @@ namespace CupPlaner.Controllers
         public ActionResult ChangeStructure(int divisionId, int typeId)
         {
             Division d = db.DivisionSet.Find(divisionId);
+            // Clear the schedule
+            sm.DeleteSchedule(d.Tournament.Id, db);
             d.TournamentStructure = (TournamentStructure)typeId;
             db.Entry(d).State = EntityState.Modified;
             db.SaveChanges();

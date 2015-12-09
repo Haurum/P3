@@ -28,7 +28,7 @@ namespace CupPlaner.Helpers.Tests
             //bool succes = sm.scheduleAll(t, FieldSize.ElevenMan, 2);
             //if (!succes)
             //{
-            sm.scheduleAll(t, FieldSize.ElevenMan, sm.MinNumOfFields(t, FieldSize.ElevenMan));
+            sm.scheduleAll(t.Id, FieldSize.ElevenMan, sm.MinNumOfFields(t.Id, FieldSize.ElevenMan));
             //}
         }
     }

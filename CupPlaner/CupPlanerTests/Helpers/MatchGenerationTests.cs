@@ -79,7 +79,7 @@ namespace CupPlaner.Helpers.Tests
         public void generateTest()
         {
             MatchGeneration mg = new MatchGeneration();
-            mg.Generate(1);
+            mg.Generate(11);
         }
 
         [TestMethod()]

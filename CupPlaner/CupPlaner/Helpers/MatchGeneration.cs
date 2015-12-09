@@ -83,6 +83,10 @@ namespace CupPlaner.Helpers
                 List<Pool> finalsPools = d.Pools.Where(x => x.IsAuto).ToList();
                 foreach (Pool finalPool in finalsPools)
                 {
+                    if (finalPool.Teams.Count <2)
+                    {
+                        throw new Exception();
+                    }
                     List<Team> teams = new List<Team>();
                     teams.AddRange(finalPool.Teams);
 
@@ -177,9 +181,7 @@ namespace CupPlaner.Helpers
                             switch (teamsToAdd.Count)
                             {
                                 case 1:
-                                    KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " vinder", Division = d, IsAuto = true });
-                                    teamsToAdd[0].Pool = KOPool;
-                                    break;
+                                    throw new Exception("Not enough teams");
                                 case 2:
                                     KOPool = db.PoolSet.Add(new Pool() { Name = finalPool.Name + " finale", Division = d, IsAuto = true });
                                     break;
