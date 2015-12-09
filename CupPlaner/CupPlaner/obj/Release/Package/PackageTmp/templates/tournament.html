@@ -23,7 +23,7 @@
         </div>
         <div class="modal-body">
           <form>
-            <label class="pull-left">Tilføj banens navn</label>
+            <label class="pull-left">Tilføj rækkens navn</label>
             <input type="text" class="form-control" ng-model="newDivName" placeholder="Række navn.." />
             <br />
             <label class="pull-left">Tid for kamp</label>
@@ -156,9 +156,48 @@
       </div>
     <div ng-if="tournament.isValid" class="col-md-12 add-button">
       <hr />
-      <a ng-click="scheduleTournament()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Planlæg kampprogram
+      <a ng-click="scheduleTournament()" ng-show="!IsScheduled" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Planlæg kampprogram
         <span class="glyphicon glyphicon-list-alt"> </span>
       </a>
+      <div ng-show="IsScheduled">
+        <div class="row">
+          <center>
+          <button ng-click="decDay()" class="btn btn-default">-</button> {{ tournament2.TimeIntervals[chosenDay].Date }} <button ng-click="incDay()" class="btn btn-default">+</button>
+          </center>
+        </div>
+
+        <div class="row">
+          <div class="col-md-1">
+          </div>
+          <div class="col-md-3" ng-repeat="field in tournament2.Fields">
+          </div>
+        </div>
+
+        <div class="row">
+          <div ng-repeat="field in tournament2.Fields track by $index" style="margin-top: 5px;">
+          <div ng-if="$index % 3 == 0 && $index != 0" class="col-md-12 clearfix"></div>
+            <div class="col-md-1" ng-if="$index % 3 == 0" style="margin-top: 63px;">
+              <p ng-repeat="ti in tournament2.TimeIntervals[chosenDay].Times" style="height: 60px; margin-bottom: 0px!important;">{{ ti }}:00</p>
+            </div>
+          
+            
+            <div class="col-md-3">
+              <div class="row">
+                <h2>{{ field.Name }}</h2>
+              </div>
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="row"  ng-repeat="match in field.matches | filter: tournament2.TimeIntervals[chosenDay].Date track by $index">
+                    <div ng-if="$index != 0 && field.matches[$index-1].EndTime != field.matches[$index].StartTime" style="height: {{ GetMinutes(field.matches[$index-1].EndTime, field.matches[$index].StartTime) }}px"></div>
+                    <button style="overflow: hidden; width: 100%; margin-top: 0px; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}</button>
+                  </div>
+                </div>
+                <div class="col-md-4"></div>
+              </div>
+            </div>    
+          </div>
+        </div>
+      </div>
     </div>
     <div class="col-md-4 col-md-offset-4" id="logPanel">
       <div class="panel panel-default">

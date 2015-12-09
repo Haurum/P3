@@ -54,16 +54,17 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
   cfpLoadingBarProvider.parentSelector = '#navbar';
 }]);
 
-app.run(function ($rootScope, $http, $routeParams) {
+app.run(function ($rootScope, $http, $routeParams, $route) {
   $rootScope.apiUrl = "http://sorenlyng.dk";
 
   var deleteSchedule = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
-    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?=tournamentId=" + tournamentID)
+    $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentId=" + tournamentID)
       .success(function (deleteData) {
         if (deleteData.status === "success")
         {
           console.log("Kampprogram slettet")
+          $rootScope.Message = "Kunne ikke gennemfører planlægning. Prøv at tilføje mere tid eller flere baner.";
         }
         else
         {
@@ -128,7 +129,11 @@ app.run(function ($rootScope, $http, $routeParams) {
                                                 if (fScheduleData.status === "success") {
                                                   console.log("Fem mands kampe planlagt");
                                                   $rootScope.Message = "Kampprogram planlagt";
-                                                  IsScheduled = true;                                                  
+                                                  $http.post($rootScope.apiUrl + "/Tournament/ChangeIsScheduled", { tournamentId: tournamentID})
+                                                  .success(function (data) {
+                                                    $rootScope.IsScheduled = true;
+                                                    $route.reload();
+                                                  })                                            
                                                 }
                                                 else {
                                                   if(fScheduleData.errorCode === 1 ){

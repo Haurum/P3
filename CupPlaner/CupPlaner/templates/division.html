@@ -138,9 +138,9 @@
     </div>
   </div>
   
-  <div class="row">
+  <div class="row" ng-if="IsScheduled">
     <div class="col-md-12 text-center">
-      <div ng-if="isScheduled" class="divisionSchedule">
+      <div  class="divisionSchedule">
         <div class="col-md-3">
           <form id="divisionSearch">
             <div class="inner-addon left-addon">
@@ -195,11 +195,6 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      <div ng-if="division.isValid" class="col-md-12 add-button">
-        <a ng-click="schedule()" class="btn btn-primary btn-lg" style="white-space: inherit ! important;">Schedule
-          <span class="glyphicon glyphicon-list-alt"> </span>
-        </a>
       </div>
     </div>
   </div>

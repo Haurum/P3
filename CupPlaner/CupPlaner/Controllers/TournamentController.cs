@@ -60,7 +60,7 @@ namespace CupPlaner.Controllers
                         fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size });
                     }
                 }
-                object obj = new { status = "success", Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields, isValid = FrontendValidation };
+                object obj = new { status = "success", Id = t.Id, Name = t.Name, Password = t.Password, Divisions = divs, TimeIntervals = times, Fields = fields, isValid = FrontendValidation, IsScheduled = t.IsScheduled };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             }
@@ -69,6 +69,17 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "Could not find tournament", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        public ActionResult ChangeIsScheduled(int tournamentId)
+        {
+            Tournament t = db.TournamentSet.Find(tournamentId);
+            t.IsScheduled = true;
+            db.Entry(t).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(new { State = "success" });
+        }
+
         // This function will create a password as a string.
         // Find a password to the tournament in the databse. 
         [HttpPost]
@@ -171,6 +182,10 @@ namespace CupPlaner.Controllers
                                         if (p.Teams.Count > missingFLs)
                                             missingFLs = p.Teams.Count;
                                     }
+                                    for (flIndex = 0; flIndex < missingFLs; flIndex++)
+                                    {
+                                        d.FinalsLinks.Add(new FinalsLink() { Division = d, PoolPlacement = flIndex + 1, Finalstage = flIndex + 1 });
+                                    }
                                 }
 
                                 if (range2.Value == null)
@@ -178,10 +193,6 @@ namespace CupPlaner.Controllers
 
                                 d = new Division() { Tournament = t, Name = range.Value, FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
                                 
-                                for (flIndex = 0; flIndex <= missingFLs; flIndex++)
-                                {
-                                    d.FinalsLinks.Add(new FinalsLink() { Division = d, PoolPlacement = flIndex+1, Finalstage = flIndex+1 });
-                                }
                                 d = db.DivisionSet.Add(d);
                                 missingFLs = 0;
                                 poolStart = i;

@@ -1,4 +1,4 @@
-app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window) {
+app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', '$filter', '$location', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window, $filter, $location) {
   
   $scope.new = false;
   $scope.newDivName = "";
@@ -12,6 +12,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
     $http.get($rootScope.apiUrl + "/Tournament/Details?id=" +  $routeParams.tournamentId)
       .success(function(data)
       {
+        $rootScope.IsScheduled = data.IsScheduled;
         if(data.status === "success"){
           $scope.EmFields = [];
           $scope.OmFields = [];
@@ -70,7 +71,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
       $scope.getDivisions();
         $scope.createNew();
     }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
     });
   };
 
@@ -164,22 +164,69 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
   /* Field end */
 
-    //Function used to show and hide the schedule button.
-  $scope.schedule = function () {
-    $scope.isScheduled = !$scope.isScheduled;
-  }
-
   //Schedule funcion, used to schedule a tournaments matches.
   $scope.scheduleTournament = function () {
     $rootScope.scheduler($routeParams.tournamentId);
   }
 
+  $scope.chosenDay = 0;
+  $scope.incDay = function() {
+    if ($scope.chosenDay < $scope.tournament.TimeIntervals.length-1)
+      $scope.chosenDay++;
+  }
+  $scope.decDay = function() {
+    if ($scope.chosenDay > 0)
+      $scope.chosenDay--;
+  }
+  $scope.getData = function(){
+    $http.get($rootScope.apiUrl + "/Field/GetAllTournamentFields?tournamentId=" + $routeParams.tournamentId).success(function(data) {
+      $scope.tournament2 = data;
+      $scope.days = [];
+      for (var i=0; i < $scope.tournament2.Fields.length; i++) {
+        for (var j=0; j < $scope.tournament2.Fields[i].matches.length; j++) {
+          $scope.tournament2.Fields[i].matches[j].StartTime = $filter('jsonOnlyTime')($scope.tournament2.Fields[i].matches[j].StartTime);
+          $scope.tournament2.Fields[i].matches[j].EndTime = $filter('jsonOnlyTime')($scope.tournament2.Fields[i].matches[j].EndTime);
+          $scope.tournament2.Fields[i].matches[j].Date = $filter('jsonOnlyDate')($scope.tournament2.Fields[i].matches[j].Date);
+          if (j > 0)
+          {
+            if ($scope.tournament2.Fields[i].matches[j-1].EndTime != $scope.tournament2.Fields[i].matches[j].StartTime)
+            {
+              var eTime = new Date, time = $scope.tournament2.Fields[i].matches[j-1].EndTime.split(/\:|\-/g);
+              eTime.setHours(time[0]);
+              eTime.setMinutes(time[1]);
+              var sTime = new Date, time = $scope.tournament2.Fields[i].matches[j].StartTime.split(/\:|\-/g);
+              sTime.setHours(time[0]);
+              sTime.setMinutes(time[1]);
+              $scope.tournament2.Fields[i].matches[j].Pause = (sTime - eTime) / 1000 / 60 + 'px';
+            }
+          }
+        }
+      }
+      for (var i=0; i < $scope.tournament2.TimeIntervals.length; i++) {
+        $scope.tournament2.TimeIntervals[i].StartTime = $filter('jsonOnlyTime')($scope.tournament2.TimeIntervals[i].StartTime);
+        $scope.tournament2.TimeIntervals[i].EndTime = $filter('jsonOnlyTime')($scope.tournament2.TimeIntervals[i].EndTime);
+        $scope.tournament2.TimeIntervals[i].Date = $filter('jsonOnlyDate')($scope.tournament2.TimeIntervals[i].Date);
+      }
+    })
+  }   
+  $scope.getData(); 
+
+  $scope.GetMinutes = function(endTime, startTime) {
+    console.log(endTime);
+    var eTime = new Date, time = endTime.split(/\:|\-/g);
+    eTime.setHours(time[0]);
+    eTime.setMinutes(time[1]);
+    var sTime = new Date, time = startTime.split(/\:|\-/g);
+    sTime.setHours(time[0]);
+    sTime.setMinutes(time[1]);
+    return { height: (sTime - eTime) / 1000 / 60 + 'px' };
+  }
 
 }]);
 
 //ModalInstanceController, the functions used to add new divisions,
 //added through the modal.
-app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
+app.controller('ModalInstanceCtrl', ['$scope', '$rootScope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $rootScope, $uibModalInstance, $http, $routeParams) {
 
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
@@ -203,7 +250,7 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
           $scope.newDivName = "";
           $scope.newMatchDuration = "";
           $scope.chooseField = "";
-          $scope.getDivisions();
+          //$scope.getDivisions();
         }
         else {
           $scope.error = "Række ikke tilføjet";
@@ -230,7 +277,6 @@ app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$r
     $uibModalInstance.dismiss('cancel');
   };
 
-  $scope.isScheduled = false;
 
 }]);
 
