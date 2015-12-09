@@ -40,6 +40,10 @@ app.config(['$routeProvider', function ($routeProvider) {
       templateUrl: 'templates/schedule.html',
       controller: 'ScheduleController'
     }).
+    when('/tutorial', {
+      templateUrl: 'templates/tutorial.html',
+      controller: 'HomeController'
+    }).
     otherwise({
       redirectTo: '/'
     });
