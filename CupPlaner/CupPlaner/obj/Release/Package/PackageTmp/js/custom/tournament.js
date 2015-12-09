@@ -1,4 +1,4 @@
-app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', '$filter', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window, $filter) {
+app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$http', '$routeParams', '$uibModal', '$window', '$filter', '$location', function ($scope, $rootScope, $location, $http, $routeParams, $uibModal, $window, $filter, $location) {
   
   $scope.new = false;
   $scope.newDivName = "";
@@ -187,6 +187,19 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
           $scope.tournament2.Fields[i].matches[j].StartTime = $filter('jsonOnlyTime')($scope.tournament2.Fields[i].matches[j].StartTime);
           $scope.tournament2.Fields[i].matches[j].EndTime = $filter('jsonOnlyTime')($scope.tournament2.Fields[i].matches[j].EndTime);
           $scope.tournament2.Fields[i].matches[j].Date = $filter('jsonOnlyDate')($scope.tournament2.Fields[i].matches[j].Date);
+          if (j > 0)
+          {
+            if ($scope.tournament2.Fields[i].matches[j-1].EndTime != $scope.tournament2.Fields[i].matches[j].StartTime)
+            {
+              var eTime = new Date, time = $scope.tournament2.Fields[i].matches[j-1].EndTime.split(/\:|\-/g);
+              eTime.setHours(time[0]);
+              eTime.setMinutes(time[1]);
+              var sTime = new Date, time = $scope.tournament2.Fields[i].matches[j].StartTime.split(/\:|\-/g);
+              sTime.setHours(time[0]);
+              sTime.setMinutes(time[1]);
+              $scope.tournament2.Fields[i].matches[j].Pause = (sTime - eTime) / 1000 / 60 + 'px';
+            }
+          }
         }
       }
       for (var i=0; i < $scope.tournament2.TimeIntervals.length; i++) {
@@ -198,10 +211,15 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   }   
   $scope.getData(); 
 
-  $scope.GetMinutes = function(endTime, startTime)
-  {
-    console.log(new Date(endTime).getMinutes() - new Date(startTime).getMinutes());
-    return (new Date(endTime).getMinutes() - new Date(startTime).getMinutes());
+  $scope.GetMinutes = function(endTime, startTime) {
+    console.log(endTime);
+    var eTime = new Date, time = endTime.split(/\:|\-/g);
+    eTime.setHours(time[0]);
+    eTime.setMinutes(time[1]);
+    var sTime = new Date, time = startTime.split(/\:|\-/g);
+    sTime.setHours(time[0]);
+    sTime.setMinutes(time[1]);
+    return { height: (sTime - eTime) / 1000 / 60 + 'px' };
   }
 
 }]);
