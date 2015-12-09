@@ -144,6 +144,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchGenerationController.cs" />
     <Compile Include="Controllers\PoolController.cs" />
+    <Compile Include="Controllers\ScheduleManagerController.cs" />
     <Compile Include="Controllers\TeamController.cs" />
     <Compile Include="Controllers\TournamentController.cs" />
     <Compile Include="Controllers\ValidatorController.cs" />
@@ -277,6 +278,7 @@
     <Folder Include="Views\FinalsLink\" />
     <Folder Include="Views\MatchGeneration\" />
     <Folder Include="Views\Pool\" />
+    <Folder Include="Views\ScheduleManager\" />
     <Folder Include="Views\Team\" />
     <Folder Include="Views\Tournament\" />
     <Folder Include="Views\Validator\" />
