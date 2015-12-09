@@ -179,7 +179,7 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
 
 //ModalInstanceController, the functions used to add new divisions,
 //added through the modal.
-app.controller('ModalInstanceCtrl', ['$scope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $uibModalInstance, $http, $routeParams) {
+app.controller('ModalInstanceCtrl', ['$scope','$rootScope', '$uibModalInstance', '$http', '$routeParams', function ($scope, $rootScope, $uibModalInstance, $http, $routeParams) {
 
     $scope.newDivName = "";
     $scope.newMatchDuration = "";
