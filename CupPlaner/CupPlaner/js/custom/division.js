@@ -21,7 +21,6 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
       if(data.status === "success"){
         $scope.division = data;
         $scope.finalsType = $scope.finalsTypes[data.FinalsStage];
-        console.log($scope.finalsType);
         for(var i = 0; i < $scope.division.Matches.length; i++)
         {
           $scope.division.Matches[i].StartTime = new Date(parseInt($scope.division.Matches[i].StartTime.substr(6)));
@@ -31,8 +30,9 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
         for (var i = 0; i < $scope.division.FinalsLinks.length; i++)
         {
           $scope.division.letters.push($scope.allLetters[i]);
-        }
-      } else {
+        } 
+      }
+      else {
         $scope.error = "Kunne ikke læse række";
       }
     }).error(function(err) 

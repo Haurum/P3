@@ -29,6 +29,7 @@ namespace CupPlaner.Controllers
                 List<object> finalslinks = new List<object>();
 
                 bool FrontendValidation = validator.IsScheduleReady(tourny.Id);
+                bool enoughTeams = false;
 
                 // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -39,6 +40,10 @@ namespace CupPlaner.Controllers
                     foreach (Pool p in d.Pools)
                     {
                         teams = new List<object>();
+                        if (p.Teams.Count >= 2)
+                        {
+                            enoughTeams = true;
+                        }
 
                         foreach (Team t in p.Teams)
                         {
@@ -75,7 +80,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation, isTeamsValid = enoughTeams };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             /*}
