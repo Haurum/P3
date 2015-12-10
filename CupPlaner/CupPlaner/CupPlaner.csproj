@@ -139,7 +139,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\DivisionController.cs" />
-    <Compile Include="Controllers\FieldController.cs" />
     <Compile Include="Controllers\FinalsLinkController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchGenerationController.cs" />
@@ -676,7 +675,6 @@
     <Content Include="templates\addTournament.html" />
     <Content Include="templates\division.html" />
     <Content Include="templates\editTournament.html" />
-    <Content Include="templates\field.html" />
     <Content Include="templates\finalStage.html" />
     <Content Include="templates\home.html" />
     <Content Include="templates\pool.html" />
@@ -709,7 +707,6 @@
     <Folder Include="Models\" />
     <Folder Include="Views\Default\" />
     <Folder Include="Views\Division\" />
-    <Folder Include="Views\Field\" />
     <Folder Include="Views\FinalsLink\" />
     <Folder Include="Views\MatchGeneration\" />
     <Folder Include="Views\Pool\" />
