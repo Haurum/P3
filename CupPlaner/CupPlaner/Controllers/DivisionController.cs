@@ -29,6 +29,7 @@ namespace CupPlaner.Controllers
                 List<object> finalslinks = new List<object>();
 
                 bool FrontendValidation = validator.IsScheduleReady(tourny.Id);
+                bool enoughTeams = false;
 
                 // For finalstage
                 string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -39,6 +40,10 @@ namespace CupPlaner.Controllers
                     foreach (Pool p in d.Pools)
                     {
                         teams = new List<object>();
+                        if (p.Teams.Count >= 2)
+                        {
+                            enoughTeams = true;
+                        }
 
                         foreach (Team t in p.Teams)
                         {
@@ -60,7 +65,7 @@ namespace CupPlaner.Controllers
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
 
-                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
+                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, /*FieldName = m.Field.Name,*/ Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }
                     }
@@ -75,7 +80,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-                object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation };
+                object obj = new { status = "success", Id = d.Id, Name = d.Name, FinalsStage = d.TournamentStructure, Pools = pools, Teams = teams, FieldSize = d.FieldSize, MatchDuration = d.MatchDuration, Matches = matches, FinalsLinks = finalslinks, isValid = FrontendValidation, isTeamsValid = enoughTeams };
 
                 return Json(obj, JsonRequestBehavior.AllowGet);
             /*}
@@ -101,6 +106,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
+
+                sm.DeleteSchedule(t.Id, db);
+
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
 
                 db.SaveChanges();

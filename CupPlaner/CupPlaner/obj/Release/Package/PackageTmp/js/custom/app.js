@@ -55,7 +55,7 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 }]);
 
 app.run(function ($rootScope, $http, $routeParams, $route) {
-  $rootScope.apiUrl = "http://sorenlyng.dk";
+  $rootScope.apiUrl = "http://localhost:50229";
 
   var deleteSchedule = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
@@ -64,7 +64,7 @@ app.run(function ($rootScope, $http, $routeParams, $route) {
         if (deleteData.status === "success")
         {
           console.log("Kampprogram slettet")
-          $rootScope.Message = "Kunne ikke gennemfører planlægning. Prøv at tilføje mere tid eller flere baner.";
+          $rootScope.Message = "Kunne ikke gennemfører planlægning. Du kan evt. prøve at tilføje mere tid eller flere baner.";
         }
         else
         {

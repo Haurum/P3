@@ -438,7 +438,7 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 //EditTournamentController has the same functionalities as the create controller,
 //but post-requests sends data along with it, to edit a tournament which has already
 //been created.
-app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$location', '$routeParams', function ($scope, $rootScope, $http, $location, $routeParams) {
+app.controller('EditTournamentController', ['$scope', '$rootScope', '$window', '$http', '$location', '$routeParams', function ($scope, $rootScope, $window, $http, $location, $routeParams) {
 
   $http.get($rootScope.apiUrl + "/Tournament/Details?id=" + $routeParams.tournamentId).success(function(data){
     
@@ -548,20 +548,24 @@ app.controller('EditTournamentController', ['$scope', '$rootScope', '$http', '$l
                 startTimes: $scope.startDateTimes,
                 endTimes: $scope.endDateTimes
               }
-              $http.post($rootScope.apiUrl + "/Tournament/Edit/", tournamentData).success(function(Data)
-              {
-                if(Data.message === "Password already exists"){
-                $scope.error = "Adgangskoden eksisterer allerede";
-                }
-                if(Data.status === "success"){
-                  $location.path("tournament/" + $routeParams.tournamentId);
-                } else {
-                  $scope.error = "Kunne ikke redigere turnering";
-                }
-              }).error(function(err)
-              {
-                $scope.error = "Kunne ikke uploade til serveren";
-              });
+              var save = $window.confirm('Ved at gemme denne data, vil kampprogrammet slettes.');
+              if (save) {
+                  $http.post($rootScope.apiUrl + "/Tournament/Edit/", tournamentData).success(function(Data)
+                  {
+                    if(Data.message === "Password already exists"){
+                    $scope.error = "Adgangskoden eksisterer allerede";
+                    }
+                    if(Data.status === "success"){
+                      $location.path("tournament/" + $routeParams.tournamentId);
+                    } else {
+                      $scope.error = "Kunne ikke redigere turnering";
+                    }
+                  }).error(function(err)
+                  {
+                    $scope.error = "Kunne ikke uploade til serveren";
+                  });
+              }
+              
             }
           }  
         }   

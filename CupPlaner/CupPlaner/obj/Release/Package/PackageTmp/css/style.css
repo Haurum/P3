@@ -35,6 +35,10 @@
   margin-bottom: 30px;
 }
 
+#infoMsg {
+  margin-top: 20px;
+}
+
 #logPanel {
   padding-top: 10px;
   padding-bottom: 10px;
