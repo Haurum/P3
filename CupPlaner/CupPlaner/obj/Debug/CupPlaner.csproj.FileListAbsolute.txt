@@ -160,6 +160,5 @@ C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.D
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\System.Web.WebPages.Razor.xml
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Antlr3.Runtime.pdb
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
-C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.csprojResolveAssemblyReference.cache
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.dll
 C:\Users\cdann\Documents\GitHub\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb

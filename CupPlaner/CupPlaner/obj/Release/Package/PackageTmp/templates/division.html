@@ -44,6 +44,14 @@
       </div>
     </div>
   </div>
+  <div ng-if="division.Pools.Teams > 0" class="col-md-12 text-center">
+    <div class="alert alert-info alert-dismissable" role="alert" id="infoMsg">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="errMsg()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <p>Husk at indstille slutspillet for rækken længere nede på siden, når du har tilføjet de ønskede antal hold</p>
+    </div>
+  </div>
   <div class="row row-eq-height">
     <div class="btn-group-vertical col-md-12" role="group">
     <div >
