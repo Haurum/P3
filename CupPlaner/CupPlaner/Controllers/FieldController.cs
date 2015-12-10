@@ -53,7 +53,7 @@ namespace CupPlaner.Controllers
                             matches = new List<object>();
                             foreach (Match m in f.Matches.OrderBy(match => match.StartTime))
                             {
-                                matches.Add(new { Id = m.Id, StartTime = m.StartTime, EndTime = m.StartTime.AddMinutes(m.Duration), Duration = m.Duration, Date = m.StartTime.Date, Nr = m.Number, HomeTeam = new { Id = m.Teams.First().Id, Name = m.Teams.First().Name }, AwayTeam = new { Id = m.Teams.Last().Id, Name = m.Teams.Last().Name } });
+                                matches.Add(new { Id = m.Id, StartTime = m.StartTime, EndTime = m.StartTime.AddMinutes(m.Duration), Duration = m.Duration, Date = m.StartTime.Date, Nr = m.Number, Pool = m.TournamentStage.Pool.Name, HomeTeam = new { Id = m.Teams.First().Id, Name = m.Teams.First().Name }, AwayTeam = new { Id = m.Teams.Last().Id, Name = m.Teams.Last().Name } });
                             }
                             fields.Add(new { Id = f.Id, Name = f.Name, fieldSize = f.Size, matches = matches });
                         //}

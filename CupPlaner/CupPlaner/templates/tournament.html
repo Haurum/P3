@@ -195,7 +195,7 @@
                   <div class="row"  ng-repeat="match in field.matches | filter: tournament2.TimeIntervals[chosenDay].Date track by $index">
                     <!--<div ng-if="$index != 0 && field.matches[$index-1].EndTime != field.matches[$index].StartTime" ng-style="GetMinutes(field.matches[$index-1].EndTime, field.matches[$index].StartTime)"></div>-->
                     <div ng-if="match.Pause" style="height: {{ match.Pause }}"></div>
-                    <button style="overflow: hidden; width: 100%; margin-top: 0px; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}</button>
+                    <button style="overflow: hidden; width: 100%; margin-top: 0px; height: {{ match.Duration }}px;" popover-title="{{ match.HomeTeam.Name }} - {{ match.AwayTeam.Name }}" uib-popover="{{ match.StartTime }} - {{ match.EndTime }}" popover-trigger="mouseenter" type="button" class="btn btn-default">{{ match.Nr }}: {{ match.Pool }}</button>
                   </div>
                 </div>
                 <div class="col-md-4"></div>
