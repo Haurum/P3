@@ -185,7 +185,7 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
             startTimes: $scope.startDateTimes,
             endTimes: $scope.endDateTimes
           }
-          $http.post("http://localhost:50229/Team/Edit/", teamData)
+          $http.post($rootScope.apiUrl + "/Team/Edit/", teamData)
           .success(function(Data)
           {
             if(Data.status === "success"){
