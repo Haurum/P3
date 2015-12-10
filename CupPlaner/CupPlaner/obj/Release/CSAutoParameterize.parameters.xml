@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <parameters>
   <parameter name="LocalMySqlServer-Web.config Connection String" description="LocalMySqlServer Connection String used in web.config by the application to access the database." defaultValue="" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\Søren\\Desktop\\P3\\CupPlaner\\CupPlaner\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='LocalMySqlServer']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Mark\ Haurum\\Documents\\UNI\\3\.\ Semester\\P3\\CupPlaner\\CupPlaner\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='LocalMySqlServer']/@connectionString" />
   </parameter>
   <parameter name="CupDBContainer-Web.config Connection String" description="CupDBContainer Connection String used in web.config by the application to access the database." defaultValue="metadata=res://*/CupDB.csdl|res://*/CupDB.ssdl|res://*/CupDB.msl;provider=MySql.Data.MySqlClient;provider connection string=&quot;server=mysql40.unoeuro.com;user id=sorenlyng_dk;password=Sorenergud;persistsecurityinfo=True;database=sorenlyng_dk_db&quot;" tags="SqlConnectionString">
-    <parameterEntry kind="XmlFile" scope="C:\\Users\\Søren\\Desktop\\P3\\CupPlaner\\CupPlaner\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CupDBContainer']/@connectionString" />
+    <parameterEntry kind="XmlFile" scope="C:\\Users\\Mark\ Haurum\\Documents\\UNI\\3\.\ Semester\\P3\\CupPlaner\\CupPlaner\\obj\\Release\\Package\\PackageTmp\\Web\.config$" match="/configuration/connectionStrings/add[@name='CupDBContainer']/@connectionString" />
   </parameter>
 </parameters>

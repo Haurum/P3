@@ -667,7 +667,7 @@
     <Content Include="js\scheduler\sources\locale\recurring\locale_recurring_sv.js.map" />
     <Content Include="js\scheduler\sources\locale\recurring\locale_recurring_ua.js.map" />
     <Content Include="Images\Thumbs.db" />
-    <None Include="Properties\PublishProfiles\Sorenlyng.pubxml" />
+    <None Include="Properties\PublishProfiles\Sorenlyng.dk.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

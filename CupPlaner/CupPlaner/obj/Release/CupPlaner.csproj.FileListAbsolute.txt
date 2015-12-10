@@ -96,3 +96,6 @@ C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\bin\Newtonsoft.Json.xml
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Release\CupPlaner.csprojResolveAssemblyReference.cache
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Release\CupPlaner.dll
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlaner\obj\Release\CupPlaner.pdb
+C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Excel.dll
+C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\ICSharpCode.SharpZipLib.dll
+C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Excel.pdb

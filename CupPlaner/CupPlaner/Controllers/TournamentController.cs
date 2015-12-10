@@ -215,17 +215,18 @@ namespace CupPlaner.Controllers
                             }
 
                         }
-                        t.Name = name;
-                        t.Password = password;
-                        t.TimeIntervals = tis;
-                        t = db.TournamentSet.Add(t);
-                        db.SaveChanges();
-
                         excelReader.Close();
-                        return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
                     }
-                    return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
+                    t.Name = name;
+                    t.Password = password;
+                    t.TimeIntervals = tis;
+                    t = db.TournamentSet.Add(t);
+                    db.SaveChanges();
+                    
+                    return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
+                    
                 }
+                return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
             //}
             /*catch (Exception ex)
             {
