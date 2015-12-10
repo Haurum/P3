@@ -60,7 +60,7 @@ namespace CupPlaner.Controllers
                                 Team team1 = m.Teams.ToList()[0];
                                 Team team2 = m.Teams.ToList()[1];
 
-                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, FieldName = m.Field.Name, Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
+                                matches.Add(new { Id = m.Id, Number = m.Number, StartTime = m.StartTime, /*FieldName = m.Field.Name,*/ Pool = new { Id = team1.Pool.Id, Name = team1.Pool.Name }, Team1 = new { name = team1.Name, Id = team1.Id }, Team2 = new { name = team2.Name, Id = team2.Id } });
                             }
                         }
                     }
@@ -101,6 +101,9 @@ namespace CupPlaner.Controllers
             try
             {
                 Tournament t = db.TournamentSet.Find(tournamentId);
+
+                sm.DeleteSchedule(t.Id, db);
+
                 Division d = db.DivisionSet.Add(new Division() { Name = name, FieldSize = FieldSize, MatchDuration = MatchDuration, Tournament = t });
 
                 db.SaveChanges();

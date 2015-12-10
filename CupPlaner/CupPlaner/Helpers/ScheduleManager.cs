@@ -185,10 +185,10 @@ namespace CupPlaner.Helpers
                                 }
                                 else
                                 {
-                                    /*done = true;
+                                    done = true;
                                     IsScheduled = true;
-                                    continue;*/
-                                    return false;
+                                    continue;
+                                    //return false;
                                 }
                             }
                             foreach (Match match in allUnscheduledMatches.Where(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue))
