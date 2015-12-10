@@ -64,7 +64,7 @@ app.run(function ($rootScope, $http, $routeParams, $route) {
         if (deleteData.status === "success")
         {
           console.log("Kampprogram slettet")
-          $rootScope.Message = "Kunne ikke gennemfører planlægning. Prøv at tilføje mere tid eller flere baner.";
+          $rootScope.Message = "Kunne ikke gennemfører planlægning. Du kan evt. prøve at tilføje mere tid eller flere baner.";
         }
         else
         {
