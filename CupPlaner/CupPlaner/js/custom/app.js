@@ -55,7 +55,7 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 }]);
 
 app.run(function ($rootScope, $http, $routeParams, $route) {
-  $rootScope.apiUrl = "http://sorenlyng.dk";
+  $rootScope.apiUrl = "http://localhost:50229";
 
   var deleteSchedule = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");

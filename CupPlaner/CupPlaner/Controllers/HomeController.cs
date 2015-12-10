@@ -47,7 +47,7 @@ namespace CupPlaner.Controllers
             return Json(new { Name = ts.First().Name }, JsonRequestBehavior.AllowGet);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         public ActionResult ExcelTest(HttpPostedFileBase file = null)
         {
             List<string> divisions = new List<string>();
@@ -124,6 +124,6 @@ namespace CupPlaner.Controllers
 
             return Json(new { State = "Success" }, JsonRequestBehavior.AllowGet);
             
-        }
+        }*/
     }
 }

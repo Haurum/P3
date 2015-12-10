@@ -8,8 +8,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using Excel = Microsoft.Office.Interop.Excel;
+//using Excel = Microsoft.Office.Interop.Excel;
+using Excel;
 using CupPlaner.Helpers;
+using System.Data;
 
 namespace CupPlaner.Controllers
 {
@@ -97,7 +99,145 @@ namespace CupPlaner.Controllers
         // This function will have name, password starttime and endtime.
         // 
 
-        [HttpPost]
+        public ActionResult Create(string name, string password, string startTimes, string endTimes)
+        {
+            //try
+            //{
+                if (!db.TournamentSet.Any(x => x.Password == password))
+                {
+                    Tournament t = new Tournament();
+                    List<TimeInterval> tis = new List<TimeInterval>();
+
+                    HttpPostedFileBase file = null;
+                    int poolStart = 1;
+
+                    List<DateTime> startTimesList = startTimes.Split(',').Select(DateTime.Parse).ToList();
+                    List<DateTime> endTimesList = endTimes.Split(',').Select(DateTime.Parse).ToList();
+                    for (int i = 0; i < startTimesList.Count; i++)
+                    {
+                        tis.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
+                        db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
+                    }
+
+                    if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
+                    {
+                        file = Request.Files[0];
+                        IExcelDataReader excelReader;
+                        switch (Path.GetExtension(file.FileName))
+                        {
+                            case ".xlsx":
+                                excelReader = ExcelReaderFactory.CreateOpenXmlReader(file.InputStream);
+                                break;
+                            case ".xls":
+                                excelReader = ExcelReaderFactory.CreateBinaryReader(file.InputStream);
+                                break;
+                            default:
+                                excelReader = ExcelReaderFactory.CreateBinaryReader(file.InputStream);
+                                break;
+                        }
+
+                        DataSet result = excelReader.AsDataSet();
+
+                        List<string> divisions = new List<string>();
+                        List<string> pools = new List<string>();
+                        List<string> teams = new List<string>();
+
+                        Division d = new Division();
+                        Pool p = new Pool();
+
+                        int missingFLs = 0;
+                        int flIndex = 0;
+
+                        /*// extract only the filename
+                        var fileName = Path.GetFileName(file.FileName);
+                        // store the file inside ~/App_Data/uploads folder
+                        var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);*/
+
+
+                        t.Name = result.Tables[0].Rows[0][0].ToString();
+                        object[] stopRow = new object[1];
+                        stopRow[0] = "Stop";
+                        result.Tables[0].Rows.Add(stopRow);
+
+                        for (int i = 1; i < result.Tables[0].Rows.Count; i++)
+                        {
+                            //if (result.Tables[0].Rows[i][0].ToString() != null || result.Tables[0].Rows[i][1].ToString() == null)
+                            if (!string.IsNullOrEmpty(result.Tables[0].Rows[i][0].ToString()) || string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
+                            {
+                                if (t.Divisions.Count > 0)
+                                {
+                                    for (int j = poolStart; j < i; j++)
+                                    {
+
+                                        p = new Pool() { Division = d, Name = result.Tables[0].Rows[j][1].ToString(), IsAuto = false };
+
+                                        for (int teamIndex = 2; teamIndex < 25; teamIndex++)
+                                        {
+                                            try
+                                            {
+                                                string teamName = result.Tables[0].Rows[j][teamIndex].ToString();
+                                                if (!string.IsNullOrEmpty(result.Tables[0].Rows[j][teamIndex].ToString()))
+                                                {
+
+                                                    Team newTeam = new Team() { Name = teamName, Pool = p, IsAuto = false, };
+                                                    foreach (TimeInterval ti in tis)
+                                                    {
+                                                        newTeam.TimeIntervals.Add(db.TimeIntervalSet.Add(new TimeInterval { StartTime = ti.StartTime, EndTime = ti.EndTime }));
+                                                    }
+                                                    p.Teams.Add(newTeam);
+                                                    newTeam = db.TeamSet.Add(newTeam);
+                                                }
+                                                else
+                                                    break;
+                                            } catch(Exception e)
+                                            {
+                                                break;
+                                            }
+                                            
+                                        }
+                                        p = db.PoolSet.Add(p);
+                                        if (p.Teams.Count > missingFLs)
+                                            missingFLs = p.Teams.Count;
+                                    }
+                                    for (flIndex = 0; flIndex < missingFLs; flIndex++)
+                                    {
+                                        d.FinalsLinks.Add(new FinalsLink() { Division = d, PoolPlacement = flIndex + 1, Finalstage = flIndex + 1 });
+                                    }
+                                }
+
+                                if (string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
+                                    break;
+
+                                d = new Division() { Tournament = t, Name = result.Tables[0].Rows[i][0].ToString(), FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
+                                d = db.DivisionSet.Add(d);
+                                missingFLs = 0;
+                                poolStart = i;
+                            }
+
+                        }
+                        t.Name = name;
+                        t.Password = password;
+                        t.TimeIntervals = tis;
+                        t = db.TournamentSet.Add(t);
+                        db.SaveChanges();
+
+                        excelReader.Close();
+                        return Json(new { status = "success", message = "New tournament added", id = t.Id }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
+                }
+            //}
+            /*catch (Exception ex)
+            {
+                return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
+            }*/
+            return Json(new { status = "error", message = "New tournament not added" }, JsonRequestBehavior.AllowGet);
+        }
+
+        
+
+
+        /*[HttpPost]
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
             try
@@ -219,9 +359,11 @@ namespace CupPlaner.Controllers
             {
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
-        }
+        }*/
+         
+          
         //This function will export the scheduled tournament plan to an excel file
-        public ActionResult ExportExcel(int tournamentId)
+        /*public ActionResult ExportExcel(int tournamentId)
         {
             Microsoft.Office.Interop.Excel.Application oXL;
             Microsoft.Office.Interop.Excel._Workbook workbook;
@@ -494,7 +636,7 @@ namespace CupPlaner.Controllers
             //return Content(oWB.ToString(), );
             
             return File(Path.Combine(Server.MapPath("~/App_Data/ExcelExport"), fileName), "application/ms-excel");
-        }
+        }*/
 
         // POST: Tournament/Edit/5
         // Find a id to the tournament in the database.
