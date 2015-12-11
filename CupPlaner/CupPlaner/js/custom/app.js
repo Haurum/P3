@@ -55,8 +55,9 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 }]);
 
 app.run(function ($rootScope, $http, $routeParams, $route) {
-  $rootScope.apiUrl = "http://sorenlyng.dk";
+  $rootScope.apiUrl = "http://localhost:50229";
 
+  //Function set as an variable to delete the scheduled used in the scheduler function.
   var deleteSchedule = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
     $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentId=" + tournamentID)
@@ -64,7 +65,6 @@ app.run(function ($rootScope, $http, $routeParams, $route) {
         if (deleteData.status === "success")
         {
           console.log("Kampprogram slettet")
-          $rootScope.Message = "Kunne ikke gennemfører planlægning. Du kan evt. prøve at tilføje mere tid eller flere baner.";
         }
         else
         {
@@ -75,11 +75,16 @@ app.run(function ($rootScope, $http, $routeParams, $route) {
       })
   }
 
+  //the schduler function is making many requests for the back end, nested in each other.
+  //The different console.logs are used to see where the program got to, if it failed.
+  //The $rootScope.Message is printed out in the front end sp the user have an idea of what the system are doing.
+  //If anny of the requests fails, the schedule will be deleted. 
   $rootScope.scheduler = function (tournamentID) {
     console.log("Sletter nuværende kampprogram");
     $rootScope.Message = "Sletter nuværende kampprogram";
     $http.get($rootScope.apiUrl + "/ScheduleManager/DeleteSchedule?tournamentId=" + tournamentID)
       .success(function (deleteData) {
+        $rootScope.isScheduling = true;
         console.log("Kampprogram slettet")
         $rootScope.Message = "Kampprogram slettet";
         console.log("Validere turnering");
@@ -264,6 +269,7 @@ app.run(function ($rootScope, $http, $routeParams, $route) {
       }).error(function () {
 
       })
+      $rootScope.isScheduling = false;
     }
 });
 

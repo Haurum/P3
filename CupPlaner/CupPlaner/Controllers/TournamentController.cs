@@ -10,6 +10,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 //using Excel = Microsoft.Office.Interop.Excel;
 using Excel;
+using OfficeOpenXml;
 using CupPlaner.Helpers;
 using System.Data;
 
@@ -27,6 +28,7 @@ namespace CupPlaner.Controllers
         // If there doesnt exist a tournament it will return a JSON object and get a error.
         public ActionResult Details(int id)
         {
+
             try
             {
                 Validator validator = new Validator();
@@ -101,8 +103,8 @@ namespace CupPlaner.Controllers
 
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
-            //try
-            //{
+            try
+            {
                 if (!db.TournamentSet.Any(x => x.Password == password))
                 {
                     Tournament t = new Tournament();
@@ -148,12 +150,6 @@ namespace CupPlaner.Controllers
                         int missingFLs = 0;
                         int flIndex = 0;
 
-                        /*// extract only the filename
-                        var fileName = Path.GetFileName(file.FileName);
-                        // store the file inside ~/App_Data/uploads folder
-                        var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);*/
-
-
                         t.Name = result.Tables[0].Rows[0][0].ToString();
                         object[] stopRow = new object[1];
                         stopRow[0] = "Stop";
@@ -161,7 +157,6 @@ namespace CupPlaner.Controllers
 
                         for (int i = 1; i < result.Tables[0].Rows.Count; i++)
                         {
-                            //if (result.Tables[0].Rows[i][0].ToString() != null || result.Tables[0].Rows[i][1].ToString() == null)
                             if (!string.IsNullOrEmpty(result.Tables[0].Rows[i][0].ToString()) || string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
                             {
                                 if (t.Divisions.Count > 0)
@@ -227,12 +222,11 @@ namespace CupPlaner.Controllers
                     
                 }
                 return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
-            //}
-            /*catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }*/
-            return Json(new { status = "error", message = "New tournament not added" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         
@@ -361,7 +355,206 @@ namespace CupPlaner.Controllers
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
             }
         }*/
-         
+
+        public ActionResult ExportExcel(int tournamentId)
+        {
+            
+            Tournament t = db.TournamentSet.Find(tournamentId);
+            FileInfo exportFile = new FileInfo(Path.Combine(Server.MapPath("~/App_Data/ExcelExport"), t.Id.ToString() + ".xls"));
+            ExcelPackage pck = new ExcelPackage(exportFile);
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVXYZ";
+
+            try
+            {
+                var cupSheet = pck.Workbook.Worksheets.Add("Cup");
+
+                //Add table headers going cell by cell.
+                cupSheet.Cells["A1"].Value = "CID";
+                cupSheet.Cells["B1"].Value = "MD5ID";
+                cupSheet.Cells["C1"].Value = "Navn";
+                cupSheet.Cells["D1"].Value = "Start";
+                cupSheet.Cells["E1"].Value = "PointForSejr";
+                cupSheet.Cells["F1"].Value = "BrugKontakter";
+                cupSheet.Cells["G1"].Value = "KampSortering";
+                cupSheet.Cells["H1"].Value = "BeregningsMetode";
+                
+                cupSheet.Cells[chars[0] + "2"].Value = "892";
+                cupSheet.Cells[chars[1] + "2"].Value = "xxxx";
+                cupSheet.Cells[chars[2] + "2"].Value = t.Name;
+                cupSheet.Cells[chars[3] + "2"].Value = t.TimeIntervals.First().StartTime.ToString();
+                cupSheet.Cells[chars[4] + "2"].Value = "xxxx";
+                cupSheet.Cells[chars[5] + "2"].Value = "0";
+                cupSheet.Cells[chars[6] + "2"].Value = "xxxx";
+                cupSheet.Cells[chars[7] + "2"].Value = "FBCADE";
+
+                var fieldsSheet = pck.Workbook.Worksheets.Add("Spillesteder");
+
+                fieldsSheet.Cells["A1"].Value = "SID";
+                fieldsSheet.Cells["B1"].Value = "CID";
+                fieldsSheet.Cells["C1"].Value = "Navn";
+                fieldsSheet.Cells["D1"].Value = "Adresse";
+
+                int fieldsIndex = 2;
+                foreach (Field f in t.Fields)
+                {   
+                    fieldsSheet.Cells[chars[0] + fieldsIndex.ToString()].Value = f.Id.ToString();
+                    fieldsSheet.Cells[chars[1] + fieldsIndex.ToString()].Value = t.Id.ToString();
+                    fieldsSheet.Cells[chars[2] + fieldsIndex.ToString()].Value = f.Name;
+                    fieldsSheet.Cells[chars[3] + fieldsIndex.ToString()].Value = "";
+                    fieldsIndex++;
+                }
+
+
+                var divSheet = pck.Workbook.Worksheets.Add("Rækker");
+
+                divSheet.Cells["A1"].Value = "RID";
+                divSheet.Cells["B1"].Value = "CID";
+                divSheet.Cells["C1"].Value = "Navn";
+
+                int divIndex = 2;
+                foreach (Division d in t.Divisions)
+                {
+                    divSheet.Cells[chars[0] + divIndex.ToString()].Value = d.Id.ToString();
+                    divSheet.Cells[chars[1] + divIndex.ToString()].Value = t.Id.ToString();
+                    divSheet.Cells[chars[2] + divIndex.ToString()].Value = d.Name;
+                    divIndex++;
+                }
+
+                var poolSheet = pck.Workbook.Worksheets.Add("Puljer");
+
+                poolSheet.Cells["A1"].Value = "PID";
+                poolSheet.Cells["B1"].Value = "RID";
+                poolSheet.Cells["C1"].Value = "Type";
+                poolSheet.Cells["D1"].Value = "Navn";
+                poolSheet.Cells["E1"].Value = "Footer";
+                poolSheet.Cells["F1"].Value = "Header";
+                poolSheet.Cells["G1"].Value = "OpdaterStilling";
+
+
+                int poolIndex = 2;
+                foreach (Division d in t.Divisions)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        poolSheet.Cells[chars[0] + poolIndex.ToString()].Value = p.Id.ToString();
+                        poolSheet.Cells[chars[1] + poolIndex.ToString()].Value = d.Id.ToString();
+                        poolSheet.Cells[chars[2] + poolIndex.ToString()].Value = "Normal";
+                        poolSheet.Cells[chars[3] + poolIndex.ToString()].Value = p.Name;
+                        poolSheet.Cells[chars[4] + poolIndex.ToString()].Value = "Ja";
+                        poolSheet.Cells[chars[5] + poolIndex.ToString()].Value = "Ja";
+                        poolSheet.Cells[chars[6] + poolIndex.ToString()].Value = "Ja";
+                        poolIndex++;
+                    }
+                }
+
+
+                var teamSheet = pck.Workbook.Worksheets.Add("Hold");
+
+                teamSheet.Cells["A1"].Value = "HID";
+                teamSheet.Cells["B1"].Value = "PID";
+                teamSheet.Cells["C1"].Value = "OriginalNavn";
+                teamSheet.Cells["D1"].Value = "Navn";
+                teamSheet.Cells["E1"].Value = "Dispensation";
+                teamSheet.Cells["F1"].Value = "Placering";
+                teamSheet.Cells["G1"].Value = "PuljeId";
+                teamSheet.Cells["H1"].Value = "TaberId";
+                teamSheet.Cells["I1"].Value = "VinderId";
+                teamSheet.Cells["J1"].Value = "Kontakt";
+                teamSheet.Cells["K1"].Value = "Telefon";
+                teamSheet.Cells["L1"].Value = "Email";
+                teamSheet.Cells["M1"].Value = "Position";
+                teamSheet.Cells["N1"].Value = "K";
+                teamSheet.Cells["O1"].Value = "V";
+                teamSheet.Cells["P1"].Value = "U";
+                teamSheet.Cells["Q1"].Value = "T";
+                teamSheet.Cells["R1"].Value = "M1";
+                teamSheet.Cells["S1"].Value = "M2";
+                teamSheet.Cells["T1"].Value = "P";
+
+                int teamIndex = 2;
+                foreach (Division d in t.Divisions)
+                {
+                    foreach (Pool p in d.Pools)
+                    {
+                        foreach (Team team in p.Teams)
+                        {
+                            teamSheet.Cells[chars[0] + teamIndex.ToString()].Value = team.Id.ToString();
+                            teamSheet.Cells[chars[1] + teamIndex.ToString()].Value = p.Id.ToString();
+                            teamSheet.Cells[chars[2] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[3] + teamIndex.ToString()].Value = team.Name;
+                            teamSheet.Cells[chars[4] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[5] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[6] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[7] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[8] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[9] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[10] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[11] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[12] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[13] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[14] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[15] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[16] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[17] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[18] + teamIndex.ToString()].Value = "";
+                            teamSheet.Cells[chars[19] + teamIndex.ToString()].Value = "";
+                            teamIndex++;
+                        }
+                    }
+                }
+
+                var matchSheet = pck.Workbook.Worksheets.Add("Kampe");
+
+                matchSheet.Cells["A1"].Value = "KID";
+                matchSheet.Cells["B1"].Value = "PID";
+                matchSheet.Cells["C1"].Value = "Nummer";
+                matchSheet.Cells["D1"].Value = "HjemmeholdID";
+                matchSheet.Cells["E1"].Value = "UdeholdID";
+                matchSheet.Cells["F1"].Value = "Resultat";
+                matchSheet.Cells["G1"].Value = "M1";
+                matchSheet.Cells["H1"].Value = "M2";
+                matchSheet.Cells["I1"].Value = "Tid";
+                matchSheet.Cells["J1"].Value = "Dato";
+                matchSheet.Cells["K1"].Value = "Timer";
+                matchSheet.Cells["L1"].Value = "Minutter";
+                matchSheet.Cells["M1"].Value = "HalID";
+                matchSheet.Cells["N1"].Value = "ArverResultat";
+
+                int matchIndex = 2;
+                foreach (Field f in t.Fields)
+                {
+                    foreach (Match match in f.Matches)
+                    {
+                        matchSheet.Cells[chars[0] + matchIndex.ToString()].Value = match.Id.ToString();
+                        matchSheet.Cells[chars[1] + matchIndex.ToString()].Value = match.Teams.First().Pool.Id.ToString();
+                        matchSheet.Cells[chars[2] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[3] + matchIndex.ToString()].Value = match.Teams.First().Id.ToString();
+                        matchSheet.Cells[chars[4] + matchIndex.ToString()].Value = match.Teams.Last().Id.ToString();
+                        matchSheet.Cells[chars[5] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[6] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[7] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[8] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[9] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[10] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[11] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[12] + matchIndex.ToString()].Value = "";
+                        matchSheet.Cells[chars[13] + matchIndex.ToString()].Value = "";
+                        matchIndex++;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                return Json(new { State = "Failed", Exception = e }, JsonRequestBehavior.AllowGet);
+            }
+
+            Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            Response.AddHeader("content-disposition", "attachment; filename=Export.xlsx");
+            Response.BinaryWrite(pck.GetAsByteArray());
+            Response.End();
+            return Json(new { State = "Success" }, JsonRequestBehavior.AllowGet);
+        }
+
           
         //This function will export the scheduled tournament plan to an excel file
         /*public ActionResult ExportExcel(int tournamentId)

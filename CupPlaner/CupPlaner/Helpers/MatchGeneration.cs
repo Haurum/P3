@@ -108,8 +108,6 @@ namespace CupPlaner.Helpers
                     //if finals are knockout
                     else
                     {
-                        //db.TeamSet.RemoveRange(teams);
-                        //db.PoolSet.Remove(finalPool);
                         Pool KOPool = new Pool();
                         TournamentStage tournyStage = new TournamentStage();
                         int pow = 0;
@@ -343,8 +341,6 @@ namespace CupPlaner.Helpers
                     //if finals are knockout
                     else
                     {
-                        //db.TeamSet.RemoveRange(teams);
-                        //db.PoolSet.Remove(finalPool);
                         Pool KOPool = new Pool();
                         TournamentStage tournyStage = new TournamentStage();
                         int pow = 0;
