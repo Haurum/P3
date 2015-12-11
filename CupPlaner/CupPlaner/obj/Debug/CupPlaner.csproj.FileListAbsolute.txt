@@ -133,3 +133,6 @@ D:\Dokumenter\Github\P3\CupPlaner\CupPlaner\obj\Debug\CupPlaner.pdb
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Excel.dll
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\ICSharpCode.SharpZipLib.dll
 C:\Users\Mark Haurum\Documents\UNI\3. Semester\P3\CupPlaner\CupPlaner\bin\Excel.pdb
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Excel.dll
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\ICSharpCode.SharpZipLib.dll
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlaner\bin\Excel.pdb
