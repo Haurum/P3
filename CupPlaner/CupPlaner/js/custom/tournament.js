@@ -212,7 +212,6 @@ app.controller('TournamentController', ['$scope', '$rootScope', '$location', '$h
   $scope.getData(); 
 
   $scope.GetMinutes = function(endTime, startTime) {
-    console.log(endTime);
     var eTime = new Date, time = endTime.split(/\:|\-/g);
     eTime.setHours(time[0]);
     eTime.setMinutes(time[1]);
@@ -297,15 +296,13 @@ app.controller('CreateTournyController', ['$scope', '$rootScope', '$http', '$loc
 
   //Funcion to send data when an item is successfully uploaded.
   uploader.onSuccessItem = function(fileItem, response, status, headers) {
-    cfpLoadingBar.complete()
-    console.info('onSuccessItem', fileItem, response, status, headers);
+      cfpLoadingBar.complete();
     $location.path("tournament/" + response.id);
   };
 
   //Function to send data when an item is not succcessfully uploaded.
   uploader.onErrorItem = function(fileItem, response, status, headers) {
-    cfpLoadingBar.complete()
-    console.info('onErrorItem', fileItem, response, status, headers);
+      cfpLoadingBar.complete();
   };
 
   /* DATE PICKER START */ //The datepicker is used to generate and handle the time-intervals

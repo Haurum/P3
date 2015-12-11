@@ -166,10 +166,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
 
   $scope.finalsLinkChanged = function(finalsLink, letter)
   {
-    console.log({ id: finalsLink.Id, finalStage: $scope.allLetters.indexOf(letter) + 1, poolPlacement: finalsLink.PoolPlacement  });
     $http.post($rootScope.apiUrl + "/FinalsLink/Edit", { id: finalsLink.Id, finalStage: ($scope.allLetters.indexOf(letter) + 1), poolPlacement: finalsLink.PoolPlacement  })
     .success(function(data) {
-      console.log(data);
     })
     .error(function(err) {
       $scope.uflErr = err;
@@ -178,10 +176,8 @@ app.controller('DivisionController', ['$scope', '$rootScope', '$location', '$htt
 
   $scope.finalsTypeChanged = function(finalstype)
   {
-    console.log(finalstype);
     $http.post($rootScope.apiUrl + "/Division/ChangeStructure", { divisionId: $scope.division.Id, typeId: finalstype.nr  })
     .success(function(data) {
-      console.log(data);
     })
     .error(function(err) {
       $scope.uflErr = err;
