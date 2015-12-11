@@ -30,6 +30,7 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DetailsTest()
         {
+            //Find the created finals link
             dynamic jsonResult = ((JsonResult)controller.Details(ID.FinalsLinkId)).Data;
             Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.FinalsLinkId, jsonResult.id);
@@ -37,7 +38,7 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(1, jsonResult.PoolPlacement);
             Assert.AreEqual(ID.DivisionId, jsonResult.Division_Id.Id);
 
-            //Find a field that does not exist
+            //Find a finals link that does not exist
             jsonResult = ((JsonResult)controller.Details(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }

@@ -179,3 +179,6 @@ C:\Users\Søren\Desktop\P3\CupPlaner\CupPlanerTests\bin\Debug\System.Web.Optimiz
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.csprojResolveAssemblyReference.cache
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.dll
 C:\Users\Søren\Desktop\P3\CupPlaner\CupPlanerTests\obj\Debug\CupPlanerTests.pdb
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\Excel.dll
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\ICSharpCode.SharpZipLib.dll
+C:\Users\BK\Documents\GitHub\P3\CupPlaner\CupPlanerTests\bin\Debug\Excel.pdb
