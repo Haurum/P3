@@ -23,9 +23,6 @@ namespace CupPlaner.Helpers
             int selector = 0;
             int dayCount = 1;
             int indicator = 1;
-            int prevCount = 0;
-            int prevPrevCount = 0;
-            int startingPoint = 0;
             bool IsScheduled = false;
             while (!IsScheduled)
             {
@@ -75,98 +72,94 @@ namespace CupPlaner.Helpers
                     if (!isReady)
                     {
                         selector++;
-                        continue;
-                    }
-
-
-                    List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
-                    Match matchToSchedule;
-                    if (unscheduledMatches.Count == 0)
-                    {
-                        DateTime lastMatchStart = ts.Matches.Max(x => x.StartTime);
-                        ts.TimeInterval.EndTime = lastMatchStart.AddMinutes(ts.DivisionTournament.Division.MatchDuration * 2);
-                        ts.IsScheduled = true;
-                        continue;
-                    }
-                    else if (indicator > 0)
-                    {
-                        matchToSchedule = unscheduledMatches.First();
-
                     }
                     else
                     {
-                        matchToSchedule = unscheduledMatches.Last();
-                        selector++;
-                    }
-
-                    List<Field> fields = matchToSchedule.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == fSize).Take(numberOfFields).ToList();
-                    List<Field> fieldsNotChecked = new List<Field>();
-                    fieldsNotChecked.AddRange(fields);
-
-                    for (int i = 0; i < dayCount; i++)
-                    {
-                        //if (ts.TournamentStructure == TournamentStructure.RoundRobin)
-                        //{
-                        //    foreach (Field field in matchToSchedule.TournamentStage.Pool.FavoriteFields)
-                        //    {
-                        //        if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
-                        //        {
-                        //            matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
-                        //            matchToSchedule.Field = field;
-                        //            field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
-                        //            matchToSchedule.IsScheduled = true;
-                        //            db.Entry(field).State = System.Data.Entity.EntityState.Modified;
-                        //            break;
-                        //        }
-                        //        fieldsNotChecked.Remove(field);
-
-                        //    }
-
-                        //    if (matchToSchedule.IsScheduled || fieldsNotChecked.Count == 0)
-                        //    {
-                        //        break;
-                        //    }
-                        //}
-                        fieldsNotChecked = fieldsNotChecked.OrderBy(x => x.Matches.Count(y => y.StartTime.Date == x.NextFreeTime.ElementAt(i).FreeTime.Date)).ToList();
-                        foreach (Field field in fieldsNotChecked)
+                        List<Match> unscheduledMatches = ts.Matches.Where(x => !x.IsScheduled).ToList();
+                        Match matchToSchedule;
+                        if (unscheduledMatches.Count == 0)
                         {
-                            if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
+                            DateTime lastMatchStart = ts.Matches.Max(x => x.StartTime);
+                            ts.TimeInterval.EndTime = lastMatchStart.AddMinutes(ts.DivisionTournament.Division.MatchDuration * 2);
+                            ts.IsScheduled = true;
+                            continue;
+                        }
+                        else if (indicator > 0)
+                        {
+                            matchToSchedule = unscheduledMatches.First();
+
+                        }
+                        else
+                        {
+                            matchToSchedule = unscheduledMatches.Last();
+                            selector++;
+                        }
+
+                        List<Field> fields = matchToSchedule.TournamentStage.DivisionTournament.Division.Tournament.Fields.Where(x => x.Size == fSize).Take(numberOfFields).ToList();
+                        List<Field> fieldsNotChecked = new List<Field>();
+                        fieldsNotChecked.AddRange(fields);
+
+                        for (int i = 0; i < dayCount; i++)
+                        {
+                            //if (ts.TournamentStructure == TournamentStructure.RoundRobin)
+                            //{
+                            //    foreach (Field field in matchToSchedule.TournamentStage.Pool.FavoriteFields)
+                            //    {
+                            //        if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
+                            //        {
+                            //            matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
+                            //            matchToSchedule.Field = field;
+                            //            field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
+                            //            matchToSchedule.IsScheduled = true;
+                            //            db.Entry(field).State = System.Data.Entity.EntityState.Modified;
+                            //            break;
+                            //        }
+                            //        fieldsNotChecked.Remove(field);
+
+                            //    }
+
+                            //    if (matchToSchedule.IsScheduled || fieldsNotChecked.Count == 0)
+                            //    {
+                            //        break;
+                            //    }
+                            //}
+                            fieldsNotChecked = fieldsNotChecked.OrderBy(x => x.Matches.Count(y => y.StartTime.Date == x.NextFreeTime.ElementAt(i).FreeTime.Date)).ToList();
+                            foreach (Field field in fieldsNotChecked)
                             {
-                                matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
-                                matchToSchedule.Field = field;
-                                field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
-                                matchToSchedule.IsScheduled = true;
-                                //if (ts.TournamentStructure == TournamentStructure.RoundRobin)
-                                //{
-                                //    matchToSchedule.TournamentStage.Pool.FavoriteFields.Add(field);
-                                //}                               
-                                db.Entry(field).State = System.Data.Entity.EntityState.Modified;
+                                if (validator.areTeamsFree(matchToSchedule, field.NextFreeTime.ElementAt(i).FreeTime))
+                                {
+                                    matchToSchedule.StartTime = field.NextFreeTime.ElementAt(i).FreeTime;
+                                    matchToSchedule.Field = field;
+                                    field.NextFreeTime.ElementAt(i).FreeTime = field.NextFreeTime.ElementAt(i).FreeTime.AddMinutes(matchToSchedule.Duration);
+                                    matchToSchedule.IsScheduled = true;
+                                    //if (ts.TournamentStructure == TournamentStructure.RoundRobin)
+                                    //{
+                                    //    matchToSchedule.TournamentStage.Pool.FavoriteFields.Add(field);
+                                    //}                               
+                                    db.Entry(field).State = System.Data.Entity.EntityState.Modified;
+                                    break;
+                                }
+
+                            }
+
+                            if (matchToSchedule.IsScheduled)
+                            {
                                 break;
                             }
-                            
-                        }
 
+
+                        }
                         if (matchToSchedule.IsScheduled)
                         {
-                            startingPoint++;
-                            break;
+                            indicator = 1;
+                            selector = 0;
+                            db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
                         }
-
-
                     }
-                    if (matchToSchedule.IsScheduled)
-                    {
-                        indicator = 1;
-                        selector = 0;
-                        db.Entry(matchToSchedule).State = System.Data.Entity.EntityState.Modified;
-                    }
-
                 }
                 if (selector >= unscheduledTournamentstages.Count )
                 {
                     List<Match> allUnscheduledMatches = allMatches.Where(x => !x.IsScheduled).ToList();
-                    if (allUnscheduledMatches.Count != 0 && allUnscheduledMatches.Count == prevCount && prevCount == prevPrevCount)
-                    {
                         int newDayCount = 1;
                         int k = 0;
                         bool done = false;
@@ -190,11 +183,11 @@ namespace CupPlaner.Helpers
                                 }
                                 else
                                 {
-                                    /*done = true;
-                                    IsScheduled = true;
-                                    continue;*/
-                                    return false;
-                                }
+                                //done = true;
+                                //IsScheduled = true;
+                                //continue;
+                                return false;
+                            }
                             }
                             foreach (Match match in allUnscheduledMatches.Where(x => x.TournamentStage.TimeInterval.StartTime != DateTime.MinValue))
                             {
@@ -223,18 +216,10 @@ namespace CupPlaner.Helpers
                                 {
                                     selector = 0;
                                     done = true;
-                                    startingPoint++;
                                     break;
                                 }
                             }
                         }
-                    }
-
-                    else
-                    {
-                        prevPrevCount = prevCount;
-                        prevCount = allUnscheduledMatches.Count;
-                    }
                 }
                 indicator *= -1;
             }

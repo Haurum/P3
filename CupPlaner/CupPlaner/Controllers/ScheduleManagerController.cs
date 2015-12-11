@@ -50,12 +50,16 @@ namespace CupPlaner.Controllers
             int numOfFields = t.Fields.Count(x => x.Size == fs);
             if (numOfFields > 0 && t.Divisions.Any(x => x.FieldSize == fs))
             {
+                //if (sm.scheduleAll(tournamentID, fs, 2))
+                //{
+                //    return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
+                //}
                 minNumOfFields = sm.MinNumOfFields(tournamentID, fs);
                 for (int i = minNumOfFields; i <= numOfFields; i++)
                 {
                     if (sm.scheduleAll(tournamentID, fs, i))
                     {
-                        return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
+                        return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
                     }
                 }
             }
