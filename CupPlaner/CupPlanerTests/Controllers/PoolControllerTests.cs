@@ -34,7 +34,7 @@ namespace CupPlaner.Controllers.Tests
         [TestMethod()]
         public void DetailsTest()
         {
-            //Find the created division
+            //Find the created pool
             dynamic jsonResult = ((JsonResult)controller.Details(ID.PoolId)).Data;
             Assert.AreEqual("success", jsonResult.status);
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
@@ -57,8 +57,8 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual(ID.PoolId, jsonResult.Id);
             Assert.AreEqual("Pulje Test2", jsonResult.Name);
 
-            //Edit a pool using null valueshttp://localhost:50229/Service References/
-            jsonResult = ((JsonResult)controller.Edit(ID.PoolId, "Pulje Test2", ID.DivisionId)).Data;
+            //Edit a pool using null values
+            jsonResult = ((JsonResult)controller.Edit(ID.PoolId, null, ID.DivisionId)).Data;
             Assert.AreEqual("error", jsonResult.status);
 
             //Edit a pool that does not exist

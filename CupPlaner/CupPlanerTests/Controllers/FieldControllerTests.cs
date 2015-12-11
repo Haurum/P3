@@ -41,7 +41,7 @@ namespace CupPlaner.Controllers.Tests
             Assert.AreEqual("Test Field", jsonResult.Fields[0].Name);
 
             //Get the tournament fields from a non-existing tournament
-            jsonResult = ((JsonResult)controller.GetAllTournamentFields(999999));
+            jsonResult = ((JsonResult)controller.GetAllTournamentFields(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
 

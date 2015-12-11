@@ -75,7 +75,7 @@ namespace CupPlaner.Controllers.Tests
             dynamic jsonResult = ((JsonResult)controller.Delete(ID.DivisionId)).Data;
             Assert.AreEqual("success", jsonResult.status);
 
-            //Delete a tournament that does not exist
+            //Delete a division that does not exist
             jsonResult = ((JsonResult)controller.Delete(999999)).Data;
             Assert.AreEqual("error", jsonResult.status);
         }
