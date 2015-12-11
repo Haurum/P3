@@ -32,21 +32,6 @@ namespace CupPlaner.Controllers
             return View();
         }
 
-        public ActionResult Hejhej(string name)
-        {
-            db.TournamentSet.Add(new Tournament() { Name = name });
-            db.SaveChanges();
-
-            return Json(new { LOL = "hej" }, JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult GetHejs()
-        {
-            List<Tournament> ts = db.TournamentSet.ToList();
-
-            return Json(new { Name = ts.First().Name }, JsonRequestBehavior.AllowGet);
-        }
-
         /*[HttpPost]
         public ActionResult ExcelTest(HttpPostedFileBase file = null)
         {
