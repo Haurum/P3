@@ -51,8 +51,8 @@ namespace CupPlaner.Controllers
 
         public ActionResult GenerateFinalsMatches(int tournamentID)
         {
-            //try
-            //{
+            try
+            {
                 if (mg.GenerateFinalsMatches(tournamentID))
                 {
                     return Json(new { status = "success" }, JsonRequestBehavior.AllowGet);
@@ -61,11 +61,11 @@ namespace CupPlaner.Controllers
                 {
                     return Json(new { status = "error", message = "Generering mislykkedes" }, JsonRequestBehavior.AllowGet);
                 }
-            //}
-            //catch (Exception)
-            //{
-            //    return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
-            //}
+            }
+            catch (Exception)
+            {
+                return Json(new { status = "error", message = "fejl i programmet" }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

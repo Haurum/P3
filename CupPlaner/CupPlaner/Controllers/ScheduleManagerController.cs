@@ -15,15 +15,15 @@ namespace CupPlaner.Controllers
 
         public ActionResult DeleteSchedule (int tournamentID)
         {
-            //try
-            //{
+            try
+            {
                 sm.DeleteSchedule(tournamentID);
                 return Json(new { status = "success"}, JsonRequestBehavior.AllowGet);
-            //}
-            //catch (Exception)
-            //{
-            //    return Json(new { status = "error" }, JsonRequestBehavior.AllowGet);
-            //}
+            }
+            catch (Exception)
+            {
+                return Json(new { status = "error" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         public ActionResult MinNumOfFields (int tournamentID, FieldSize fs)

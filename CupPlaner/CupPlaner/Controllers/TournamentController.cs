@@ -103,8 +103,8 @@ namespace CupPlaner.Controllers
 
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
-            //try
-            //{
+            try
+            {
                 if (!db.TournamentSet.Any(x => x.Password == password))
                 {
                     Tournament t = new Tournament();
@@ -150,12 +150,6 @@ namespace CupPlaner.Controllers
                         int missingFLs = 0;
                         int flIndex = 0;
 
-                        /*// extract only the filename
-                        var fileName = Path.GetFileName(file.FileName);
-                        // store the file inside ~/App_Data/uploads folder
-                        var path = Path.Combine(Server.MapPath("~/App_Data/Excel"), fileName);*/
-
-
                         t.Name = result.Tables[0].Rows[0][0].ToString();
                         object[] stopRow = new object[1];
                         stopRow[0] = "Stop";
@@ -163,7 +157,6 @@ namespace CupPlaner.Controllers
 
                         for (int i = 1; i < result.Tables[0].Rows.Count; i++)
                         {
-                            //if (result.Tables[0].Rows[i][0].ToString() != null || result.Tables[0].Rows[i][1].ToString() == null)
                             if (!string.IsNullOrEmpty(result.Tables[0].Rows[i][0].ToString()) || string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
                             {
                                 if (t.Divisions.Count > 0)
@@ -229,12 +222,11 @@ namespace CupPlaner.Controllers
                     
                 }
                 return Json(new { status = "error", message = "Password already exists" }, JsonRequestBehavior.AllowGet);
-            //}
-            /*catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return Json(new { status = "error", message = "New tournament not added", details = ex.Message }, JsonRequestBehavior.AllowGet);
-            }*/
-            return Json(new { status = "error", message = "New tournament not added" }, JsonRequestBehavior.AllowGet);
+            }
         }
 
         
