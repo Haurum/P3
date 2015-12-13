@@ -245,12 +245,12 @@ namespace CupPlaner.Helpers
                             teamsToAdd.Clear();
                             db.SaveChanges();
                         }
-                        List<Team> whatthefuck = db.TeamSet.Where(x => x.Pool.Id == finalPool.Id).ToList();
-                        foreach (Team team in whatthefuck)
+                        List<Team> teamsToClearUp = db.TeamSet.Where(x => x.Pool.Id == finalPool.Id).ToList();
+                        foreach (Team team in teamsToClearUp)
                         {
                             db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
                         }
-                        db.TeamSet.RemoveRange(whatthefuck);
+                        db.TeamSet.RemoveRange(teamsToClearUp);
                         db.PoolSet.Remove(finalPool);
                         db.SaveChanges();
                     }
