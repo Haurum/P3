@@ -15,74 +15,6 @@ namespace CupPlaner.Helpers.Tests
         CupDBContainer db = new CupDBContainer();
 
         [TestMethod()]
-        public void sletTest()
-        {
-
-            Tournament t = db.TournamentSet.Find(1);
-            foreach (Division d in t.Divisions.ToList())
-            {
-                if (d.DivisionTournament != null)
-                {
-                    foreach (TournamentStage ts in d.DivisionTournament.TournamentStage.ToList())
-                    {
-                        foreach (Match m in ts.Matches.ToList())
-                        {
-                            foreach (Team team in m.Teams.ToList())
-                            {
-                                team.Matches.Remove(m);
-                            }
-                            db.MatchSet.Remove(m);
-                        }
-                        //db.TimeIntervalSet.Remove(ts.TimeInterval);
-                        db.TournamentStageSet.Remove(ts);
-                    }
-                    db.DivisionTournamentSet.Remove(d.DivisionTournament);
-                    //dtc.Delete(d.DivisionTournament.Id);
-                }
-
-                foreach (Pool pool in d.Pools.ToList())
-                {
-                    pool.FavoriteFields.Clear();
-                    if (pool.IsAuto)
-                    {
-                        foreach (Team team in pool.Teams)
-                        {
-                            db.TimeIntervalSet.RemoveRange(team.TimeIntervals);
-                        }
-                        db.TeamSet.RemoveRange(pool.Teams);
-                        
-                        db.PoolSet.Remove(pool);
-                    }
-                }
-
-                db.FinalsLinkSet.RemoveRange(d.FinalsLinks);
-
-                int maxNumOfTeams = 0;
-
-                foreach (Pool p in d.Pools)
-                {
-                    if (maxNumOfTeams < p.Teams.Count)
-                    {
-                        maxNumOfTeams = p.Teams.Count;
-                    }
-                }
-
-                for (int i = 1; i <= maxNumOfTeams; i++)
-                {
-                    db.FinalsLinkSet.Add(new FinalsLink() { Division = d, PoolPlacement = i, Finalstage = (i / 2) + 1 });
-                }
-            }
-            db.SaveChanges();
-        }
-
-        [TestMethod()]
-        public void generateTest()
-        {
-            MatchGeneration mg = new MatchGeneration();
-            mg.Generate(17);
-        }
-
-        [TestMethod()]
         public void SameTimeIntervalTest()
         {
             Pool p = new Pool();
@@ -95,7 +27,6 @@ namespace CupPlaner.Helpers.Tests
             List<TimeInterval> tis1 = new List<TimeInterval>() { new TimeInterval() { StartTime = startDates1[0], EndTime = endDates1[0] }, new TimeInterval() { StartTime = startDates1[1], EndTime = endDates1[1] }, new TimeInterval() { StartTime = startDates1[2], EndTime = endDates1[2] } };
             List<TimeInterval> tis2 = new List<TimeInterval>() { new TimeInterval() { StartTime = startDates2[0], EndTime = endDates2[0] }, new TimeInterval() { StartTime = startDates2[1], EndTime = endDates2[1] }, new TimeInterval() { StartTime = startDates2[2], EndTime = endDates2[2] } };
             List<TimeInterval> tis3 = new List<TimeInterval>() { new TimeInterval() { StartTime = startDates3[0], EndTime = endDates3[0] }, new TimeInterval() { StartTime = startDates3[1], EndTime = endDates3[1] }, new TimeInterval() { StartTime = startDates3[2], EndTime = endDates3[2] } };
-
 
             Team t1 = new Team() { TimeIntervals = tis1 };
             Team t2 = new Team() { TimeIntervals = tis2 };
