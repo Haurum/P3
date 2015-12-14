@@ -55,7 +55,7 @@ app.config(['cfpLoadingBarProvider', function (cfpLoadingBarProvider) {
 }]);
 
 app.run(function ($rootScope, $http, $routeParams, $route) {
-  $rootScope.apiUrl = "http://localhost:50229";
+  $rootScope.apiUrl = "http://sorenlyng.dk";
 
   //Function set as an variable to delete the scheduled used in the scheduler function.
   var deleteSchedule = function (tournamentID) {
