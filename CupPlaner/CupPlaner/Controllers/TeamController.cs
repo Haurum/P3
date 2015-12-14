@@ -101,7 +101,6 @@ namespace CupPlaner.Controllers
                 List<TimeInterval> tournytis = new List<TimeInterval>();
                 Team t = db.TeamSet.Find(id);
                 tournytis = t.Pool.Division.Tournament.TimeIntervals.ToList();
-
                 for (int i = 0; i < startTimes.Count; i++)
                 {
                     if(startTimes[i] >= tournytis[i].StartTime && endTimes[i] <= tournytis[i].EndTime)
@@ -143,7 +142,8 @@ namespace CupPlaner.Controllers
             {
                 Team t = db.TeamSet.Find(id);
                 Pool p = db.PoolSet.Find(t.Pool.Id);
-
+                bool tooMany = true;
+                
                 // Clear the schedule
                 sm.DeleteSchedule(t.Pool.Division.Tournament.Id, db);
 
@@ -152,6 +152,15 @@ namespace CupPlaner.Controllers
                 {
                     t.TimeIntervals.Remove(ti);
                 }
+
+                foreach (Pool pool in p.Division.Pools)
+                {
+                    if (pool != p && pool.Teams.Count >= p.Teams.Count)
+                        tooMany = false;
+                }
+
+                if (tooMany)
+                    db.FinalsLinkSet.Remove(p.Division.FinalsLinks.Last());
 
                 db.MatchSet.RemoveRange(t.Matches);
                 db.TeamSet.Remove(t);

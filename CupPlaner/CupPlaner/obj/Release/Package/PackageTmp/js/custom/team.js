@@ -204,5 +204,4 @@ app.controller('TeamDetailController', ['$scope', '$rootScope', '$location', '$h
       }  
     }   
   }
-  /* Change time intervals end */ 
 }]);
