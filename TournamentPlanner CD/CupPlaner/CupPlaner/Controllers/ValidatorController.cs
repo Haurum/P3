@@ -11,6 +11,7 @@ namespace CupPlaner.Controllers
     {
         Validator v = new Validator();
 
+        // calls the IsScheduleReady function from the Validator class and return a json object to the frontend with the result
         public ActionResult IsScheduleReady(int tournamentID)
         {
             try

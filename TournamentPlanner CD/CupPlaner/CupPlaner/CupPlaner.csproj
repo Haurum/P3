@@ -695,6 +695,7 @@
     <Content Include="templates\team.html" />
     <Content Include="templates\tournament.html" />
     <Content Include="templates\tutorial.html" />
+    <Content Include="title.ico" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

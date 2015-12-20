@@ -11,6 +11,7 @@ namespace CupPlaner.Controllers
     {
         MatchGeneration mg = new MatchGeneration();
 
+        // These functions call functions from the matchGeneration class and returns a json object to tell the frontend whether or not it was successfull 
         public ActionResult GenerateGroupStage(int tournamentID)
         {
             try

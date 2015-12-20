@@ -97,9 +97,8 @@ namespace CupPlaner.Controllers
         }
 
         // POST: Tournament/Create
-        // This function will have name, password starttime and endtime.
+        // Create tournament, either with or without excel upload.
         // 
-
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
             try
@@ -120,6 +119,7 @@ namespace CupPlaner.Controllers
                         db.TimeIntervalSet.Add(new TimeInterval() { StartTime = startTimesList[i], EndTime = endTimesList[i] });
                     }
 
+                    // Check for attatched file
                     if (Request != null && Request.Files.Count > 0 && Request.Files[0] != null && Request.Files[0].ContentLength > 0)
                     {
                         file = Request.Files[0];
@@ -153,18 +153,20 @@ namespace CupPlaner.Controllers
                         object[] stopRow = new object[1];
                         stopRow[0] = "Stop";
                         result.Tables[0].Rows.Add(stopRow);
-
+                        // Loop over number rows in the table
                         for (int i = 1; i < result.Tables[0].Rows.Count; i++)
                         {
                             if (!string.IsNullOrEmpty(result.Tables[0].Rows[i][0].ToString()) || string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
                             {
                                 if (t.Divisions.Count > 0)
                                 {
+                                    // A loop running from where one pool starts till another ends
                                     for (int j = poolStart; j < i; j++)
                                     {
 
                                         p = new Pool() { Division = d, Name = result.Tables[0].Rows[j][1].ToString(), IsAuto = false };
 
+                                        // Create new teams and link them to the pool
                                         for (int teamIndex = 2; teamIndex < 25; teamIndex++)
                                         {
                                             try
@@ -174,6 +176,7 @@ namespace CupPlaner.Controllers
                                                 {
 
                                                     Team newTeam = new Team() { Name = teamName, Pool = p, IsAuto = false, };
+                                                    // Make sure teams gets standard time intervals
                                                     foreach (TimeInterval ti in tis)
                                                     {
                                                         newTeam.TimeIntervals.Add(db.TimeIntervalSet.Add(new TimeInterval { StartTime = ti.StartTime, EndTime = ti.EndTime }));
@@ -193,6 +196,7 @@ namespace CupPlaner.Controllers
                                         if (p.Teams.Count > missingFLs)
                                             missingFLs = p.Teams.Count;
                                     }
+                                    // Create finalslinks for division. MissingFls is the max number of teams in a pool in a division
                                     for (flIndex = 0; flIndex < missingFLs; flIndex++)
                                     {
                                         d.FinalsLinks.Add(new FinalsLink() { Division = d, PoolPlacement = flIndex + 1, Finalstage = flIndex + 1 });
@@ -202,6 +206,7 @@ namespace CupPlaner.Controllers
                                 if (string.IsNullOrEmpty(result.Tables[0].Rows[i][1].ToString()))
                                     break;
 
+                                // Create the division and assign data
                                 d = new Division() { Tournament = t, Name = result.Tables[0].Rows[i][0].ToString(), FieldSize = FieldSize.ElevenMan, MatchDuration = 60 };
                                 d = db.DivisionSet.Add(d);
                                 missingFLs = 0;
@@ -211,6 +216,8 @@ namespace CupPlaner.Controllers
                         }
                         excelReader.Close();
                     }
+
+                    // Standard code for creating the tournament. Creates the tournament even when there are no excel data
                     t.Name = name;
                     t.Password = password;
                     t.TimeIntervals = tis;
@@ -230,7 +237,7 @@ namespace CupPlaner.Controllers
 
         
 
-
+        // OLD EXCEL UPLOAD
         /*[HttpPost]
         public ActionResult Create(string name, string password, string startTimes, string endTimes)
         {
@@ -355,6 +362,8 @@ namespace CupPlaner.Controllers
             }
         }*/
 
+
+        // Export the excel document in Piratliga format 
         public ActionResult ExportExcel(int tournamentId)
         {
             
@@ -365,9 +374,9 @@ namespace CupPlaner.Controllers
 
             try
             {
+                // Create the sheet for the cup
                 var cupSheet = pck.Workbook.Worksheets.Add("Cup");
 
-                //Add table headers going cell by cell.
                 cupSheet.Cells["A1"].Value = "CID";
                 cupSheet.Cells["B1"].Value = "MD5ID";
                 cupSheet.Cells["C1"].Value = "Navn";
@@ -386,6 +395,8 @@ namespace CupPlaner.Controllers
                 cupSheet.Cells[chars[6] + "2"].Value = "xxxx";
                 cupSheet.Cells[chars[7] + "2"].Value = "FBCADE";
 
+
+                // Sheet for fields
                 var fieldsSheet = pck.Workbook.Worksheets.Add("Spillesteder");
 
                 fieldsSheet.Cells["A1"].Value = "SID";
@@ -393,6 +404,7 @@ namespace CupPlaner.Controllers
                 fieldsSheet.Cells["C1"].Value = "Navn";
                 fieldsSheet.Cells["D1"].Value = "Adresse";
 
+                // For all fields in the tournament
                 int fieldsIndex = 2;
                 foreach (Field f in t.Fields)
                 {   
@@ -403,7 +415,7 @@ namespace CupPlaner.Controllers
                     fieldsIndex++;
                 }
 
-
+                // Sheet for division
                 var divSheet = pck.Workbook.Worksheets.Add("Rækker");
 
                 divSheet.Cells["A1"].Value = "RID";
@@ -419,6 +431,8 @@ namespace CupPlaner.Controllers
                     divIndex++;
                 }
 
+
+                // Sheet for pools
                 var poolSheet = pck.Workbook.Worksheets.Add("Puljer");
 
                 poolSheet.Cells["A1"].Value = "PID";
@@ -446,7 +460,7 @@ namespace CupPlaner.Controllers
                     }
                 }
 
-
+                // Sheet for teams
                 var teamSheet = pck.Workbook.Worksheets.Add("Hold");
 
                 teamSheet.Cells["A1"].Value = "HID";
@@ -502,6 +516,8 @@ namespace CupPlaner.Controllers
                     }
                 }
 
+
+                // Sheet for matches
                 var matchSheet = pck.Workbook.Worksheets.Add("Kampe");
 
                 matchSheet.Cells["A1"].Value = "KID";
@@ -544,9 +560,11 @@ namespace CupPlaner.Controllers
             }
             catch (Exception e)
             {
+                // Handle errors
                 return Json(new { State = "Failed", Exception = e }, JsonRequestBehavior.AllowGet);
             }
 
+            // Return the document
             Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             Response.AddHeader("content-disposition", "attachment; filename=Export.xlsx");
             Response.BinaryWrite(pck.GetAsByteArray());
@@ -555,7 +573,7 @@ namespace CupPlaner.Controllers
         }
 
           
-        //This function will export the scheduled tournament plan to an excel file
+        // OLD EXCEL EXPORT
         /*public ActionResult ExportExcel(int tournamentId)
         {
             Microsoft.Office.Interop.Excel.Application oXL;
