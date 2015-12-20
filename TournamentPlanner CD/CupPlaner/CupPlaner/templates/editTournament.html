@@ -1,0 +1,84 @@
+<div class="row">
+  <div class="col-lg-12 text-center">
+    <ul class="breadcrumb">
+      <li><a href="#/tournament/{{tournamentId}}">Turneringsoverblik</a></li>
+      <li class="active"><a href="/tournament/{{tournamentId}}/edit">Rediger turnering</a></li>
+    </ul>
+    <h1>Rediger turnering</h1>
+    <hr />
+    <div class="row">
+      <form>
+        <div class="brugerInput">
+          <div class="col-md-6">
+            <h4>Turnerings navn</h4>
+            <input type="text" class="form-control" ng-model="tournamentName" placeholder="Skriv turneringens navn" required="true" />
+          </div>
+          <div class="col-md-6">
+            <h4>Turnerings kodeord</h4>
+            <input type="password" class="form-control" ng-model="tournamentPassword" placeholder="Skriv turneringens kodeord" required="true" />
+          </div>
+  
+  
+          <div class="col-md-6">
+            <h4>Turnerings start dag</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" ng-change="isChanged()" uib-datepicker-popup="{{format}}" ng-model="startDate" is-open="statusStartDate.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openStartDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4>Turnerings slut dag</h4>
+            <div class="row">
+              <div class="col-md-12">
+                <p class="input-group">
+                  <input type="text" class="form-control" ng-change="isChanged()" uib-datepicker-popup="{{format}}" ng-model="endDate" is-open="statusEndDate.opened" min-date="minDate" max-date="maxDate" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" required="true" close-text="Close" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="openEndDate($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>      
+              </div>
+            </div>
+          </div>
+  
+         <div class="row">
+          <div class="col-md-4" ng-repeat="x in dateArray">
+            <h4>Tider for den {{x | date: "d. MMM"}}</h4>
+            <div class="col-md-12" style="display: inline-flex">
+              <div class="col-md-5">
+                <uib-timepicker ng-model="startTimes[$index]"  show-meridian="false"></uib-timepicker>
+              </div>            
+              <div class="col-md-2" style="margin-top: auto; margin-bottom: auto; display: block;">-</div>
+              <div class="col-md-5">
+                <uib-timepicker ng-model="endTimes[$index]" show-meridian="false"></uib-timepicker>
+              </div>
+            </div>
+          </div>
+        </div>
+       </div>
+       <div class="col-md-12 upload-excel">
+        <hr />
+      </div>
+        <div class="row">
+          <div class="col-md-12 add-button">
+            <button type="submit" ng-click="uploadTournament()" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Gem turnering
+              <span class="glyphicon glyphicon-list-alt"> </span>
+            </button>
+          </div>
+          <div class="alert alert-danger alert-dismissable col-md-4 col-md-offset-4" role="alert" ng-if="error" id="editTournyError">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="errMsg()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <p> {{error}} </p>
+          </div>
+        </div>
+      </form>
+      <hr />     
+    </div>
+  </div>                
+</div>

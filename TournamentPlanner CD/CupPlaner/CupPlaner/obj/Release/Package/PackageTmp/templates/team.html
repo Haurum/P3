@@ -1,0 +1,124 @@
+<div class="row">
+  <div class="col-md-12 text-center">
+    <ul class="breadcrumb">
+      <li><a ng-click="gotoTournament()">Turneringsoversigt</a></li>
+      <li><a ng-click="gotoDivision()">Rækkeoversigt</a></li>
+      <li><a ng-click="gotoPool()">Puljeoversigt</a></li>
+      <li><a>{{ team.Name }}</a></li>
+    </ul>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <div id="changeTeamName">
+          <div ng-if="!changeName">
+            <h1>
+              <span>{{ team.Name }}</span>
+              <a ng-click="changeTeamNameFunc()" class="btn btn-xs btn-primary teamEditBtn" data-toggle="tooltip" data-placement="right" title="Ændre holdets navn">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </a>
+            </h1>
+          </div>
+          <div class="form-inline">
+            <div ng-if="changeName" class="form-group col-md-4 col-md-offset-4" id="changeTeamName">
+              <input type="text" ng-model="newTeamName" class="form-control" placeholder="{{team.Name}}" />
+              <span>
+              <input type="submit" ng-click="changeNewTeamNameFunc(newTeamName)" class="btn btn-primary" value="Gem" />
+              <a ng-click="changeTeamNameFunc()" class="btn btn-danger">Annuller</a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr />
+
+    <!-- Timeintervals -->
+    <div class="row">
+      <div class="col-md-4" ng-repeat="x in dateArray" id="timeIntervalsTeam">
+        <h4>Tider for den {{x | date: "d. MMM"}}</h4>
+        <div class="col-md-12" style="display: inline-flex">
+          <div class="col-md-5">
+            <uib-timepicker ng-model="startTimes[$index]"  show-meridian="false"></uib-timepicker>
+          </div>            
+          <div class="col-md-2" style="margin-top: auto; margin-bottom: auto; display: block;">-</div>
+          <div class="col-md-5">
+            <uib-timepicker ng-model="endTimes[$index]" show-meridian="false"></uib-timepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div>
+          <input type="submit" value="Gem" id="tisButton" class="btn btn-primary" ng-click="uploadTeam()" />
+        </div>
+        <div class="alert alert-success alert-dismissable col-md-4 col-md-offset-4" role="alert" ng-if="isSuccess" id="teamSuccess">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="successMsg()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p>Info gemt</p>
+        </div>
+        <div class="alert alert-danger alert-dismissable col-md-4 col-md-offset-4" role="alert" ng-if="error" id="teamError">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="errMsg()">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <p> {{error}} </p>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <a class="btn btn-danger" ng-click="remove()">Slet hold</a>
+    <hr />
+    <div class="row" ng-if="IsScheduled">
+      <div class="col-md-12 text-center">
+        <div class="col-md-3">
+          <form id="divisionSearch">
+            <div class="inner-addon left-addon">
+              <i class="glyphicon glyphicon-search"></i>
+              <input type="text" class="form-control" placeholder="Søg.." ng-model="searchFilter" />
+            </div>
+          </form>
+        </div>
+        <table class="table table-bordered table-hover table-responsive">
+          <thead>
+            <tr>
+              <th>
+                <a href="" ng-click="orderByField='Number'; reverseSort = !reverseSort">
+                Kamp nr. <span ng-show="orderByField == 'Number'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='StartTime'; reverseSort = !reverseSort">
+                Dag <span ng-show="orderByField == 'StartTime'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Field.Name'; reverseSort = !reverseSort">
+                Bane <span ng-show="orderByField == 'Field.Name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team1.name'; reverseSort = !reverseSort">
+                  Hold 1 <span ng-show="orderByField == 'Team1.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+              <th>
+                <a href="" ng-click="orderByField='Team2.name'; reverseSort = !reverseSort">
+                Hold 2 <span ng-show="orderByField == 'Team2.name'"><span ng-show="!reverseSort" class="glyphicon glyphicon-circle-arrow-up"></span><span ng-show="reverseSort" class="glyphicon glyphicon-circle-arrow-down"></span></span>
+                </a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="match in team.Matches | orderBy:orderByField:reverseSort | filter:searchFilter">
+              <td> {{ match.Number }} </td>
+              <td> {{ match.StartTime | date:"dd/MM 'kl.' HH:mm" }} </td> 
+              <td> {{ match.FieldName }} </td>
+              <td><a ng-click="gotoTeam(match.Team1)"> {{ match.Team1.name }} </a></td>
+              <td><a ng-click="gotoTeam(match.Team2)"> {{ match.Team2.name }} </a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

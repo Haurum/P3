@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12 text-center">
+      <h1>Tilføj baner</h1>
+      <hr />
+      <div class="fieldHeadings">
+        <div class="col-md-4">
+          <h4>11-mands baner</h4>
+          <div ng-if="newEm">
+            <form>
+              <input type="text" ng-model="newFieldName" />
+              <input type="submit" ng-click="submitEmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewEmField()" class="btn btn-default">Annuller</a>
+            </form>  
+          </div>
+          <div class="btn-group-vertical col-md-12" role="group">
+            <div class="row">
+              <a ng-if="!newEm" class="btn btn-default col-md-12" ng-click="createNewEmField()" style="white-space: inherit ! important;">
+                Tilføj ny 11-mands bane
+                <span class="glyphicon glyphicon-plus pull-right"></span>
+              </a>
+              <a ng-repeat="field in EmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+                {{ field }}
+                <span ng-click="removeEmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>8-mands baner</h4>
+          <div ng-if="newOm">
+            <form>
+              <input type="text" ng-model="newFieldName" />
+              <input type="submit" ng-click="submitOmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewOmField()" class="btn btn-default">Annuller</a>
+            </form>  
+          </div>
+          <div class="btn-group-vertical col-md-12" role="group">
+            <div class="row">
+              <a ng-if="!newOm" class="btn btn-default col-md-12" ng-click="createNewOmField()" style="white-space: inherit ! important;">
+                Tilføj ny 8-mands bane
+                <span class="glyphicon glyphicon-plus pull-right"></span>
+              </a>
+              <a ng-repeat="field in OmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+                {{ field }}
+                <span ng-click="removeOmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h4>5-mands baner</h4>
+          <div ng-if="newFm">
+            <form>
+              <input type="text" ng-model="newFieldName" />
+              <input type="submit" ng-click="submitFmField(newFieldName)" class="btn btn-default" value="Submit" /><a ng-click="createNewFmField()" class="btn btn-default">Annuller</a>
+            </form>  
+          </div>
+          <div class="btn-group-vertical col-md-12" role="group">
+            <div class="row">
+              <a ng-if="!newFm" class="btn btn-default col-md-12" ng-click="createNewFmField()" style="white-space: inherit ! important;">
+                Tilføj ny 5-mands bane
+                <span class="glyphicon glyphicon-plus pull-right"></span>
+              </a>
+              <a ng-repeat="field in FmFields track by $index" class="btn btn-default col-md-12" style="white-space: inherit ! important;">
+                {{ field }}
+                <span ng-click="removeFmField($index)" class="glyphicon glyphicon-remove pull-right"></span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 add-button">
+        <hr />
+          <a href="#/divisions" class="btn btn-default btn-lg" style="white-space: inherit ! important;">Fortsæt
+            <span class="glyphicon glyphicon-arrow-right"> </span>
+          </a>
+      </div>
+    </div>
+  </div>
+</div>
