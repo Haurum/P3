@@ -1,0 +1,7 @@
+READ-ME file for TournamentPlanner
+
+To run the code, Visual Studio is needed. The group have used Visual Studio 2013 and Visual Studio 2015 Community Edition
+The code can be found in the folder CupPlaner, then the file CupPlaner have to be opened and thte code can be run.
+
+The project is also uploaded on sorenlyng.dk, where you are able to try out on code on faster servers.
+
